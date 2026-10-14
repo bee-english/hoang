@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOHA - Tạo & Làm đề</title>
+    <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        :root {
+            font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            font-weight: 400;
+            color-scheme: light;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --primary: #FFA500;
+            --primary-light: #FFD700;
+            --secondary: #2196F3;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --purple: #9C27B0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; overflow-x: hidden; font-family: 'Inter', system-ui, sans-serif; }
+        #app { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .home-button {
+            position: fixed; top: 18px; left: 18px; z-index: 1000;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 50px; padding: 10px 18px;
+            font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3); transition: all 0.3s; text-decoration: none;
+        }
+        .home-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4); }
+
+        .page {
+            width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
+            padding: 70px 20px 40px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .page.hidden { display: none !important; }
+
+        .container {
+            width: 100%; max-width: 560px; background: rgba(255,255,255,0.97);
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); padding: 28px;
+        }
+        .container.wide { max-width: 960px; }
+
+        .logo-section { text-align: center; margin-bottom: 22px; }
+        .logo-section img { width: 64px; height: 64px; margin-bottom: 8px; }
+        .logo-section h1 {
+            font-size: 1.85rem; font-weight: 700;
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .logo-section p { color: #666; margin-top: 6px; font-size: 0.92rem; }
+
+        .form-title { color: #FFA500; margin-bottom: 16px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 0.9rem; }
+        input, select, textarea {
+            width: 100%; padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px;
+            font-size: 0.95rem; transition: all 0.2s; background: white; font-family: inherit;
+        }
+        textarea { min-height: 100px; resize: vertical; }
+        input:focus, select:focus, textarea:focus {
+            border-color: #FFA500; outline: none; box-shadow: 0 0 0 3px rgba(255,165,0,0.12);
+        }
+
+        .btn {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 600;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,215,0,0.3); }
+        .btn-secondary { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+        .btn-success { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+        .btn-danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .btn-purple { background: linear-gradient(135deg, #9C27B0, #673AB7); }
+        .btn-outline { background: transparent; border: 2px solid #FFA500; color: #FFA500; }
+        .btn-sm { width: auto; padding: 8px 14px; font-size: 0.85rem; }
+
+        .role-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+        .role-tab {
+            flex: 1; padding: 10px; text-align: center; border: 2px solid #e0e0e0; border-radius: 10px;
+            cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .role-tab.active { border-color: #FFA500; background: rgba(255,165,0,0.1); color: #FFA500; }
+
+        .divider { display: flex; align-items: center; margin: 18px 0; color: #777; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e0e0e0; }
+        .divider-text { padding: 0 12px; font-size: 0.85rem; }
+
+        /* Exam list */
+        .exam-card {
+            background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 12px;
+            border-left: 5px solid #FFA500; transition: all 0.2s; cursor: pointer;
+        }
+        .exam-card:hover { transform: translateX(4px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+        .exam-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+        .exam-card-title { font-weight: 700; color: #333; font-size: 1.05rem; }
+        .exam-card-meta { font-size: 0.8rem; color: #888; margin-top: 4px; }
+        .exam-code-badge {
+            background: linear-gradient(135deg, #FFA500, #FFD700); color: white;
+            padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .exam-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+
+        /* Question builder */
+        .question-item {
+            background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 14px;
+            border-left: 5px solid #2196F3; position: relative;
+        }
+        .question-item.essay { border-left-color: #FF9800; }
+        .question-item-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+            font-weight: 700; color: #333;
+        }
+        .option-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+        .option-row input[type="text"] { flex: 1; }
+        .option-row input[type="checkbox"] { width: 18px; height: 18px; }
+        .remove-btn {
+            background: #f44336; color: white; border: none; border-radius: 6px;
+            padding: 5px 10px; cursor: pointer; font-size: 0.8rem;
+        }
+        .add-option-btn {
+            background: #4CAF50; color: white; border: none; border-radius: 6px;
+            padding: 6px 12px; cursor: pointer; font-size: 0.85rem; margin-top: 4px;
+        }
+
+        /* Take exam */
+        .exam-header-bar {
+            background: linear-gradient(to right, #FFA500, #FFD700); color: white;
+            padding: 16px 22px; border-radius: 14px; margin-bottom: 18px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .question-box {
+            background: white; border-radius: 14px; padding: 18px; margin-bottom: 16px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06); border-left: 5px solid #FFA500;
+        }
+        .question-box.mcq { border-left-color: #2196F3; }
+        .question-text { font-size: 1.08rem; font-weight: 600; margin-bottom: 12px; line-height: 1.5; }
+        .mcq-option-item {
+            display: flex; align-items: center; padding: 12px; border: 2px solid #e0e0e0;
+            border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .mcq-option-item:hover { border-color: #FFA500; background: rgba(255,165,0,0.05); }
+        .mcq-option-item.selected { border-color: #2196F3; background: rgba(33,150,243,0.1); }
+        .mcq-option-item input { margin-right: 12px; width: 18px; height: 18px; }
+
+        /* Submissions / Grading */
+        .submission-card {
+            background: #f9f9f9; border-radius: 12px; padding: 14px; margin-bottom: 12px;
+            border-left: 4px solid #9C27B0;
+        }
+        .submission-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+        .status-badge {
+            padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;
+        }
+        .status-pending { background: #fff3e0; color: #ef6c00; }
+        .status-graded { background: #e8f5e9; color: #2e7d32; }
+        .status-ai { background: #f3e5f5; color: #7b1fa2; }
+
+        .grade-item {
+            background: white; border: 1px solid #e0e0e0; border-radius: 10px;
+            padding: 12px; margin-bottom: 10px;
+        }
+        .grade-item .q-text { font-weight: 600; margin-bottom: 6px; }
+        .grade-item .student-ans { color: #555; font-size: 0.9rem; margin-bottom: 6px; }
+        .grade-item .correct-ans { color: #2e7d32; font-size: 0.85rem; }
+        .grade-score-input { width: 80px; display: inline-block; }
+
+        /* Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center;
+            padding: 15px; backdrop-filter: blur(3px);
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white; padding: 26px; border-radius: 18px; width: 100%; max-width: 640px;
+            max-height: 88vh; overflow-y: auto; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal-content.wide { max-width: 900px; }
+        .modal-header { margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #FFD700; }
+        .modal-header h3 { color: #FFA500; display: flex; align-items: center; gap: 8px; font-size: 1.3rem; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 2px solid #e0e0e0; }
+        .modal-btn {
+            padding: 10px 18px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem;
+        }
+        .modal-btn.secondary { background: linear-gradient(135deg, #666, #555); }
+        .close {
+            position: absolute; top: 12px; right: 12px; cursor: pointer; color: #666;
+            width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .close:hover { background: rgba(0,0,0,0.1); }
+
+        .notification {
+            position: fixed; top: 20px; right: 20px; padding: 13px 20px; border-radius: 12px; color: white;
+            font-weight: 700; z-index: 3000; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transform: translateX(150%); transition: transform 0.4s; max-width: 340px;
+        }
+        .notification.show { transform: translateX(0); }
+        .notification.success { background: linear-gradient(135deg, #00b09b, #96c93d); }
+        .notification.info { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+        .notification.warning { background: linear-gradient(135deg, #f46b45, #eea849); }
+        .notification.error { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+
+        #loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
+            flex-direction: column; gap: 16px;
+        }
+        .loading {
+            display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .score-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .score-table th, .score-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; }
+        .score-table th { background: #f5f5f5; font-weight: 700; color: #555; }
+        .score-table tr:hover { background: #fafafa; }
+
+        .difficulty-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 700;
+        }
+        .diff-easy { background: #e8f5e9; color: #2e7d32; }
+        .diff-medium { background: #fff3e0; color: #ef6c00; }
+        .diff-hard { background: #ffebee; color: #c62828; }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px; margin: 0 8px; }
+            .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
+            .page { padding: 60px 10px 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <a href="https://hmtuan002.github.io/hoang/main" class="home-button">
+            <i class="fas fa-home"></i> Trang chính
+        </a>
+
+        <!-- ========== AUTH PAGE ========== -->
+        <div id="authPage" class="page">
+            <div class="container">
+                <div class="logo-section">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
+                    <h1>LOHA</h1>
+                    <p>Tạo đề – Làm đề – Chấm điểm</p>
+                </div>
+                <div class="role-tabs">
+                    <div class="role-tab active" data-role="student" id="tabStudent">Học sinh</div>
+                    <div class="role-tab" data-role="teacher" id="tabTeacher">Giáo viên</div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="authEmail" placeholder="Nhập email">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="authPassword" placeholder="Nhập mật khẩu">
+                </div>
+                <div class="form-group" id="nameGroup" style="display:none;">
+                    <label>Họ và tên</label>
+                    <input type="text" id="authName" placeholder="Nhập họ tên hiển thị">
+                </div>
+                <button class="btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
+                <button class="btn btn-outline" id="toggleRegisterBtn" style="margin-top:10px;">Chưa có tài khoản? Đăng ký</button>
+            </div>
+        </div>
+
+        <!-- ========== TEACHER DASHBOARD ========== -->
+        <div id="teacherDashboard" class="page hidden">
+            <div class="container wide">
+                <div class="logo-section">
+                    <h1 style="font-size:1.6rem;">LOHA – Quản lý đề thi</h1>
+                    <p id="teacherWelcome">Xin chào giáo viên!</p>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+                    <button class="btn btn-success" id="btnCreateExam" style="width:auto;flex:1;min-width:180px;">
+                        <i class="fas fa-plus-circle"></i> Tạo đề mới
+                    </button>
+                    <button class="btn btn-danger" id="teacherLogoutBtn" style="width:auto;">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+
+                <h2 class="form-title"><i class="fas fa-folder-open"></i> Các đề đã tạo</h2>
+                <div id="teacherExamList">
+                    <div style="text-align:center;padding:30px;color:#999;">Đang tải...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== CREATE EXAM PAGE ========== -->
+        <div id="createExamPage" class="page hidden">
+            <div class="container wide">
+                <div class="logo-section">
+                    <h1 style="font-size:1.5rem;">Tạo đề thi mới</h1>
+                </div>
+
+                <div class="form-group">
+                    <label>Tên đề thi</label>
+                    <input type="text" id="examTitle" placeholder="Ví dụ: Kiểm tra 15 phút - Phương trình bậc nhất">
+                </div>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <div class="form-group" style="flex:1;min-width:140px;">
+                        <label>Môn học</label>
+                        <select id="examSubject">
+                            <option value="toan">Toán</option>
+                            <option value="van">Ngữ văn</option>
+                            <option value="khtn">KHTN</option>
+                            <option value="anh">Tiếng Anh</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex:1;min-width:120px;">
+                        <label>Khối</label>
+                        <select id="examGrade">
+                            <option value="6">Lớp 6</option>
+                            <option value="7">Lớp 7</option>
+                            <option value="8">Lớp 8</option>
+                            <option value="9">Lớp 9</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex:1;min-width:120px;">
+                        <label>Thời gian (phút)</label>
+                        <input type="number" id="examDuration" value="45" min="5" max="180">
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;">
+                    <button class="btn btn-sm" id="btnAddEssay" style="background:linear-gradient(135deg,#FF9800,#F57C00);">
+                        <i class="fas fa-pen"></i> Thêm tự luận
+                    </button>
+                    <button class="btn btn-sm" id="btnAddMcq" style="background:linear-gradient(135deg,#2196F3,#1976D2);">
+                        <i class="fas fa-list-check"></i> Thêm trắc nghiệm
+                    </button>
+                    <button class="btn btn-sm btn-purple" id="btnAiGenerate">
+                        <i class="fas fa-robot"></i> Tạo bằng AI
+                    </button>
+                </div>
+
+                <h3 style="margin:14px 0 10px;color:#555;">Danh sách câu hỏi (<span id="questionCount">0</span>)</h3>
+                <div id="questionList"></div>
+
+                <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+                    <button class="btn btn-success" id="btnSaveExam" style="flex:1;">
+                        <i class="fas fa-save"></i> Lưu đề & tạo mã
+                    </button>
+                    <button class="btn btn-outline" id="btnCancelCreate" style="flex:1;">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== STUDENT HOME ========== -->
+        <div id="studentHome" class="page hidden">
+            <div class="container">
+                <div class="logo-section">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
+                    <h1>LOHA</h1>
+                    <p id="studentWelcome">Xin chào học sinh!</p>
+                </div>
+
+                <h2 class="form-title"><i class="fas fa-key"></i> Nhập mã đề để làm bài</h2>
+                <div class="form-group">
+                    <label>Mã đề thi</label>
+                    <input type="text" id="inputExamCode" placeholder="Ví dụ: DE_A1B2C3" style="text-transform:uppercase;letter-spacing:1px;font-weight:700;">
+                </div>
+                <button class="btn btn-secondary" id="btnJoinExam">
+                    <i class="fas fa-door-open"></i> Vào làm đề
+                </button>
+
+                <div class="divider"><span class="divider-text">hoặc</span></div>
+                <h2 class="form-title"><i class="fas fa-history"></i> Bài đã làm</h2>
+                <div id="studentHistoryList">
+                    <div style="text-align:center;padding:20px;color:#999;">Đang tải...</div>
+                </div>
+
+                <button class="btn btn-danger" id="studentLogoutBtn" style="margin-top:18px;">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
+
+        <!-- ========== TAKE EXAM PAGE ========== -->
+        <div id="takeExamPage" class="page hidden">
+            <div class="container wide">
+                <div class="exam-header-bar">
+                    <div>
+                        <div style="font-size:1.25rem;font-weight:700;" id="takeExamTitle">Đề thi</div>
+                        <div style="font-size:0.85rem;opacity:0.9;" id="takeExamMeta"></div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:0.85rem;">Thời gian còn lại</div>
+                        <div style="font-size:1.4rem;font-weight:700;" id="takeExamTimer">--:--</div>
+                    </div>
+                </div>
+                <div id="takeExamQuestions"></div>
+                <button class="btn btn-success" id="btnSubmitExam" style="margin-top:16px;">
+                    <i class="fas fa-paper-plane"></i> Nộp bài
+                </button>
+            </div>
+        </div>
+
+        <!-- ========== VIEW RESULT (Student) ========== -->
+        <div id="resultPage" class="page hidden">
+            <div class="container">
+                <div class="logo-section">
+                    <h1 style="font-size:1.5rem;">Kết quả bài làm</h1>
+                </div>
+                <div id="resultContent"></div>
+                <button class="btn btn-outline" id="btnBackFromResult" style="margin-top:16px;">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </button>
+            </div>
+        </div>
+
+        <!-- ========== EXAM DETAIL (Teacher) ========== -->
+        <div id="examDetailPage" class="page hidden">
+            <div class="container wide">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+                    <div>
+                        <h1 style="font-size:1.4rem;color:#FFA500;" id="detailExamTitle">Chi tiết đề</h1>
+                        <div id="detailExamMeta" style="color:#666;font-size:0.9rem;"></div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btnBackToDashboard">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+
+                <div style="background:#f0f8ff;padding:12px 16px;border-radius:10px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                    <div>
+                        <strong>Mã đề:</strong>
+                        <span class="exam-code-badge" id="detailExamCode">DE_XXXX</span>
+                    </div>
+                    <button class="btn btn-sm btn-secondary" id="btnCopyCode">
+                        <i class="fas fa-copy"></i> Sao chép mã
+                    </button>
+                </div>
+
+                <h2 class="form-title"><i class="fas fa-users"></i> Danh sách bài làm của học sinh</h2>
+                <div id="submissionList">
+                    <div style="text-align:center;padding:20px;color:#999;">Đang tải...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== GRADE SUBMISSION PAGE ========== -->
+        <div id="gradePage" class="page hidden">
+            <div class="container wide">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+                    <div>
+                        <h1 style="font-size:1.35rem;color:#FFA500;" id="gradeStudentName">Chấm bài</h1>
+                        <div id="gradeExamInfo" style="color:#666;font-size:0.9rem;"></div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btnBackFromGrade">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+                    <button class="btn btn-purple btn-sm" id="btnAiGrade">
+                        <i class="fas fa-robot"></i> Nhờ AI chấm
+                    </button>
+                    <button class="btn btn-success btn-sm" id="btnSaveGrades">
+                        <i class="fas fa-check"></i> Lưu điểm & gửi học sinh
+                    </button>
+                </div>
+
+                <div id="gradeQuestionsList"></div>
+            </div>
+        </div>
+
+        <!-- ========== AI GENERATE MODAL ========== -->
+        <div id="aiGenerateModal" class="modal">
+            <div class="modal-content">
+                <span class="material-symbols-outlined close" id="closeAiModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-robot"></i> Tạo câu hỏi bằng AI</h3></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Chủ đề / Tên bài học</label>
+                        <input type="text" id="aiTopic" placeholder="Ví dụ: Phương trình bậc nhất một ẩn">
+                    </div>
+                    <div class="form-group">
+                        <label>Loại câu hỏi</label>
+                        <select id="aiType">
+                            <option value="essay">Tự luận</option>
+                            <option value="mcq">Trắc nghiệm</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input type="number" id="aiQuantity" value="5" min="1" max="15">
+                    </div>
+                    <div class="form-group">
+                        <label>Độ khó</label>
+                        <select id="aiDifficulty">
+                            <option value="easy">Dễ</option>
+                            <option value="medium" selected>Trung bình</option>
+                            <option value="hard">Khó</option>
+                        </select>
+                    </div>
+                    <div id="aiLoading" style="display:none;text-align:center;padding:16px;">
+                        <div class="loading" style="margin:0 auto;border-color:#9C27B0 rgba(156,39,176,0.3) rgba(156,39,176,0.3);border-top-color:#9C27B0;"></div>
+                        <p style="margin-top:8px;color:#666;">AI đang tạo câu hỏi...</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary" id="cancelAiModal">Hủy</button>
+                    <button class="modal-btn" id="btnDoAiGenerate" style="background:linear-gradient(135deg,#9C27B0,#673AB7);">
+                        <i class="fas fa-robot"></i> Tạo ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== AI REVIEW MODAL ========== -->
+        <div id="aiReviewModal" class="modal">
+            <div class="modal-content wide">
+                <span class="material-symbols-outlined close" id="closeAiReview">close</span>
+                <div class="modal-header"><h3><i class="fas fa-edit"></i> Xem & Sửa đề AI tạo</h3></div>
+                <div class="modal-body">
+                    <p style="color:#666;font-size:0.9rem;margin-bottom:12px;">
+                        Giáo viên hãy kiểm tra câu hỏi và đáp án. Có thể sửa hoặc xóa trước khi thêm vào đề.
+                    </p>
+                    <div id="aiReviewList" style="max-height:55vh;overflow-y:auto;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary" id="cancelAiReview">Hủy bỏ</button>
+                    <button class="modal-btn" id="btnConfirmAiQuestions" style="background:linear-gradient(135deg,#4CAF50,#2E7D32);">
+                        <i class="fas fa-check"></i> Thêm vào đề
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <div id="loading-overlay">
+        <div style="width:56px;height:56px;border:4px solid rgba(255,215,0,0.3);border-radius:50%;border-top-color:#FFD700;animation:spin 0.8s linear infinite;"></div>
+        <div style="color:white;font-size:17px;" id="loading-text">Đang xử lý...</div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // ============================================================
+        // FIREBASE
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
+            authDomain: "bee2-8be5c.firebaseapp.com",
+            databaseURL: "https://bee2-8be5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bee2-8be5c",
+            storageBucket: "bee2-8be5c.firebasestorage.app",
+            messagingSenderId: "955848369197",
+            appId: "1:955848369197:web:ccda9b046000ac4cfa04a4",
+            measurementId: "G-1G0N144BN3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // API
+        // ============================================================
+        function getAPIKey() {
+            const originalKey = "v6xGqEar3C7yKR9K2GmO5dTZx2OLCg258qLWdF5o7kt5ImQu-ks";
+            return originalKey.split('').reverse().join('');
+        }
+        const API_URL = "https://api.shopaikey.com/v1/chat/completions";
+
+        function showLoading(msg) {
+            document.getElementById('loading-text').textContent = msg || 'Đang xử lý...';
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentUser = null;
+        let currentUserProfile = null;
+        let selectedRole = 'student';
+        let isRegisterMode = false;
+
+        // Create exam state
+        let draftQuestions = []; // { id, type, question, correctAnswers/options, points, difficulty }
+
+        // AI temp
+        let pendingAiQuestions = [];
+        let pendingAiType = 'essay';
+
+        // Take exam state
+        let currentExam = null;
+        let currentExamId = null;
+        let examTimerInterval = null;
+        let examEndTime = null;
+
+        // Grade state
+        let currentSubmission = null;
+        let currentSubmissionId = null;
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                const doc = await db.collection('users').doc(user.uid).get();
+                if (doc.exists) {
+                    currentUserProfile = doc.data();
+                } else {
+                    currentUserProfile = { name: user.email.split('@')[0], role: 'student' };
+                }
+                if (currentUserProfile.role === 'teacher') {
+                    showTeacherDashboard();
+                } else {
+                    showStudentHome();
+                }
+            } else {
+                currentUser = null;
+                currentUserProfile = null;
+                showAuthPage();
+            }
+        });
+
+        document.getElementById('tabStudent').addEventListener('click', () => {
+            selectedRole = 'student';
+            document.getElementById('tabStudent').classList.add('active');
+            document.getElementById('tabTeacher').classList.remove('active');
+        });
+        document.getElementById('tabTeacher').addEventListener('click', () => {
+            selectedRole = 'teacher';
+            document.getElementById('tabTeacher').classList.add('active');
+            document.getElementById('tabStudent').classList.remove('active');
+        });
+
+        document.getElementById('toggleRegisterBtn').addEventListener('click', () => {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('nameGroup').style.display = isRegisterMode ? 'block' : 'none';
+            document.getElementById('loginBtn').innerHTML = isRegisterMode
+                ? '<i class="fas fa-user-plus"></i> Đăng ký'
+                : '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
+            document.getElementById('toggleRegisterBtn').textContent = isRegisterMode
+                ? 'Đã có tài khoản? Đăng nhập'
+                : 'Chưa có tài khoản? Đăng ký';
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value;
+            const name = document.getElementById('authName').value.trim();
+            if (!email || !password) {
+                showNotification('Vui lòng nhập email và mật khẩu', 'warning');
+                return;
+            }
+            showLoading(isRegisterMode ? 'Đang đăng ký...' : 'Đang đăng nhập...');
+            try {
+                if (isRegisterMode) {
+                    if (!name) {
+                        hideLoading();
+                        showNotification('Vui lòng nhập họ tên', 'warning');
+                        return;
+                    }
+                    const cred = await auth.createUserWithEmailAndPassword(email, password);
+                    await db.collection('users').doc(cred.user.uid).set({
+                        name: name,
+                        email: email,
+                        role: selectedRole,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    showNotification('Đăng ký thành công!', 'success');
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    showNotification('Đăng nhập thành công!', 'success');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + (err.message || 'Không thể đăng nhập/đăng ký'), 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        document.getElementById('teacherLogoutBtn').addEventListener('click', () => auth.signOut());
+        document.getElementById('studentLogoutBtn').addEventListener('click', () => auth.signOut());
+
+        // ============================================================
+        // PAGE NAVIGATION
+        // ============================================================
+        function hideAllPages() {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+        }
+        function showAuthPage() {
+            hideAllPages();
+            document.getElementById('authPage').classList.remove('hidden');
+        }
+        function showTeacherDashboard() {
+            hideAllPages();
+            document.getElementById('teacherDashboard').classList.remove('hidden');
+            document.getElementById('teacherWelcome').textContent = `Xin chào ${currentUserProfile?.name || 'Giáo viên'}!`;
+            loadTeacherExams();
+        }
+        function showStudentHome() {
+            hideAllPages();
+            document.getElementById('studentHome').classList.remove('hidden');
+            document.getElementById('studentWelcome').textContent = `Xin chào ${currentUserProfile?.name || 'Học sinh'}!`;
+            loadStudentHistory();
+        }
+        function showCreateExamPage() {
+            hideAllPages();
+            document.getElementById('createExamPage').classList.remove('hidden');
+            draftQuestions = [];
+            document.getElementById('examTitle').value = '';
+            document.getElementById('examDuration').value = '45';
+            renderDraftQuestions();
+        }
+
+        // ============================================================
+        // TEACHER: LOAD EXAMS
+        // ============================================================
+        function loadTeacherExams() {
+            const list = document.getElementById('teacherExamList');
+            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            db.collection('exams').where('teacherId', '==', currentUser.uid)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then(snap => {
+                    if (snap.empty) {
+                        list.innerHTML = '<div style="text-align:center;padding:40px;color:#999;"><i class="fas fa-folder-open" style="font-size:2.5rem;margin-bottom:8px;"></i><p>Chưa có đề nào. Hãy tạo đề mới!</p></div>';
+                        return;
+                    }
+                    let html = '';
+                    snap.forEach(doc => {
+                        const e = doc.data();
+                        const created = e.createdAt ? new Date(e.createdAt.toDate()).toLocaleDateString('vi-VN') : 'N/A';
+                        const qCount = e.questions ? e.questions.length : 0;
+                        html += `
+                            <div class="exam-card" onclick="openExamDetail('${doc.id}')">
+                                <div class="exam-card-header">
+                                    <div>
+                                        <div class="exam-card-title">${escapeHtml(e.title)}</div>
+                                        <div class="exam-card-meta">
+                                            ${subjName(e.subject)} – Lớp ${e.grade} • ${qCount} câu • ${e.duration || 45} phút • ${created}
+                                        </div>
+                                    </div>
+                                    <span class="exam-code-badge">${e.code}</span>
+                                </div>
+                                <div class="exam-actions">
+                                    <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();openExamDetail('${doc.id}')">
+                                        <i class="fas fa-eye"></i> Xem & Chấm
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteExam('${doc.id}')">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </button>
+                                </div>
+                            </div>`;
+                    });
+                    list.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error(err);
+                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải dữ liệu</div>';
+                });
+        }
+
+        window.deleteExam = function(examId) {
+            if (!confirm('Xóa đề này? Tất cả bài làm liên quan cũng sẽ bị ảnh hưởng.')) return;
+            showLoading('Đang xóa...');
+            db.collection('exams').doc(examId).delete()
+                .then(() => {
+                    showNotification('Đã xóa đề', 'success');
+                    loadTeacherExams();
+                })
+                .catch(err => showNotification('Lỗi xóa: ' + err.message, 'error'))
+                .finally(() => hideLoading());
+        };
+
+        // ============================================================
+        // CREATE EXAM
+        // ============================================================
+        document.getElementById('btnCreateExam').addEventListener('click', showCreateExamPage);
+        document.getElementById('btnCancelCreate').addEventListener('click', showTeacherDashboard);
+        document.getElementById('btnAddEssay').addEventListener('click', () => addDraftQuestion('essay'));
+        document.getElementById('btnAddMcq').addEventListener('click', () => addDraftQuestion('mcq'));
+        document.getElementById('btnAiGenerate').addEventListener('click', openAiGenerateModal);
+        document.getElementById('btnSaveExam').addEventListener('click', saveExam);
+
+        function addDraftQuestion(type) {
+            const id = 'q_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+            if (type === 'essay') {
+                draftQuestions.push({
+                    id, type: 'essay', question: '', correctAnswers: [''], points: 1, difficulty: 'medium'
+                });
+            } else {
+                draftQuestions.push({
+                    id, type: 'mcq', question: '',
+                    options: [
+                        { text: '', correct: false },
+                        { text: '', correct: false },
+                        { text: '', correct: false },
+                        { text: '', correct: false }
+                    ],
+                    points: 1, difficulty: 'medium'
+                });
+            }
+            renderDraftQuestions();
+        }
+
+        function renderDraftQuestions() {
+            const list = document.getElementById('questionList');
+            document.getElementById('questionCount').textContent = draftQuestions.length;
+            if (draftQuestions.length === 0) {
+                list.innerHTML = '<div style="text-align:center;padding:24px;color:#999;">Chưa có câu hỏi. Hãy thêm câu hỏi hoặc dùng AI.</div>';
+                return;
+            }
+            let html = '';
+            draftQuestions.forEach((q, idx) => {
+                if (q.type === 'essay') {
+                    html += `
+                        <div class="question-item essay" data-id="${q.id}">
+                            <div class="question-item-header">
+                                <span>Câu ${idx + 1} – Tự luận</span>
+                                <button class="remove-btn" onclick="removeDraftQuestion('${q.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                            <div class="form-group">
+                                <label>Câu hỏi</label>
+                                <textarea class="dq-question" rows="2" onchange="updateDraftQuestion('${q.id}','question',this.value)">${escapeHtml(q.question)}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Đáp án đúng (mỗi dòng 1 đáp án chấp nhận)</label>
+                                <textarea class="dq-answers" rows="2" onchange="updateDraftAnswers('${q.id}',this.value)">${(q.correctAnswers || []).join('\n')}</textarea>
+                            </div>
+                            <div style="display:flex;gap:12px;">
+                                <div class="form-group" style="flex:1;">
+                                    <label>Độ khó</label>
+                                    <select onchange="updateDraftQuestion('${q.id}','difficulty',this.value)">
+                                        <option value="easy" ${q.difficulty==='easy'?'selected':''}>Dễ</option>
+                                        <option value="medium" ${q.difficulty==='medium'?'selected':''}>Trung bình</option>
+                                        <option value="hard" ${q.difficulty==='hard'?'selected':''}>Khó</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="width:100px;">
+                                    <label>Điểm</label>
+                                    <input type="number" value="${q.points}" min="0.5" max="20" step="0.5"
+                                        onchange="updateDraftQuestion('${q.id}','points',parseFloat(this.value)||1)">
+                                </div>
+                            </div>
+                        </div>`;
+                } else {
+                    let optsHtml = '';
+                    (q.options || []).forEach((o, oi) => {
+                        optsHtml += `
+                            <div class="option-row">
+                                <input type="checkbox" ${o.correct ? 'checked' : ''} onchange="updateMcqOption('${q.id}',${oi},'correct',this.checked)">
+                                <input type="text" value="${escapeHtml(o.text)}" placeholder="Lựa chọn ${oi+1}"
+                                    onchange="updateMcqOption('${q.id}',${oi},'text',this.value)">
+                            </div>`;
+                    });
+                    html += `
+                        <div class="question-item" data-id="${q.id}">
+                            <div class="question-item-header">
+                                <span>Câu ${idx + 1} – Trắc nghiệm</span>
+                                <button class="remove-btn" onclick="removeDraftQuestion('${q.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                            <div class="form-group">
+                                <label>Câu hỏi</label>
+                                <textarea class="dq-question" rows="2" onchange="updateDraftQuestion('${q.id}','question',this.value)">${escapeHtml(q.question)}</textarea>
+                            </div>
+                            <label>Các lựa chọn (đánh dấu đáp án đúng)</label>
+                            ${optsHtml}
+                            <button class="add-option-btn" onclick="addMcqOptionToDraft('${q.id}')"><i class="fas fa-plus"></i> Thêm lựa chọn</button>
+                            <div style="display:flex;gap:12px;margin-top:10px;">
+                                <div class="form-group" style="flex:1;">
+                                    <label>Độ khó</label>
+                                    <select onchange="updateDraftQuestion('${q.id}','difficulty',this.value)">
+                                        <option value="easy" ${q.difficulty==='easy'?'selected':''}>Dễ</option>
+                                        <option value="medium" ${q.difficulty==='medium'?'selected':''}>Trung bình</option>
+                                        <option value="hard" ${q.difficulty==='hard'?'selected':''}>Khó</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="width:100px;">
+                                    <label>Điểm</label>
+                                    <input type="number" value="${q.points}" min="0.5" max="20" step="0.5"
+                                        onchange="updateDraftQuestion('${q.id}','points',parseFloat(this.value)||1)">
+                                </div>
+                            </div>
+                        </div>`;
+                }
+            });
+            list.innerHTML = html;
+        }
+
+        window.removeDraftQuestion = function(id) {
+            draftQuestions = draftQuestions.filter(q => q.id !== id);
+            renderDraftQuestions();
+        };
+        window.updateDraftQuestion = function(id, field, value) {
+            const q = draftQuestions.find(x => x.id === id);
+            if (q) q[field] = value;
+        };
+        window.updateDraftAnswers = function(id, text) {
+            const q = draftQuestions.find(x => x.id === id);
+            if (q) q.correctAnswers = text.split('\n').map(a => a.trim()).filter(a => a);
+        };
+        window.updateMcqOption = function(id, oi, field, value) {
+            const q = draftQuestions.find(x => x.id === id);
+            if (q && q.options[oi]) q.options[oi][field] = value;
+        };
+        window.addMcqOptionToDraft = function(id) {
+            const q = draftQuestions.find(x => x.id === id);
+            if (q) {
+                q.options.push({ text: '', correct: false });
+                renderDraftQuestions();
+            }
+        };
+
+        function saveExam() {
+            const title = document.getElementById('examTitle').value.trim();
+            if (!title) {
+                showNotification('Vui lòng nhập tên đề thi', 'warning');
+                return;
+            }
+            if (draftQuestions.length === 0) {
+                showNotification('Cần ít nhất 1 câu hỏi', 'warning');
+                return;
+            }
+            // Validate
+            for (const q of draftQuestions) {
+                if (!q.question || !q.question.trim()) {
+                    showNotification('Có câu hỏi chưa nhập nội dung', 'warning');
+                    return;
+                }
+                if (q.type === 'essay') {
+                    if (!q.correctAnswers || q.correctAnswers.length === 0) {
+                        showNotification('Câu tự luận cần có đáp án', 'warning');
+                        return;
+                    }
+                } else {
+                    const hasCorrect = (q.options || []).some(o => o.correct && o.text.trim());
+                    const validOpts = (q.options || []).filter(o => o.text.trim()).length;
+                    if (validOpts < 2 || !hasCorrect) {
+                        showNotification('Câu trắc nghiệm cần ≥2 lựa chọn và ít nhất 1 đáp án đúng', 'warning');
+                        return;
+                    }
+                }
+            }
+
+            const code = 'DE_' + Math.random().toString(36).substr(2, 6).toUpperCase();
+            const subject = document.getElementById('examSubject').value;
+            const grade = document.getElementById('examGrade').value;
+            const duration = parseInt(document.getElementById('examDuration').value) || 45;
+
+            // Clean questions
+            const questions = draftQuestions.map(q => {
+                const base = {
+                    id: q.id,
+                    type: q.type,
+                    question: q.question.trim(),
+                    points: q.points || 1,
+                    difficulty: q.difficulty || 'medium'
+                };
+                if (q.type === 'essay') {
+                    base.correctAnswers = q.correctAnswers;
+                } else {
+                    base.options = q.options.filter(o => o.text.trim()).map(o => ({
+                        text: o.text.trim(),
+                        correct: !!o.correct
+                    }));
+                }
+                return base;
+            });
+
+            showLoading('Đang lưu đề...');
+            db.collection('exams').add({
+                title,
+                code,
+                subject,
+                grade,
+                duration,
+                questions,
+                teacherId: currentUser.uid,
+                teacherName: currentUserProfile.name,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                totalPoints: questions.reduce((s, q) => s + (q.points || 1), 0)
+            }).then(() => {
+                showNotification(`Đã tạo đề thành công! Mã đề: ${code}`, 'success');
+                showTeacherDashboard();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi lưu đề: ' + err.message, 'error');
+            }).finally(() => hideLoading());
+        }
+
+        // ============================================================
+        // AI GENERATE + REVIEW
+        // ============================================================
+        function openAiGenerateModal() {
+            document.getElementById('aiGenerateModal').classList.add('active');
+            document.getElementById('aiTopic').value = '';
+            document.getElementById('aiQuantity').value = '5';
+            document.getElementById('aiLoading').style.display = 'none';
+        }
+        document.getElementById('closeAiModal').addEventListener('click', () => document.getElementById('aiGenerateModal').classList.remove('active'));
+        document.getElementById('cancelAiModal').addEventListener('click', () => document.getElementById('aiGenerateModal').classList.remove('active'));
+        document.getElementById('btnDoAiGenerate').addEventListener('click', doAiGenerate);
+
+        async function doAiGenerate() {
+            const topic = document.getElementById('aiTopic').value.trim();
+            const type = document.getElementById('aiType').value;
+            const quantity = parseInt(document.getElementById('aiQuantity').value) || 5;
+            const difficulty = document.getElementById('aiDifficulty').value;
+            if (!topic) {
+                showNotification('Vui lòng nhập chủ đề', 'warning');
+                return;
+            }
+            document.getElementById('aiLoading').style.display = 'block';
+            document.getElementById('btnDoAiGenerate').disabled = true;
+            try {
+                const API_KEY = getAPIKey();
+                let prompt = '';
+                if (type === 'essay') {
+                    prompt = `Tạo ${quantity} câu hỏi tự luận về chủ đề "${topic}" mức độ ${difficulty} cho học sinh THCS (sách Kết nối tri thức).
+Trả về JSON array:
+[
+  { "question": "...", "correctAnswers": ["đáp án1","đáp án2"], "points": 1, "difficulty": "${difficulty}" }
+]
+Chỉ trả về JSON, không thêm text.`;
+                } else {
+                    prompt = `Tạo ${quantity} câu hỏi trắc nghiệm (4 lựa chọn, 1 đáp án đúng) về chủ đề "${topic}" mức độ ${difficulty} cho học sinh THCS.
+Trả về JSON array:
+[
+  {
+    "question": "...",
+    "options": [
+      {"text":"A","correct":false},
+      {"text":"B","correct":true},
+      {"text":"C","correct":false},
+      {"text":"D","correct":false}
+    ],
+    "points": 1,
+    "difficulty": "${difficulty}"
+  }
+]
+Chỉ trả về JSON, không thêm text.`;
+                }
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-5.4-nano',
+                        messages: [
+                            { role: 'system', content: 'Bạn là giáo viên THCS, chỉ trả về JSON hợp lệ.' },
+                            { role: 'user', content: prompt }
+                        ],
+                        max_tokens: 2500,
+                        temperature: 0.6
+                    })
+                });
+                if (!response.ok) throw new Error('API error ' + response.status);
+                const data = await response.json();
+                let content = data.choices[0].message.content;
+                content = content.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const match = content.match(/\[[\s\S]*\]/);
+                if (!match) throw new Error('Không parse được JSON từ AI');
+                const items = JSON.parse(match[0]);
+                if (!Array.isArray(items) || !items.length) throw new Error('AI không tạo được câu hỏi');
+
+                pendingAiQuestions = items;
+                pendingAiType = type;
+                document.getElementById('aiGenerateModal').classList.remove('active');
+                openAiReviewModal();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi AI: ' + err.message, 'error');
+            } finally {
+                document.getElementById('aiLoading').style.display = 'none';
+                document.getElementById('btnDoAiGenerate').disabled = false;
+            }
+        }
+
+        function openAiReviewModal() {
+            const list = document.getElementById('aiReviewList');
+            list.innerHTML = '';
+            pendingAiQuestions.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'question-item ' + (pendingAiType === 'essay' ? 'essay' : '');
+                div.dataset.index = idx;
+                if (pendingAiType === 'essay') {
+                    div.innerHTML = `
+                        <div class="question-item-header">
+                            <span>Câu ${idx + 1} – Tự luận</span>
+                            <button class="remove-btn" onclick="removePendingAi(${idx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <label>Câu hỏi</label>
+                        <textarea class="ai-q" rows="2">${escapeHtml(item.question || '')}</textarea>
+                        <label>Đáp án đúng (mỗi dòng 1)</label>
+                        <textarea class="ai-ans" rows="2">${(item.correctAnswers || []).join('\n')}</textarea>
+                        <div style="display:flex;gap:12px;margin-top:8px;">
+                            <div style="flex:1;">
+                                <label>Độ khó</label>
+                                <select class="ai-diff">
+                                    <option value="easy" ${item.difficulty==='easy'?'selected':''}>Dễ</option>
+                                    <option value="medium" ${!item.difficulty||item.difficulty==='medium'?'selected':''}>Trung bình</option>
+                                    <option value="hard" ${item.difficulty==='hard'?'selected':''}>Khó</option>
+                                </select>
+                            </div>
+                            <div style="width:90px;">
+                                <label>Điểm</label>
+                                <input type="number" class="ai-pts" value="${item.points||1}" min="0.5" step="0.5">
+                            </div>
+                        </div>`;
+                } else {
+                    let opts = '';
+                    const options = item.options || [];
+                    for (let i = 0; i < Math.max(4, options.length); i++) {
+                        const o = options[i] || { text: '', correct: false };
+                        opts += `
+                            <div class="option-row">
+                                <input type="checkbox" class="ai-opt-c" ${o.correct?'checked':''}>
+                                <input type="text" class="ai-opt-t" value="${escapeHtml(o.text||'')}" placeholder="Lựa chọn ${i+1}">
+                            </div>`;
+                    }
+                    div.innerHTML = `
+                        <div class="question-item-header">
+                            <span>Câu ${idx + 1} – Trắc nghiệm</span>
+                            <button class="remove-btn" onclick="removePendingAi(${idx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <label>Câu hỏi</label>
+                        <textarea class="ai-q" rows="2">${escapeHtml(item.question || '')}</textarea>
+                        <label>Lựa chọn (đánh dấu đúng)</label>
+                        ${opts}
+                        <div style="display:flex;gap:12px;margin-top:8px;">
+                            <div style="flex:1;">
+                                <label>Độ khó</label>
+                                <select class="ai-diff">
+                                    <option value="easy" ${item.difficulty==='easy'?'selected':''}>Dễ</option>
+                                    <option value="medium" ${!item.difficulty||item.difficulty==='medium'?'selected':''}>Trung bình</option>
+                                    <option value="hard" ${item.difficulty==='hard'?'selected':''}>Khó</option>
+                                </select>
+                            </div>
+                            <div style="width:90px;">
+                                < = currentExam ? currentExam.title : '';
+
+                renderGradeQuestions();
+                hideLoading();
+            }).catch(err => {
+                hideLoading();
+                showNotification('Lỗi: ' + err.message, 'error');
+            });
+        };
+
+        document.getElementById('btnBackFromGrade').addEventListener('click', () => {
+            if (currentExamId) openExamDetail(currentExamId);
+            else showTeacherDashboard();
+        });
+
+        function renderGradeQuestions() {
+            const list = document.getElementById('gradeQuestionsList');
+            const questions = currentExam?.questions || [];
+            const answers = currentSubmission.answers || {};
+            const scores = currentSubmission.questionScores || {};
+            const feedbacks = currentSubmission.feedbacks || {};
+
+            let html = '';
+            questions.forEach((q, idx) => {
+                const ans = answers[q.id] || answers[idx] || '';
+                const score = scores[q.id] != null ? scores[q.id] : (scores[idx] != null ? scores[idx] : '');
+                const fb = feedbacks[q.id] || feedbacks[idx] || '';
+
+                let correctHtml = '';
+                if (q.type === 'essay') {
+                    correctHtml = `<div class="correct-ans"><strong>Đáp án mẫu:</strong> ${(q.correctAnswers || []).join(' / ')}</div>`;
+                } else {
+                    const correctOpts = (q.options || []).filter(o => o.correct).map(o => o.text);
+                    correctHtml = `<div class="correct-ans"><strong>Đáp án đúng:</strong> ${correctOpts.join(', ')}</div>`;
+                }
+
+                html += `
+                    <div class="grade-item" data-qid="${q.id}">
+                        <div class="q-text">Câu ${idx + 1} (${q.points} điểm) – ${q.type === 'essay' ? 'Tự luận' : 'Trắc nghiệm'}</div>
+                        <div style="margin-bottom:6px;color:#333;">${escapeHtml(q.question)}</div>
+                        <div class="student-ans"><strong>Học sinh trả lời:</strong> ${escapeHtml(String(ans)) || '<em>Không trả lời</em>'}</div>
+                        ${correctHtml}
+                        <div style="display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap;">
+                            <label style="margin:0;">Điểm:</label>
+                            <input type="number" class="grade-score-input grade-score" data-qid="${q.id}"
+                                value="${score}" min="0" max="${q.points}" step="0.25" style="width:80px;">
+                            <span>/ ${q.points}</span>
+                        </div>
+                        <div class="form-group" style="margin-top:8px;margin-bottom:0;">
+                            <label>Nhận xét (tùy chọn)</label>
+                            <input type="text" class="grade-feedback" data-qid="${q.id}" value="${escapeHtml(fb)}" placeholder="Nhận xét cho học sinh...">
+                        </div>
+                    </div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        document.getElementById('btnAiGrade').addEventListener('click', async () => {
+            if (!currentExam || !currentSubmission) return;
+            showLoading('AI đang chấm bài...');
+            try {
+                const API_KEY = getAPIKey();
+                const questions = currentExam.questions || [];
+                const answers = currentSubmission.answers || {};
+
+                let prompt = `Bạn là giáo viên THCS. Hãy chấm bài làm của học sinh.\nTrả về JSON array với format:\n[\n  { "questionId": "...", "score": số_điểm, "feedback": "nhận xét ngắn" }\n]\nChỉ trả về JSON.\n\n`;
+                questions.forEach((q, idx) => {
+                    const ans = answers[q.id] || answers[idx] || '(không trả lời)';
+                    prompt += `Câu ${idx + 1} (ID: ${q.id}, tối đa ${q.points} điểm, loại ${q.type}):\n`;
+                    prompt += `Câu hỏi: ${q.question}\n`;
+                    if (q.type === 'essay') {
+                        prompt += `Đáp án mẫu: ${(q.correctAnswers || []).join(' / ')}\n`;
+                    } else {
+                        const correct = (q.options || []).filter(o => o.correct).map(o => o.text);
+                        prompt += `Đáp án đúng: ${correct.join(', ')}\n`;
+                    }
+                    prompt += `Học sinh trả lời: ${ans}\n\n`;
+                });
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-5.4-nano',
+                        messages: [
+                            { role: 'system', content: 'Bạn là giáo viên chấm điểm công bằng, chỉ trả về JSON.' },
+                            { role: 'user', content: prompt }
+                        ],
+                        max_tokens: 2000,
+                        temperature: 0.3
+                    })
+                });
+                if (!response.ok) throw new Error('API error ' + response.status);
+                const data = await response.json();
+                let content = data.choices[0].message.content;
+                content = content.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const match = content.match(/\[[\s\S]*\]/);
+                if (!match) throw new Error('Không parse được kết quả AI');
+                const results = JSON.parse(match[0]);
+
+                // Apply to UI
+                results.forEach(r => {
+                    const scoreInput = document.querySelector(`.grade-score[data-qid="${r.questionId}"]`);
+                    const fbInput = document.querySelector(`.grade-feedback[data-qid="${r.questionId}"]`);
+                    if (scoreInput) scoreInput.value = r.score;
+                    if (fbInput && r.feedback) fbInput.value = r.feedback;
+                });
+                showNotification('AI đã chấm xong. Giáo viên hãy xem lại và chỉnh sửa nếu cần.', 'success');
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi AI chấm: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        document.getElementById('btnSaveGrades').addEventListener('click', async () => {
+            if (!currentSubmissionId || !currentExam) return;
+            const questionScores = {};
+            const feedbacks = {};
+            let totalScore = 0;
+            let maxScore = 0;
+
+            (currentExam.questions || []).forEach(q => {
+                maxScore += q.points || 1;
+                const scoreInput = document.querySelector(`.grade-score[data-qid="${q.id}"]`);
+                const fbInput = document.querySelector(`.grade-feedback[data-qid="${q.id}"]`);
+                let sc = parseFloat(scoreInput?.value);
+                if (isNaN(sc)) sc = 0;
+                sc = Math.max(0, Math.min(sc, q.points || 1));
+                questionScores[q.id] = sc;
+                totalScore += sc;
+                if (fbInput?.value.trim()) feedbacks[q.id] = fbInput.value.trim();
+            });
+
+            showLoading('Đang lưu điểm...');
+            try {
+                await db.collection('exam_submissions').doc(currentSubmissionId).update({
+                    questionScores,
+                    feedbacks,
+                    totalScore: Math.round(totalScore * 100) / 100,
+                    maxScore,
+                    status: 'graded',
+                    gradedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    gradedBy: currentUser.uid
+                });
+                showNotification('Đã lưu điểm và gửi kết quả cho học sinh!', 'success');
+                openExamDetail(currentExamId);
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi lưu điểm: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // ============================================================
+        // STUDENT: JOIN EXAM
+        // ============================================================
+        document.getElementById('btnJoinExam').addEventListener('click', joinExamByCode);
+
+        function joinExamByCode() {
+            const code = document.getElementById('inputExamCode').value.trim().toUpperCase();
+            if (!code) {
+                showNotification('Vui lòng nhập mã đề', 'warning');
+                return;
+            }
+            showLoading('Đang tìm đề...');
+            db.collection('exams').where('code', '==', code).limit(1).get()
+                .then(snap => {
+                    if (snap.empty) {
+                        hideLoading();
+                        showNotification('Không tìm thấy đề với mã này', 'warning');
+                        return;
+                    }
+                    const doc = snap.docs[0];
+                    const exam = { id: doc.id, ...doc.data() };
+
+                    // Check if already submitted
+                    return db.collection('exam_submissions')
+                        .where('examId', '==', exam.id)
+                        .where('studentId', '==', currentUser.uid)
+                        .limit(1)
+                        .get()
+                        .then(subSnap => {
+                            hideLoading();
+                            if (!subSnap.empty) {
+                                const sub = subSnap.docs[0].data();
+                                if (sub.status === 'graded' || sub.status === 'ai_graded') {
+                                    // Show result
+                                    showStudentResult(subSnap.docs[0].id, sub, exam);
+                                } else {
+                                    showNotification('Bạn đã nộp bài đề này rồi (đang chờ chấm)', 'info');
+                                }
+                                return;
+                            }
+                            startTakeExam(exam);
+                        });
+                })
+                .catch(err => {
+                    hideLoading();
+                    showNotification('Lỗi: ' + err.message, 'error');
+                });
+        }
+
+        function startTakeExam(exam) {
+            currentExam = exam;
+            currentExamId = exam.id;
+            hideAllPages();
+            document.getElementById('takeExamPage').classList.remove('hidden');
+            document.getElementById('takeExamTitle').textContent = exam.title;
+            document.getElementById('takeExamMeta').textContent =
+                `${subjName(exam.subject)} – Lớp ${exam.grade} • ${exam.questions?.length || 0} câu`;
+
+            // Timer
+            const durationMin = exam.duration || 45;
+            examEndTime = Date.now() + durationMin * 60 * 1000;
+            if (examTimerInterval) clearInterval(examTimerInterval);
+            examTimerInterval = setInterval(updateExamTimer, 1000);
+            updateExamTimer();
+
+            // Render questions
+            const container = document.getElementById('takeExamQuestions');
+            let html = '';
+            (exam.questions || []).forEach((q, idx) => {
+                if (q.type === 'essay') {
+                    html += `
+                        <div class="question-box" data-qid="${q.id}">
+                            <div class="question-text">Câu ${idx + 1} (${q.points} điểm) – Tự luận</div>
+                            <div style="margin-bottom:10px;">${escapeHtml(q.question)}</div>
+                            <textarea class="student-answer" data-qid="${q.id}" rows="4" placeholder="Nhập câu trả lời..."></textarea>
+                        </div>`;
+                } else {
+                    let opts = '';
+                    (q.options || []).forEach((o, oi) => {
+                        const oid = `opt_${q.id}_${oi}`;
+                        opts += `
+                            <div class="mcq-option-item" onclick="selectMcqOption(this, '${q.id}', '${escapeHtml(o.text).replace(/'/g,"\\'")}')">
+                                <input type="radio" name="mcq_${q.id}" id="${oid}" value="${escapeHtml(o.text)}">
+                                <label for="${oid}" style="margin:0;cursor:pointer;flex:1;">${escapeHtml(o.text)}</label>
+                            </div>`;
+                    });
+                    html += `
+                        <div class="question-box mcq" data-qid="${q.id}">
+                            <div class="question-text">Câu ${idx + 1} (${q.points} điểm) – Trắc nghiệm</div>
+                            <div style="margin-bottom:10px;">${escapeHtml(q.question)}</div>
+                            ${opts}
+                        </div>`;
+                }
+            });
+            container.innerHTML = html;
+        }
+
+        window.selectMcqOption = function(el, qid, value) {
+            const box = el.closest('.question-box');
+            box.querySelectorAll('.mcq-option-item').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            const radio = el.querySelector('input');
+            if (radio) radio.checked = true;
+        };
+
+        function updateExamTimer() {
+            if (!examEndTime) return;
+            const remain = examEndTime - Date.now();
+            if (remain <= 0) {
+                clearInterval(examTimerInterval);
+                document.getElementById('takeExamTimer').textContent = '00:00';
+                showNotification('Hết giờ! Tự động nộp bài...', 'warning');
+                submitExam(true);
+                return;
+            }
+            const m = Math.floor(remain / 60000);
+            const s = Math.floor((remain % 60000) / 1000);
+            document.getElementById('takeExamTimer').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        document.getElementById('btnSubmitExam').addEventListener('click', () => {
+            if (!confirm('Bạn chắc chắn muốn nộp bài?')) return;
+            submitExam(false);
+        });
+
+        function submitExam(auto) {
+            if (!currentExam || !currentUser) return;
+            if (examTimerInterval) clearInterval(examTimerInterval);
+
+            const answers = {};
+            (currentExam.questions || []).forEach(q => {
+                if (q.type === 'essay') {
+                    const ta = document.querySelector(`textarea.student-answer[data-qid="${q.id}"]`);
+                    answers[q.id] = ta ? ta.value.trim() : '';
+                } else {
+                    const selected = document.querySelector(`input[name="mcq_${q.id}"]:checked`);
+                    answers[q.id] = selected ? selected.value : '';
+                }
+            });
+
+            showLoading(auto ? 'Hết giờ – đang nộp bài...' : 'Đang nộp bài...');
+            db.collection('exam_submissions').add({
+                examId: currentExam.id,
+                examCode: currentExam.code,
+                examTitle: currentExam.title,
+                studentId: currentUser.uid,
+                studentName: currentUserProfile.name,
+                answers,
+                status: 'pending',
+                submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                maxScore: currentExam.totalPoints || (currentExam.questions || []).reduce((s, q) => s + (q.points || 1), 0)
+            }).then(() => {
+                showNotification('Nộp bài thành công! Chờ giáo viên chấm điểm.', 'success');
+                showStudentHome();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi nộp bài: ' + err.message, 'error');
+            }).finally(() => hideLoading());
+        }
+
+        // ============================================================
+        // STUDENT HISTORY + RESULT
+        // ============================================================
+        function loadStudentHistory() {
+            const list = document.getElementById('studentHistoryList');
+            list.innerHTML = '<div style="text-align:center;padding:16px;">Đang tải...</div>';
+            db.collection('exam_submissions').where('studentId', '==', currentUser.uid)
+                .orderBy('submittedAt', 'desc')
+                .limit(20)
+                .get()
+                .then(snap => {
+                    if (snap.empty) {
+                        list.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">Chưa làm đề nào</div>';
+                        return;
+                    }
+                    let html = '';
+                    snap.forEach(doc => {
+                        const s = doc.data();
+                        const time = s.submittedAt ? new Date(s.submittedAt.toDate()).toLocaleString('vi-VN') : '';
+                        const statusClass = s.status === 'graded' ? 'status-graded' : (s.status === 'ai_graded' ? 'status-ai' : 'status-pending');
+                        const statusText = s.status === 'graded' ? 'Đã có điểm' : (s.status === 'ai_graded' ? 'AI đã chấm' : 'Chờ chấm');
+                        const scoreText = s.totalScore != null ? `${s.totalScore}/${s.maxScore}` : '—';
+                        html += `
+                            <div class="exam-card" style="cursor:default;">
+                                <div class="exam-card-header">
+                                    <div>
+                                        <div class="exam-card-title">${escapeHtml(s.examTitle || s.examCode)}</div>
+                                        <div class="exam-card-meta">${time}</div>
+                                    </div>
+                                    <span class="status-badge ${statusClass}">${statusText}</span>
+                                </div>
+                                <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+                                    <strong>Điểm: ${scoreText}</strong>
+                                    ${s.status === 'graded' || s.status === 'ai_graded' ? `
+                                        <button class="btn btn-sm btn-secondary" onclick="viewStudentResult('${doc.id}')">
+                                            <i class="fas fa-eye"></i> Xem chi tiết
+                                        </button>` : ''}
+                                </div>
+                            </div>`;
+                    });
+                    list.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error(err);
+                    list.innerHTML = '<div style="text-align:center;padding:16px;color:red;">Lỗi tải lịch sử</div>';
+                });
+        }
+
+        window.viewStudentResult = function(submissionId) {
+            showLoading('Đang tải...');
+            db.collection('exam_submissions').doc(submissionId).get().then(async doc => {
+                if (!doc.exists) {
+                    hideLoading();
+                    return;
+                }
+                const sub = doc.data();
+                let exam = null;
+                const examDoc = await db.collection('exams').doc(sub.examId).get();
+                if (examDoc.exists) exam = { id: examDoc.id, ...examDoc.data() };
+                hideLoading();
+                showStudentResult(submissionId, sub, exam);
+            });
+        };
+
+        function showStudentResult(submissionId, sub, exam) {
+            hideAllPages();
+            document.getElementById('resultPage').classList.remove('hidden');
+            let html = `
+                <div style="text-align:center;margin-bottom:18px;">
+                    <div style="font-size:2.2rem;font-weight:700;color:#FFA500;">${sub.totalScore != null ? sub.totalScore : '—'}/${sub.maxScore || '?'}</div>
+                    <div style="color:#666;">${escapeHtml(sub.examTitle || '')}</div>
+                </div>`;
+
+            if (exam && exam.questions) {
+                const answers = sub.answers || {};
+                const scores = sub.questionScores || {};
+                const feedbacks = sub.feedbacks || {};
+                exam.questions.forEach((q, idx) => {
+                    const ans = answers[q.id] || '';
+                    const sc = scores[q.id] != null ? scores[q.id] : '—';
+                    const fb = feedbacks[q.id] || '';
+                    html += `
+                        <div class="question-box" style="margin-bottom:12px;">
+                            <div class="question-text">Câu ${idx + 1} – Điểm: ${sc}/${q.points}</div>
+                            <div style="margin-bottom:6px;">${escapeHtml(q.question)}</div>
+                            <div style="color:#555;"><strong>Bạn trả lời:</strong> ${escapeHtml(String(ans)) || '<em>Không trả lời</em>'}</div>
+                            ${fb ? `<div style="color:#9C27B0;margin-top:4px;"><strong>Nhận xét:</strong> ${escapeHtml(fb)}</div>` : ''}
+                        </div>`;
+                });
+            }
+            document.getElementById('resultContent').innerHTML = html;
+        }
+
+        document.getElementById('btnBackFromResult').addEventListener('click', showStudentHome);
+
+        // ============================================================
+        // HELPERS
+        // ============================================================
+        function subjName(s) {
+            return { toan: 'Toán', van: 'Ngữ văn', khtn: 'KHTN', anh: 'Tiếng Anh' }[s] || s;
+        }
+        function escapeHtml(str) {
+            if (str == null) return '';
+            return String(str).replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[m]);
+        }
+        function showNotification(msg, type) {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.className = `notification ${type}`;
+            setTimeout(() => n.classList.add('show'), 10);
+            setTimeout(() => n.classList.remove('show'), 4000);
+        }
+    </script>
+</body>
+</html>
