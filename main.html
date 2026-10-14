@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeTHCS – Trang chính</title>
+    <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/2922/2922561.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FFA500;
+            --primary-dark: #e69500;
+            --gold: #FFD700;
+            --blue: #2196F3;
+            --purple: #7C4DFF;
+            --dark: #1a1a2e;
+            --text: #2d3436;
+            --text-light: #636e72;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 50%, #e0eafc 100%);
+            color: var(--text);
+            position: relative;
+        }
+
+        /* Animated background shapes */
+        .bg-shapes {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.35;
+            animation: float 18s ease-in-out infinite;
+        }
+        .shape-1 {
+            width: 420px; height: 420px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            top: -120px; left: -100px;
+            animation-delay: 0s;
+        }
+        .shape-2 {
+            width: 360px; height: 360px;
+            background: linear-gradient(135deg, #36d1dc, #5b86e5);
+            bottom: -80px; right: -80px;
+            animation-delay: -6s;
+        }
+        .shape-3 {
+            width: 280px; height: 280px;
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            top: 40%; left: 55%;
+            animation-delay: -12s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.05); }
+            66% { transform: translate(-20px, 25px) scale(0.95); }
+        }
+
+        /* Main wrapper */
+        .page {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* Logo + Brand */
+        .brand {
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fadeUp 0.8s ease-out both;
+        }
+        .brand-logo {
+            width: 88px;
+            height: 88px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 8px 20px rgba(255, 165, 0, 0.35));
+            animation: bounceSoft 3s ease-in-out infinite;
+        }
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .brand h1 {
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 50%, #FF8C00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .brand p {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            font-weight: 500;
+            max-width: 420px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .brand .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            background: rgba(255, 165, 0, 0.12);
+            color: #e69500;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 165, 0, 0.25);
+        }
+
+        /* Cards container */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            max-width: 780px;
+            width: 100%;
+            animation: fadeUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Individual card */
+        .card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 40px 32px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(135deg, transparent, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+        .card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
+        }
+        .card:hover::before { opacity: 1; }
+
+        /* Card variants */
+        .card-class::before {
+            background: linear-gradient(135deg, #FFA500, #FFD700);
+        }
+        .card-class:hover {
+            box-shadow: 0 20px 50px rgba(255, 165, 0, 0.25);
+        }
+        .card-summary::before {
+            background: linear-gradient(135deg, #2196F3, #7C4DFF);
+        }
+        .card-summary:hover {
+            box-shadow: 0 20px 50px rgba(33, 150, 243, 0.25);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin: 0 auto 22px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            transition: transform 0.35s;
+        }
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(-4deg);
+        }
+        .card-class .card-icon {
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+        }
+        .card-summary .card-icon {
+            background: linear-gradient(135deg, #2196F3 0%, #7C4DFF 100%);
+        }
+
+        .card h2 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.55;
+            margin-bottom: 22px;
+        }
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 12px 24px;
+            border-radius: 50px;
+            color: white;
+            transition: all 0.25s;
+        }
+        .card-class .card-btn {
+            background: linear-gradient(135deg, #FFA500, #FFD700);
+        }
+        .card-summary .card-btn {
+            background: linear-gradient(135deg, #2196F3, #7C4DFF);
+        }
+        .card:hover .card-btn {
+            transform: translateX(4px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 56px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            animation: fadeUp 0.8s ease-out 0.4s both;
+        }
+        .footer span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 680px) {
+            .cards {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                max-width: 400px;
+            }
+            .card {
+                padding: 32px 24px;
+            }
+            .brand {
+                margin-bottom: 36px;
+            }
+            .brand-logo {
+                width: 72px;
+                height: 72px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="page">
+        <!-- Brand -->
+        <div class="brand">
+            <img class="brand-logo" src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="BeeTHCS">
+            <h1>BeeTHCS</h1>
+            <p>Nền tảng học tập trực tuyến dành cho học sinh & giáo viên THCS – Kết nối tri thức</p>
+            <div class="badge">
+                <i class="fas fa-graduation-cap"></i>
+                Toán · Văn · KHTN · Anh (Lớp 6 – 9)
+            </div>
+        </div>
+
+        <!-- Two main buttons -->
+        <div class="cards">
+            <!-- Lớp học -->
+            <a href="https://hmtuan002.github.io/hoang/index" class="card card-class" target="_blank" rel="noopener">
+                <div class="card-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h2>LỚP HỌC</h2>
+                <p>Tạo phòng học online, ra đề trắc nghiệm & tự luận, theo dõi học sinh làm bài theo thời gian thực.</p>
+                <span class="card-btn">
+                    Vào lớp học
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+
+            <!-- Tóm tắt bài học -->
+            <a href="https://hmtuan002.github.io/hoang/tomtat" class="card card-summary" target="_blank" rel="noopener">
+                <div class="card-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h2>TÓM TẮT BÀI HỌC</h2>
+                <p>AI tóm tắt kiến thức trọng tâm bất kỳ bài nào trong SGK Kết nối tri thức – nhanh, rõ, dễ nhớ.</p>
+                <span class="card-btn">
+                    Tóm tắt ngay
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2026 <span>BeeTHCS</span> · Học thông minh hơn mỗi ngày
+        </div>
+    </div>
+</body>
+</html>
