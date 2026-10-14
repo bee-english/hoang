@@ -39,8 +39,8 @@
         }
         .home-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4); }
         .main-content { width: 100%; flex: 1; display: flex; }
-        #authPage, #homePage { width: 100%; display: flex; justify-content: center; align-items: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
-        .home-container, .auth-container {
+        #needLoginPage, #homePage { width: 100%; display: flex; justify-content: center; align-items: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
+        .home-container, .need-login-container {
             width: 100%; max-width: 520px; background-color: rgba(255, 255, 255, 0.97);
             border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); padding: 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -79,12 +79,6 @@
         .divider { display: flex; align-items: center; margin: 22px 0; color: #777; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background-color: #e0e0e0; }
         .divider-text { padding: 0 12px; font-size: 0.85rem; }
-        .role-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
-        .role-tab {
-            flex: 1; padding: 10px; text-align: center; border: 2px solid #e0e0e0; border-radius: 10px;
-            cursor: pointer; font-weight: 600; transition: all 0.2s;
-        }
-        .role-tab.active { border-color: #FFA500; background: rgba(255,165,0,0.1); color: #FFA500; }
         /* ROOM PAGE */
         #roomPage { width: 100%; display: flex; flex-direction: column; min-height: 100vh; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
         .room-header {
@@ -353,6 +347,25 @@
             background: #f44336; color: white; border: none; border-radius: 6px;
             padding: 4px 10px; cursor: pointer; font-size: 0.78rem;
         }
+        .need-login-message {
+            text-align: center;
+            padding: 20px 10px;
+        }
+        .need-login-message i {
+            font-size: 3.5rem;
+            color: #FFA500;
+            margin-bottom: 16px;
+        }
+        .need-login-message h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        .need-login-message p {
+            color: #666;
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
         @media (max-width: 768px) {
             .room-content { padding: 12px; gap: 12px; }
             .room-header { padding: 12px 14px; flex-direction: column; gap: 10px; align-items: flex-start; padding-left: 70px; }
@@ -361,7 +374,7 @@
             .participants-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .room-controls, .bank-controls { padding: 12px; flex-direction: column; gap: 10px; }
             .btn-room, .bank-btn { width: 100%; justify-content: center; }
-            .home-container, .auth-container { padding: 20px; margin: 12px; }
+            .home-container, .need-login-container { padding: 20px; margin: 12px; }
             .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
         }
         @media (max-width: 480px) {
@@ -377,33 +390,21 @@
             <i class="fas fa-home"></i> Trang chính
         </a>
 
-        <!-- ========== AUTH PAGE ========== -->
-        <div id="authPage">
-            <div class="auth-container">
+        <!-- ========== NEED LOGIN PAGE (khi chưa đăng nhập ở MAIN) ========== -->
+        <div id="needLoginPage" class="hidden">
+            <div class="need-login-container">
                 <div class="logo-section">
                     <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
                     <h1>LOHA</h1>
-                    <p>Lớp học Online THCS – Kết nối tri thức (Toán, Văn, KHTN, Anh 6-9)</p>
+                    <p>Lớp học Online THCS – Kết nối tri thức</p>
                 </div>
-                <div class="role-tabs">
-                    <div class="role-tab active" data-role="student" id="tabStudent">Học sinh</div>
-                    <div class="role-tab" data-role="teacher" id="tabTeacher">Giáo viên</div>
-                </div>
-                <div id="loginForm">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="authEmail" placeholder="Nhập email">
-                    </div>
-                    <div class="form-group">
-                        <label>Mật khẩu</label>
-                        <input type="password" id="authPassword" placeholder="Nhập mật khẩu">
-                    </div>
-                    <div class="form-group" id="nameGroup" style="display:none;">
-                        <label>Họ và tên</label>
-                        <input type="text" id="authName" placeholder="Nhập họ tên hiển thị">
-                    </div>
-                    <button class="btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
-                    <button class="btn btn-outline" id="toggleRegisterBtn" style="margin-top:10px;">Chưa có tài khoản? Đăng ký</button>
+                <div class="need-login-message">
+                    <i class="fas fa-lock"></i>
+                    <h2>Bạn cần đăng nhập</h2>
+                    <p>Vui lòng đăng nhập hoặc đăng ký tài khoản tại <strong>Trang chính</strong> để sử dụng Lớp học. Tài khoản dùng chung cho toàn bộ ứng dụng LOHA.</p>
+                    <a href="https://hmtuan002.github.io/hoang/main" class="btn" style="text-decoration:none;">
+                        <i class="fas fa-sign-in-alt"></i> Đến trang chính để đăng nhập
+                    </a>
                 </div>
             </div>
         </div>
@@ -689,7 +690,7 @@
             </div>
         </div>
 
-        <!-- AI REVIEW & EDIT Modal (QUAN TRỌNG) -->
+        <!-- AI REVIEW & EDIT Modal -->
         <div id="aiReviewModal" class="modal">
             <div class="modal-content" style="max-width:900px;">
                 <span class="material-symbols-outlined close" id="closeAiReviewModal">close</span>
@@ -811,7 +812,7 @@
 
     <script>
         // ============================================================
-        // FIREBASE CONFIG
+        // FIREBASE CONFIG (GIỐNG HỆT MAIN – TÀI KHOẢN DÙNG CHUNG)
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
@@ -865,15 +866,13 @@
         let isExamMode = false;
         let examStarted = false;
         let currentAddingBankId = null;
-        let isRegisterMode = false;
-        let selectedRole = 'student';
         // AI Review state
         let pendingAiQuestions = [];
         let pendingAiContentType = 'essay';
         let pendingAiTarget = 'room'; // 'room' hoặc 'bank'
 
         // ============================================================
-        // AUTH
+        // AUTH (chỉ kiểm tra trạng thái – KHÔNG có form đăng ký/đăng nhập)
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -882,89 +881,33 @@
                 if (profileDoc.exists) {
                     currentUserProfile = profileDoc.data();
                 } else {
-                    currentUserProfile = { name: user.email.split('@')[0], role: 'student' };
+                    currentUserProfile = { name: user.email ? user.email.split('@')[0] : 'Người dùng', role: 'student' };
                 }
                 showHomePage();
             } else {
                 currentUser = null;
                 currentUserProfile = null;
-                showAuthPage();
-            }
-        });
-
-        document.getElementById('tabStudent').addEventListener('click', () => {
-            selectedRole = 'student';
-            document.getElementById('tabStudent').classList.add('active');
-            document.getElementById('tabTeacher').classList.remove('active');
-        });
-        document.getElementById('tabTeacher').addEventListener('click', () => {
-            selectedRole = 'teacher';
-            document.getElementById('tabTeacher').classList.add('active');
-            document.getElementById('tabStudent').classList.remove('active');
-        });
-
-        document.getElementById('toggleRegisterBtn').addEventListener('click', () => {
-            isRegisterMode = !isRegisterMode;
-            document.getElementById('nameGroup').style.display = isRegisterMode ? 'block' : 'none';
-            document.getElementById('loginBtn').innerHTML = isRegisterMode
-                ? '<i class="fas fa-user-plus"></i> Đăng ký'
-                : '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
-            document.getElementById('toggleRegisterBtn').textContent = isRegisterMode
-                ? 'Đã có tài khoản? Đăng nhập'
-                : 'Chưa có tài khoản? Đăng ký';
-        });
-
-        document.getElementById('loginBtn').addEventListener('click', async () => {
-            const email = document.getElementById('authEmail').value.trim();
-            const password = document.getElementById('authPassword').value;
-            const name = document.getElementById('authName').value.trim();
-            if (!email || !password) {
-                showNotification('Vui lòng nhập email và mật khẩu', 'warning');
-                return;
-            }
-            showLoading(isRegisterMode ? 'Đang đăng ký...' : 'Đang đăng nhập...');
-            try {
-                if (isRegisterMode) {
-                    if (!name) {
-                        hideLoading();
-                        showNotification('Vui lòng nhập họ tên', 'warning');
-                        return;
-                    }
-                    const cred = await auth.createUserWithEmailAndPassword(email, password);
-                    await db.collection('users').doc(cred.user.uid).set({
-                        name: name,
-                        email: email,
-                        role: selectedRole,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    showNotification('Đăng ký thành công!', 'success');
-                } else {
-                    await auth.signInWithEmailAndPassword(email, password);
-                    showNotification('Đăng nhập thành công!', 'success');
-                }
-            } catch (err) {
-                console.error(err);
-                showNotification('Lỗi: ' + (err.message || 'Không thể đăng nhập/đăng ký'), 'error');
-            } finally {
-                hideLoading();
+                showNeedLoginPage();
             }
         });
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
             if (currentRoomId) leaveRoom();
-            auth.signOut();
+            auth.signOut().then(() => {
+                showNotification('Đã đăng xuất', 'info');
+            });
         });
 
         // ============================================================
         // PAGE NAVIGATION
         // ============================================================
-        function showAuthPage() {
-            document.getElementById('authPage').classList.remove('hidden');
+        function showNeedLoginPage() {
+            document.getElementById('needLoginPage').classList.remove('hidden');
             document.getElementById('homePage').classList.add('hidden');
             document.getElementById('roomPage').classList.add('hidden');
         }
         function showHomePage() {
-            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('needLoginPage').classList.add('hidden');
             document.getElementById('homePage').classList.remove('hidden');
             document.getElementById('roomPage').classList.add('hidden');
             const name = currentUserProfile?.name || 'Bạn';
@@ -1119,6 +1062,7 @@
         function showRoomPage() {
             document.getElementById('homePage').classList.add('hidden');
             document.getElementById('roomPage').classList.remove('hidden');
+            document.getElementById('needLoginPage').classList.add('hidden');
         }
 
         function cleanupRoom() {
@@ -1796,7 +1740,6 @@ Chỉ trả về JSON, không thêm text.`;
                 const items = JSON.parse(match[0]);
                 if (!Array.isArray(items) || !items.length) throw new Error('AI không tạo được câu hỏi');
 
-                // Lưu tạm để giáo viên review
                 pendingAiQuestions = items;
                 pendingAiContentType = contentType;
                 pendingAiTarget = currentAddingBankId ? 'bank' : 'room';
