@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeTHCS - Lớp học Online THCS (Kết nối tri thức)</title>
+    <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        :root {
+            font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            font-weight: 400;
+            color-scheme: light;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --primary-color: #FFA500;
+            --primary-light: #FFD700;
+            --secondary-color: #2196F3;
+            --success-color: #4CAF50;
+            --danger-color: #f44336;
+            --warning-color: #FF9800;
+            --info-color: #36d1dc;
+            --card-bg: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden; font-family: 'Inter', system-ui, sans-serif; }
+        #app { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
+        .home-button {
+            position: fixed; top: 20px; left: 20px; z-index: 1000;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 50px; padding: 10px 20px;
+            font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3); transition: all 0.3s ease; text-decoration: none;
+        }
+        .home-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4); }
+        .main-content { width: 100%; flex: 1; display: flex; }
+        #authPage, #homePage, #summaryPage { width: 100%; display: flex; justify-content: center; align-items: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
+        .home-container, .auth-container, .summary-container {
+            width: 100%; max-width: 520px; background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .summary-container { max-width: 900px; }
+        .logo-section { text-align: center; margin-bottom: 25px; }
+        .logo-section img { width: 70px; height: 70px; margin-bottom: 10px; }
+        .logo-section h1 {
+            color: #333; font-size: 1.9rem; font-weight: 700;
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .logo-section p { color: #666; margin-top: 8px; font-size: 0.95rem; }
+        .form-title { color: #FFA500; margin-bottom: 18px; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 16px; position: relative; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: #555; font-size: 0.9rem; }
+        input, select, textarea {
+            width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 10px;
+            font-size: 0.95rem; transition: all 0.2s; background-color: white; font-family: inherit;
+        }
+        textarea { min-height: 110px; resize: vertical; }
+        input:focus, select:focus, textarea:focus {
+            border-color: #FFA500; outline: none; box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.12);
+        }
+        .btn {
+            width: 100%; padding: 13px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 600;
+            transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3); }
+        .btn-secondary { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+        .btn-success { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+        .btn-danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .btn-outline {
+            background: transparent; border: 2px solid #FFA500; color: #FFA500;
+        }
+        .divider { display: flex; align-items: center; margin: 22px 0; color: #777; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background-color: #e0e0e0; }
+        .divider-text { padding: 0 12px; font-size: 0.85rem; }
+        .role-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+        .role-tab {
+            flex: 1; padding: 10px; text-align: center; border: 2px solid #e0e0e0; border-radius: 10px;
+            cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .role-tab.active { border-color: #FFA500; background: rgba(255,165,0,0.1); color: #FFA500; }
+        /* ROOM PAGE */
+        #roomPage { width: 100%; display: flex; flex-direction: column; min-height: 100vh; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+        .room-header {
+            background: linear-gradient(to right, #FFA500, #FFD700); color: white; padding: 15px 25px;
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            flex-shrink: 0; padding-left: 80px;
+        }
+        .room-title { font-size: 1.45rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .room-meta { font-size: 0.85rem; opacity: 0.95; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .room-id, .room-time {
+            background-color: rgba(255,255,255,0.18); padding: 5px 12px; border-radius: 50px;
+            font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 500;
+        }
+        .time-critical { animation: pulse 2s infinite; background-color: rgba(255,87,87,0.35); }
+        @keyframes pulse { 0%{opacity:1} 50%{opacity:0.7} 100%{opacity:1} }
+        .user-avatar {
+            width: 42px; height: 42px; border-radius: 50%; background-color: white; color: #FFA500;
+            display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12); border: 2px solid white;
+        }
+        .room-content {
+            flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 18px;
+            max-width: 1400px; margin: 0 auto; width: 100%; overflow: hidden; min-height: 0;
+        }
+        @media (max-width: 1100px) { .room-content { grid-template-columns: 1fr; } }
+        .participants-section, .content-section {
+            background: white; border-radius: 16px; padding: 18px; box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            display: flex; flex-direction: column; height: calc(100vh - 170px); min-height: 480px; overflow: hidden;
+        }
+        .participants-title, .content-title {
+            color: #FFA500; margin-bottom: 14px; font-size: 1.25rem; display: flex; align-items: center; gap: 10px;
+            padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; flex-shrink: 0;
+        }
+        .participants-container { flex: 1; overflow-y: auto; padding-right: 4px; }
+        .participants-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+        .participant-card {
+            background: white; border-radius: 12px; padding: 14px; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; border: 2px solid transparent; position: relative;
+        }
+        .participant-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); border-color: #FFA500; }
+        .participant-current { border-color: #FFA500; background: linear-gradient(135deg, #FFF9E6 0%, #FFFAF0 100%); }
+        .participant-avatar {
+            width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold;
+            margin: 0 auto 10px; box-shadow: 0 4px 10px rgba(255,165,0,0.2); border: 3px solid white;
+        }
+        .participant-name { font-weight: 700; color: #333; margin-bottom: 5px; font-size: 0.95rem; }
+        .participant-score {
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%); color: white; padding: 4px 11px;
+            border-radius: 20px; font-size: 0.82rem; font-weight: 700; display: inline-block;
+        }
+        .teacher-badge {
+            position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border: 2px solid white;
+        }
+        .role-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.68rem; font-weight: 600; margin-left: 4px; }
+        .role-badge.student { background: #2196F3; color: white; }
+        .role-badge.teacher { background: #FFA500; color: white; }
+        .waiting-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.82), rgba(0,0,0,0.65)); backdrop-filter: blur(5px);
+            border-radius: 16px; display: flex; justify-content: center; align-items: center; z-index: 10;
+            flex-direction: column; gap: 18px; color: white; font-size: 1.4rem; font-weight: bold; text-align: center;
+        }
+        .waiting-overlay i { font-size: 3.5rem; animation: pulse 1.5s infinite; }
+        .content-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 10px; overflow-y: auto; }
+        .student-submissions-section { margin-top: 16px; border-top: 2px solid #f0f0f0; padding-top: 14px; flex-shrink: 0; max-height: 220px; overflow-y: auto; }
+        .submission-item { background: #f9f9f9; border-radius: 10px; padding: 11px; margin-bottom: 9px; border-left: 3px solid #FFA500; }
+        .submission-student { font-weight: bold; color: #FFA500; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .submission-answer { font-size: 0.88rem; color: #555; margin-bottom: 4px; word-break: break-word; }
+        .submission-status { font-size: 0.78rem; padding: 2px 8px; border-radius: 12px; display: inline-block; }
+        .submission-correct { background: #e8f5e9; color: #2e7d32; }
+        .submission-incorrect { background: #ffebee; color: #c62828; }
+        .submission-pending { background: #fff3e0; color: #f57c00; }
+        .essay-question-container, .mcq-question-container { width: 100%; max-width: 620px; margin: 0 auto; }
+        .essay-question-text, .mcq-question-text {
+            font-size: 1.15rem; font-weight: 600; margin-bottom: 16px; color: #333; line-height: 1.5;
+            padding: 14px; background: #f9f9f9; border-radius: 12px; border-left: 4px solid #FFA500;
+        }
+        .mcq-question-text { border-left-color: #2196F3; }
+        .essay-answer-input {
+            width: 100%; min-height: 120px; padding: 14px; border: 2px solid #e0e0e0; border-radius: 12px;
+            font-size: 1rem; margin-bottom: 12px; resize: vertical;
+        }
+        .essay-answer-input:focus { border-color: #FFA500; outline: none; box-shadow: 0 0 0 3px rgba(255,165,0,0.1); }
+        .mcq-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+        .mcq-option {
+            display: flex; align-items: center; padding: 13px; border: 2px solid #e0e0e0; border-radius: 10px;
+            cursor: pointer; transition: all 0.2s; background: white;
+        }
+        .mcq-option:hover { border-color: #FFA500; background: rgba(255,165,0,0.05); }
+        .mcq-option.selected { border-color: #2196F3; background: rgba(33,150,243,0.1); }
+        .mcq-option input { margin-right: 12px; width: 18px; height: 18px; }
+        .mcq-option label { flex: 1; margin: 0; cursor: pointer; font-weight: 500; color: #333; }
+        .submit-answer-btn {
+            width: 100%; padding: 13px; background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 700;
+            transition: all 0.2s; box-shadow: 0 4px 15px rgba(76,175,80,0.15);
+        }
+        .submit-answer-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76,175,80,0.3); }
+        .submit-answer-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        .answer-feedback {
+            margin-top: 12px; padding: 13px; border-radius: 12px; text-align: center; font-weight: 700;
+            font-size: 0.98rem; display: none; animation: fadeIn 0.35s ease; border: 2px solid transparent;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .answer-correct { background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); color: #2E7D32; border-color: #4CAF50; }
+        .answer-incorrect { background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%); color: #C62828; border-color: #f44336; }
+        .content-controls { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+        .content-control-btn {
+            padding: 11px 18px; background: #f8f9fa; border: none; border-radius: 10px; cursor: pointer;
+            font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 7px; font-size: 0.92rem;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+        .content-control-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(0,0,0,0.12); }
+        .create-essay-btn { background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); color: white; }
+        .create-mcq-btn { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); color: white; }
+        .ai-generate-btn { background: linear-gradient(135deg, #9C27B0 0%, #673AB7 100%); color: white; }
+        .next-content-btn { background: linear-gradient(135deg, #36d1dc, #5b86e5); color: white; }
+        .content-type-tabs { display: flex; margin-bottom: 14px; border-bottom: 2px solid #f0f0f0; }
+        .content-type-tab {
+            flex: 1; padding: 11px; text-align: center; cursor: pointer; font-weight: 600; color: #666;
+            transition: all 0.2s; border-bottom: 3px solid transparent;
+        }
+        .content-type-tab:hover { color: #FFA500; background: rgba(255,165,0,0.05); }
+        .content-type-tab.active { color: #FFA500; border-bottom-color: #FFA500; background: rgba(255,165,0,0.1); }
+        .current-content-info {
+            margin-bottom: 12px; padding: 9px 13px; background: #f9f9f9; border-radius: 10px;
+            font-size: 0.88rem; color: #666; display: flex; align-items: center; gap: 7px;
+        }
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center;
+            padding: 15px; backdrop-filter: blur(3px);
+        }
+        .modal.active { display: flex; animation: modalFadeIn 0.25s ease; }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content {
+            background: white; padding: 28px; border-radius: 18px; width: 100%; max-width: 520px;
+            max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal-header { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #FFD700; }
+        .modal-header h3 { color: #FFA500; display: flex; align-items: center; gap: 9px; font-size: 1.4rem; }
+        .modal-body { padding: 10px 0; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 2px solid #e0e0e0; }
+        .modal-btn {
+            padding: 11px 20px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: all 0.2s; font-size: 0.92rem;
+        }
+        .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(255,215,0,0.3); }
+        .modal-btn.secondary-btn { background: linear-gradient(135deg, #666 0%, #555 100%); }
+        .close {
+            position: absolute; top: 14px; right: 14px; cursor: pointer; color: #666; padding: 7px;
+            border-radius: 50%; transition: all 0.2s; background: rgba(0,0,0,0.05); width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .close:hover { background: rgba(0,0,0,0.1); transform: rotate(90deg); }
+        .room-controls {
+            padding: 16px 22px; background: linear-gradient(to right, #FFA500, #FFD700);
+            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; margin-top: auto;
+            box-shadow: 0 -2px 15px rgba(0,0,0,0.08);
+        }
+        .bank-controls {
+            padding: 12px 22px; background: rgba(255,165,0,0.1); display: flex; justify-content: space-between;
+            align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,165,0,0.3);
+        }
+        .bank-btn {
+            padding: 9px 18px; background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+            color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;
+            transition: all 0.2s; display: flex; align-items: center; gap: 7px; font-size: 0.88rem;
+        }
+        .bank-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,165,0,0.3); }
+        .bank-btn.secondary { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); }
+        .participant-count { color: white; font-size: 0.98rem; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+        .btn-room {
+            padding: 11px 22px; background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #FFA500; border: none; border-radius: 12px; font-size: 0.98rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+        .btn-room:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .start-exam-btn { background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%); color: white; font-size: 1.1rem; padding: 13px 28px; }
+        .start-exam-btn:hover { background: linear-gradient(135deg, #45a049 0%, #1b5e20 100%); transform: scale(1.02); }
+        .btn-exit { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; }
+        .hidden { display: none !important; }
+        .loading {
+            display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .notification {
+            position: fixed; top: 20px; right: 20px; padding: 14px 22px; border-radius: 12px; color: white;
+            font-weight: 700; z-index: 2000; box-shadow: 0 8px 25px rgba(0,0,0,0.2); display: flex;
+            align-items: center; gap: 10px; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            max-width: 360px; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2);
+        }
+        .notification.show { transform: translateX(0); }
+        .notification.success { background: linear-gradient(135deg, #00b09b, #96c93d); }
+        .notification.info { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+        .notification.warning { background: linear-gradient(135deg, #f46b45, #eea849); }
+        .notification.error { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .option-input-group { display: flex; gap: 8px; margin-bottom: 9px; align-items: center; }
+        .option-input-group input[type="checkbox"] { width: 18px; height: 18px; }
+        .option-input-group input[type="text"] { flex: 1; }
+        .add-option-btn, .remove-option-btn { padding: 6px 11px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; }
+        .add-option-btn { background: #4CAF50; color: white; }
+        .remove-option-btn { background: #f44336; color: white; }
+        .bank-item {
+            background: #f9f9f9; border-radius: 12px; padding: 14px; margin-bottom: 11px;
+            border-left: 4px solid #FFA500; transition: all 0.2s;
+        }
+        .bank-item:hover { transform: translateX(4px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .bank-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+        .bank-item-name { font-weight: 700; color: #FFA500; font-size: 1.05rem; }
+        .bank-item-meta { font-size: 0.78rem; color: #999; }
+        .bank-item-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .bank-item-actions button {
+            padding: 5px 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-weight: 600;
+        }
+        .bank-add-btn { background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%); color: white; }
+        .bank-edit-btn { background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); color: white; }
+        .bank-delete-btn { background: linear-gradient(135deg, #f44336 0%, #c62828 100%); color: white; }
+        .bank-view-btn { background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); color: white; }
+        .bank-item-preview { font-size: 0.82rem; color: #666; margin-top: 6px; padding-top: 6px; border-top: 1px solid #e0e0e0; }
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 7px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #FFA500, #FFD700); border-radius: 7px; }
+        .selected-bank-info {
+            background: #f0f8ff; border-radius: 10px; padding: 9px 13px; margin: 12px 0;
+            display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #FFA500;
+        }
+        .remove-bank-btn {
+            background: #f44336; color: white; border: none; padding: 4px 11px; border-radius: 20px;
+            cursor: pointer; font-size: 0.78rem;
+        }
+        .summary-result {
+            background: #f8f9fa; border-radius: 12px; padding: 18px; margin-top: 16px;
+            border-left: 5px solid #FFA500; white-space: pre-wrap; line-height: 1.6; max-height: 420px; overflow-y: auto;
+        }
+        .difficulty-badge {
+            display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; margin-left: 6px;
+        }
+        .diff-easy { background: #e8f5e9; color: #2e7d32; }
+        .diff-medium { background: #fff3e0; color: #ef6c00; }
+        .diff-hard { background: #ffebee; color: #c62828; }
+        #loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center;
+            flex-direction: column; gap: 18px;
+        }
+        @media (max-width: 768px) {
+            .room-content { padding: 12px; gap: 12px; }
+            .room-header { padding: 12px 14px; flex-direction: column; gap: 10px; align-items: flex-start; padding-left: 70px; }
+            .room-title { font-size: 1.25rem; }
+            .participants-section, .content-section { padding: 14px; min-height: auto; height: auto; }
+            .participants-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .room-controls, .bank-controls { padding: 12px; flex-direction: column; gap: 10px; }
+            .btn-room, .bank-btn { width: 100%; justify-content: center; }
+            .home-container, .auth-container, .summary-container { padding: 20px; margin: 12px; }
+            .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
+        }
+        @media (max-width: 480px) {
+            .room-header { padding-left: 60px; }
+            .participants-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 18px; margin: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <a href="#" class="home-button" id="homeButton" onclick="goHome(); return false;">
+            <i class="fas fa-home"></i> Trang chính
+        </a>
+
+        <!-- ========== AUTH PAGE ========== -->
+        <div id="authPage">
+            <div class="auth-container">
+                <div class="logo-section">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="BeeTHCS">
+                    <h1>BeeTHCS</h1>
+                    <p>Lớp học Online THCS – Kết nối tri thức (Toán, Văn, KHTN, Anh 6-9)</p>
+                </div>
+                <div class="role-tabs">
+                    <div class="role-tab active" data-role="student" id="tabStudent">Học sinh</div>
+                    <div class="role-tab" data-role="teacher" id="tabTeacher">Giáo viên</div>
+                </div>
+                <div id="loginForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="authEmail" placeholder="Nhập email">
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="authPassword" placeholder="Nhập mật khẩu">
+                    </div>
+                    <div class="form-group" id="nameGroup" style="display:none;">
+                        <label>Họ và tên</label>
+                        <input type="text" id="authName" placeholder="Nhập họ tên hiển thị">
+                    </div>
+                    <button class="btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
+                    <button class="btn btn-outline" id="toggleRegisterBtn" style="margin-top:10px;">Chưa có tài khoản? Đăng ký</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== HOME PAGE ========== -->
+        <div id="homePage" class="hidden">
+            <div class="home-container">
+                <div class="logo-section">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="BeeTHCS">
+                    <h1>BeeTHCS</h1>
+                    <p id="welcomeText">Xin chào!</p>
+                </div>
+
+                <!-- COMMON: AI Summary -->
+                <button class="btn btn-secondary" id="goSummaryBtn" style="margin-bottom:18px;">
+                    <i class="fas fa-book-open"></i> Tóm tắt kiến thức bài học (AI)
+                </button>
+
+                <!-- TEACHER SECTION -->
+                <div id="teacherHomeSection" class="hidden">
+                    <h2 class="form-title"><i class="fas fa-plus-circle"></i> Tạo phòng học mới</h2>
+                    <div class="form-group">
+                        <label>Tên phòng học</label>
+                        <input type="text" id="roomName" placeholder="Ví dụ: Toán 8 - Bài Phương trình bậc nhất">
+                    </div>
+                    <div class="form-group">
+                        <label>Môn học</label>
+                        <select id="roomSubject">
+                            <option value="toan">Toán</option>
+                            <option value="van">Ngữ văn</option>
+                            <option value="khtn">KHTN</option>
+                            <option value="anh">Tiếng Anh</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Khối</label>
+                        <select id="roomGrade">
+                            <option value="6">Lớp 6</option>
+                            <option value="7">Lớp 7</option>
+                            <option value="8">Lớp 8</option>
+                            <option value="9">Lớp 9</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Thời gian phòng (phút)</label>
+                        <select id="roomDuration">
+                            <option value="30">30 phút</option>
+                            <option value="45" selected>45 phút</option>
+                            <option value="60">60 phút</option>
+                            <option value="90">90 phút</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="bank-btn secondary" id="selectBankForRoomBtn" style="width:100%;">
+                            <i class="fas fa-folder-open"></i> Chọn đề từ ngân hàng (tùy chọn)
+                        </button>
+                        <div id="selectedBankDisplay" style="display:none;" class="selected-bank-info">
+                            <span><i class="fas fa-check-circle" style="color:#4CAF50;"></i> <strong>Đề đã chọn:</strong> <span id="selectedBankName"></span></span>
+                            <button type="button" id="clearSelectedBankBtn" class="remove-bank-btn">Bỏ chọn</button>
+                        </div>
+                    </div>
+                    <button class="btn" id="createRoomBtn"><i class="fas fa-video"></i> Tạo phòng học</button>
+                    <div class="form-group" style="margin-top:16px;">
+                        <button class="bank-btn" id="homeManageBankBtn" style="width:100%; background:linear-gradient(135deg,#2196F3,#1976D2);">
+                            <i class="fas fa-database"></i> Quản lý ngân hàng đề
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STUDENT / COMMON JOIN -->
+                <div class="divider"><span class="divider-text">hoặc</span></div>
+                <h2 class="form-title"><i class="fas fa-sign-in-alt"></i> Tham gia phòng học</h2>
+                <div class="form-group">
+                    <label>Mã phòng học</label>
+                    <input type="text" id="roomId" placeholder="Nhập mã phòng (room_xxxxx)">
+                </div>
+                <button class="btn btn-secondary" id="joinRoomBtn"><i class="fas fa-door-open"></i> Tham gia phòng</button>
+
+                <button class="btn btn-danger" id="logoutBtn" style="margin-top:20px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+            </div>
+        </div>
+
+        <!-- ========== SUMMARY PAGE ========== -->
+        <div id="summaryPage" class="hidden">
+            <div class="summary-container">
+                <div class="logo-section">
+                    <h1 style="font-size:1.6rem;">Tóm tắt kiến thức bài học (AI)</h1>
+                    <p>Chọn môn – khối – nhập tên bài / đề mục. Hệ thống sẽ tra cứu TOC rồi tóm tắt kiến thức trọng tâm.</p>
+                </div>
+                <div class="form-group">
+                    <label>Môn học</label>
+                    <select id="sumSubject">
+                        <option value="toan">Toán</option>
+                        <option value="van">Ngữ văn</option>
+                        <option value="khtn">KHTN</option>
+                        <option value="anh">Tiếng Anh</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Khối</label>
+                    <select id="sumGrade">
+                        <option value="6">Lớp 6</option>
+                        <option value="7">Lớp 7</option>
+                        <option value="8">Lớp 8</option>
+                        <option value="9">Lớp 9</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tên bài học / Đề mục (gõ chính xác hoặc gần đúng)</label>
+                    <input type="text" id="sumLesson" placeholder="Ví dụ: Phương trình bậc nhất một ẩn / Bài 5. Ôn tập...">
+                </div>
+                <button class="btn" id="requestSummaryBtn"><i class="fas fa-robot"></i> Yêu cầu AI tóm tắt</button>
+                <div id="summaryResultBox" class="summary-result hidden"></div>
+                <button class="btn btn-outline" style="margin-top:14px;" onclick="goHome()"><i class="fas fa-arrow-left"></i> Quay lại</button>
+            </div>
+        </div>
+
+        <!-- ========== ROOM PAGE ========== -->
+        <div id="roomPage" class="hidden">
+            <div class="room-header">
+                <div class="room-info">
+                    <div class="room-title">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span id="currentRoomName">Lớp học</span>
+                    </div>
+                    <div class="room-meta">
+                        <div class="room-id"><i class="fas fa-hashtag"></i> <span id="currentRoomId">room_xxx</span></div>
+                        <div class="room-time" id="roomTimeRemaining"><i class="fas fa-clock"></i> <span>45:00</span></div>
+                        <span id="roomSubjectGrade" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:20px;font-size:0.82rem;"></span>
+                    </div>
+                </div>
+                <div class="user-avatar" id="userAvatarHeader">B</div>
+            </div>
+
+            <div class="bank-controls" id="bankControls">
+                <button class="bank-btn" id="manageBankBtn"><i class="fas fa-database"></i> Quản lý ngân hàng đề</button>
+                <button class="bank-btn secondary" id="addFromBankBtn"><i class="fas fa-plus-circle"></i> Thêm đề từ ngân hàng</button>
+            </div>
+
+            <div class="room-content">
+                <div class="participants-section">
+                    <h3 class="participants-title"><i class="fas fa-users"></i> Người tham gia</h3>
+                    <div class="participants-container" id="participantsList">
+                        <div style="text-align:center;padding:40px 15px;">
+                            <div class="loading" style="margin:0 auto;border-color:#FFA500 rgba(255,165,0,0.3) rgba(255,165,0,0.3);border-top-color:#FFA500;"></div>
+                            <p style="margin-top:10px;color:#666;font-size:0.9rem;">Đang tải...</p>
+                        </div>
+                    </div>
+                    <div class="student-submissions-section" id="studentSubmissionsSection">
+                        <h4 style="color:#FFA500;margin-bottom:10px;"><i class="fas fa-clipboard-list"></i> Bài làm của học sinh</h4>
+                        <div id="submissionsList"></div>
+                    </div>
+                </div>
+
+                <div class="content-section" style="position:relative;">
+                    <div class="waiting-overlay hidden" id="waitingOverlay">
+                        <i class="fas fa-hourglass-half"></i>
+                        <p>Chờ giáo viên bắt đầu thi...</p>
+                    </div>
+                    <div class="content-type-tabs">
+                        <div class="content-type-tab active" data-type="essay"><i class="fas fa-pen"></i> Tự luận</div>
+                        <div class="content-type-tab" data-type="mcq"><i class="fas fa-list-check"></i> Trắc nghiệm</div>
+                    </div>
+                    <div class="current-content-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="currentContentInfo">Đang tải nội dung...</span>
+                    </div>
+                    <div class="content-container">
+                        <!-- Essay -->
+                        <div id="essayContent" class="content-type-content">
+                            <div class="essay-question-container">
+                                <div class="essay-question-text" id="essayQuestionText">Chưa có câu hỏi tự luận.</div>
+                                <div id="essayDifficultyBadge" style="margin-bottom:10px;"></div>
+                                <textarea class="essay-answer-input" id="essayAnswerInput" placeholder="Nhập câu trả lời của bạn..."></textarea>
+                                <button class="submit-answer-btn" id="submitEssayAnswerBtn">Nộp câu trả lời</button>
+                                <div class="answer-feedback" id="essayAnswerFeedback"></div>
+                            </div>
+                        </div>
+                        <!-- MCQ -->
+                        <div id="mcqContent" class="content-type-content hidden">
+                            <div class="mcq-question-container">
+                                <div class="mcq-question-text" id="mcqQuestionText">Chưa có câu hỏi trắc nghiệm.</div>
+                                <div id="mcqDifficultyBadge" style="margin-bottom:10px;"></div>
+                                <div class="mcq-options" id="mcqOptionsContainer"></div>
+                                <button class="submit-answer-btn" id="submitMcqAnswerBtn">Nộp câu trả lời</button>
+                                <div class="answer-feedback" id="mcqAnswerFeedback"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-controls">
+                        <button class="content-control-btn create-essay-btn" id="createEssayBtn"><i class="fas fa-plus-circle"></i> Tạo câu tự luận</button>
+                        <button class="content-control-btn create-mcq-btn" id="createMcqBtn"><i class="fas fa-plus-circle"></i> Tạo câu trắc nghiệm</button>
+                        <button class="content-control-btn ai-generate-btn" id="aiGenerateBtn"><i class="fas fa-robot"></i> Tạo bằng AI</button>
+                        <button class="content-control-btn next-content-btn" id="nextContentBtn"><i class="fas fa-forward"></i> Câu tiếp theo</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room-controls">
+                <div class="participant-count">
+                    <i class="fas fa-user-friends"></i>
+                    <span id="participantCount">0</span> người tham gia
+                </div>
+                <button class="btn-room start-exam-btn" id="startExamBtn" style="display:none;">
+                    <i class="fas fa-play"></i> Bắt đầu thi
+                </button>
+                <button class="btn-room btn-exit" id="leaveRoomBtn">
+                    <i class="fas fa-sign-out-alt"></i> Rời phòng
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== MODALS ==================== -->
+        <!-- Create Essay -->
+        <div id="createEssayModal" class="modal">
+            <div class="modal-content">
+                <span class="material-symbols-outlined close" id="closeCreateEssayModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-plus-circle"></i> Tạo câu hỏi tự luận</h3></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Câu hỏi</label>
+                        <textarea id="essayQuestion" placeholder="Nhập câu hỏi tự luận"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Đáp án đúng (mỗi dòng một đáp án chấp nhận được)</label>
+                        <textarea id="essayCorrectAnswer" placeholder="Ví dụ:&#10;x = 2&#10;2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Độ khó</label>
+                        <select id="essayDifficulty">
+                            <option value="easy">Dễ</option>
+                            <option value="medium" selected>Trung bình</option>
+                            <option value="hard">Khó</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Điểm số</label>
+                        <input type="number" id="essayPoints" value="1" min="1" max="10">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary-btn" id="cancelCreateEssay">Hủy</button>
+                    <button class="modal-btn ai-generate-btn" id="aiGenerateEssayBtn"><i class="fas fa-robot"></i> AI tạo</button>
+                    <button class="modal-btn" id="saveEssayBtn">Tạo câu hỏi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create MCQ -->
+        <div id="createMcqModal" class="modal">
+            <div class="modal-content">
+                <span class="material-symbols-outlined close" id="closeCreateMcqModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-plus-circle"></i> Tạo câu hỏi trắc nghiệm</h3></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Câu hỏi</label>
+                        <textarea id="mcqQuestion" placeholder="Nhập câu hỏi trắc nghiệm"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Lựa chọn (đánh dấu đáp án đúng)</label>
+                        <div id="mcqOptionsList"></div>
+                        <button type="button" class="add-option-btn" id="addMcqOptionBtn" style="margin-top:8px;"><i class="fas fa-plus"></i> Thêm lựa chọn</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Độ khó</label>
+                        <select id="mcqDifficulty">
+                            <option value="easy">Dễ</option>
+                            <option value="medium" selected>Trung bình</option>
+                            <option value="hard">Khó</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Điểm số</label>
+                        <input type="number" id="mcqPoints" value="1" min="1" max="10">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary-btn" id="cancelCreateMcq">Hủy</button>
+                    <button class="modal-btn ai-generate-btn" id="aiGenerateMcqBtn"><i class="fas fa-robot"></i> AI tạo</button>
+                    <button class="modal-btn" id="saveMcqBtn">Tạo câu hỏi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Generate Questions -->
+        <div id="aiGenerateModal" class="modal">
+            <div class="modal-content">
+                <span class="material-symbols-outlined close" id="closeAiGenerateModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-robot"></i> Tạo câu hỏi bằng AI</h3></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Chủ đề / Tên bài học</label>
+                        <input type="text" id="aiTopic" placeholder="Ví dụ: Phương trình bậc nhất một ẩn">
+                    </div>
+                    <div class="form-group">
+                        <label>Loại câu hỏi</label>
+                        <select id="aiContentType">
+                            <option value="essay">Tự luận</option>
+                            <option value="mcq">Trắc nghiệm</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input type="number" id="aiQuantity" value="5" min="1" max="15">
+                    </div>
+                    <div class="form-group">
+                        <label>Độ khó</label>
+                        <select id="aiDifficulty">
+                            <option value="easy">Dễ</option>
+                            <option value="medium">Trung bình</option>
+                            <option value="hard">Khó</option>
+                        </select>
+                    </div>
+                    <div id="aiLoading" style="display:none;text-align:center;padding:18px;">
+                        <div class="loading" style="margin:0 auto;border-color:#9C27B0 rgba(156,39,176,0.3) rgba(156,39,176,0.3);border-top-color:#9C27B0;"></div>
+                        <p style="margin-top:10px;color:#666;">AI đang tạo...</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary-btn" id="cancelAiGenerate">Hủy</button>
+                    <button class="modal-btn ai-generate-btn" id="generateWithAiBtn"><i class="fas fa-robot"></i> Tạo bằng AI</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bank Manager -->
+        <div id="bankManagerModal" class="modal">
+            <div class="modal-content" style="max-width:820px;">
+                <span class="material-symbols-outlined close" id="closeBankManagerModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-database"></i> Quản lý ngân hàng đề</h3></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên đề mới</label>
+                        <div style="display:flex;gap:8px;">
+                            <input type="text" id="newBankName" placeholder="Ví dụ: Đề kiểm tra 15 phút - Toán 8 Bài 3" style="flex:1;">
+                            <button class="modal-btn" id="createBankBtn" style="margin-top:0;">Tạo đề</button>
+                        </div>
+                    </div>
+                    <div style="margin:14px 0;">
+                        <button class="modal-btn" id="showAddContentButtonsBtn" style="width:100%;background:linear-gradient(135deg,#4CAF50,#2E7D32);">
+                            <i class="fas fa-plus-circle"></i> Thêm nội dung vào đề đang chọn
+                        </button>
+                    </div>
+                    <div id="bankContentButtons" style="display:none;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+                        <button class="modal-btn" id="bankCreateEssayBtn" style="background:linear-gradient(135deg,#FF9800,#F57C00);">Tạo tự luận</button>
+                        <button class="modal-btn" id="bankCreateMcqBtn" style="background:linear-gradient(135deg,#2196F3,#1976D2);">Tạo trắc nghiệm</button>
+                        <button class="modal-btn secondary-btn" id="bankHideContentButtonsBtn">Ẩn</button>
+                    </div>
+                    <div id="bankSelectedInfo" style="display:none;background:#e8f5e9;padding:8px 12px;border-radius:8px;margin-bottom:12px;">
+                        <i class="fas fa-check-circle" style="color:#4CAF50;"></i> Đang thêm vào đề: <strong id="bankTargetName"></strong>
+                    </div>
+                    <hr style="margin:16px 0;">
+                    <h4>Danh sách đề của bạn</h4>
+                    <div id="bankList" style="max-height:380px;overflow-y:auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Bank to Room -->
+        <div id="addBankModal" class="modal">
+            <div class="modal-content" style="max-width:820px;">
+                <span class="material-symbols-outlined close" id="closeAddBankModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-plus-circle"></i> Thêm đề từ ngân hàng vào phòng</h3></div>
+                <div class="modal-body">
+                    <div id="addBankList" style="max-height:480px;overflow-y:auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Bank Select -->
+        <div id="homeBankModal" class="modal">
+            <div class="modal-content" style="max-width:820px;">
+                <span class="material-symbols-outlined close" id="closeHomeBankModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-folder-open"></i> Chọn đề từ ngân hàng</h3></div>
+                <div class="modal-body">
+                    <div id="homeBankList" style="max-height:480px;overflow-y:auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Bank -->
+        <div id="viewBankModal" class="modal">
+            <div class="modal-content" style="max-width:700px;">
+                <span class="material-symbols-outlined close" id="closeViewBankModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-eye"></i> Chi tiết đề: <span id="viewBankName"></span></h3></div>
+                <div class="modal-body"><div id="viewBankContent" style="max-height:480px;overflow-y:auto;"></div></div>
+            </div>
+        </div>
+
+        <!-- Edit Bank -->
+        <div id="editBankModal" class="modal">
+            <div class="modal-content" style="max-width:700px;">
+                <span class="material-symbols-outlined close" id="closeEditBankModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-edit"></i> Sửa đề: <span id="editBankName"></span></h3></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên đề</label>
+                        <input type="text" id="editBankTitle">
+                    </div>
+                    <div class="form-group">
+                        <label>Nội dung đề</label>
+                        <div id="editBankContentsList" style="max-height:360px;overflow-y:auto;border:1px solid #e0e0e0;border-radius:8px;padding:10px;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary-btn" id="cancelEditBank">Hủy</button>
+                    <button class="modal-btn" id="saveEditBankBtn">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <div id="loading-overlay">
+        <div style="width:60px;height:60px;border:4px solid rgba(255,215,0,0.3);border-radius:50%;border-top-color:#FFD700;animation:spin 0.8s linear infinite;"></div>
+        <div style="color:white;font-size:18px;" id="loading-text">Đang xử lý...</div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIG (mới)
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
+            authDomain: "bee2-8be5c.firebaseapp.com",
+            databaseURL: "https://bee2-8be5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bee2-8be5c",
+            storageBucket: "bee2-8be5c.firebasestorage.app",
+            messagingSenderId: "955848369197",
+            appId: "1:955848369197:web:ccda9b046000ac4cfa04a4",
+            measurementId: "G-1G0N144BN3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // API KEY + AI HELPERS
+        // ============================================================
+        function getAPIKey() {
+            const originalKey = "v6xGqEar3C7yKR9K2GmO5dTZx2OLCg258qLWdF5o7kt5ImQu-ks";
+            return originalKey.split('').reverse().join('');
+        }
+        const API_URL = "https://api.shopaikey.com/v1/chat/completions";
+
+        function showLoading(msg) {
+            document.getElementById('loading-text').textContent = msg || 'Đang xử lý...';
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        // ============================================================
+        // TOC FILES (bạn sẽ thêm file JSON vào thư mục toc/ hoặc GitHub raw)
+        // Cấu trúc mỗi file: { "lessons": [ { "title": "...", "outline": "...", "page": "..." }, ... ] }
+        // ============================================================
+        const TOC_SOURCES = {
+            'toan-6': 'toc/toan-6.json',
+            'toan-7': 'toc/toan-7.json',
+            'toan-8': 'toc/toan-8.json',
+            'toan-9': 'toc/toan-9.json',
+            'van-6': 'toc/van-6.json',
+            'van-7': 'toc/van-7.json',
+            'van-8': 'toc/van-8.json',
+            'van-9': 'toc/van-9.json',
+            'khtn-6': 'toc/khtn-6.json',
+            'khtn-7': 'toc/khtn-7.json',
+            'khtn-8': 'toc/khtn-8.json',
+            'khtn-9': 'toc/khtn-9.json',
+            'anh-6': 'toc/anh-6.json',
+            'anh-7': 'toc/anh-7.json',
+            'anh-8': 'toc/anh-8.json',
+            'anh-9': 'toc/anh-9.json'
+        };
+
+        async function loadTOC(subject, grade) {
+            const key = `${subject}-${grade}`;
+            const path = TOC_SOURCES[key];
+            if (!path) return null;
+            try {
+                const res = await fetch(path);
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) {
+                console.warn('Không tải được TOC:', path, e);
+                return null;
+            }
+        }
+
+        function findLessonInTOC(tocData, lessonQuery) {
+            if (!tocData || !tocData.lessons) return null;
+            const q = lessonQuery.toLowerCase().trim();
+            let best = null;
+            let bestScore = 0;
+            for (const lesson of tocData.lessons) {
+                const title = (lesson.title || '').toLowerCase();
+                if (title.includes(q) || q.includes(title)) {
+                    const score = Math.min(title.length, q.length) / Math.max(title.length, q.length);
+                    if (score > bestScore) {
+                        bestScore = score;
+                        best = lesson;
+                    }
+                }
+            }
+            return best;
+        }
+
+        // ============================================================
+        // GLOBAL STATE
+        // ============================================================
+        let currentUser = null;          // Firebase Auth user
+        let currentUserProfile = null;  // { name, role, ... }
+        let currentRoomId = null;
+        let isTeacher = false;
+        let participantsListener = null;
+        let roomListener = null;
+        let contentListener = null;
+        let submissionsListener = null;
+        let roomTimer = null;
+        let endTime = null;
+        let currentContentIndex = 0;
+        let roomContents = [];
+        let hasAnsweredCurrentContent = false;
+        let currentContentType = 'essay';
+        let selectedBankForRoom = null;
+        let isExamMode = false;
+        let examStarted = false;
+        let currentAddingBankId = null;
+        let isRegisterMode = false;
+        let selectedRole = 'student';
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                const profileDoc = await db.collection('users').doc(user.uid).get();
+                if (profileDoc.exists) {
+                    currentUserProfile = profileDoc.data();
+                } else {
+                    currentUserProfile = { name: user.email.split('@')[0], role: 'student' };
+                }
+                showHomePage();
+            } else {
+                currentUser = null;
+                currentUserProfile = null;
+                showAuthPage();
+            }
+        });
+
+        document.getElementById('tabStudent').addEventListener('click', () => {
+            selectedRole = 'student';
+            document.getElementById('tabStudent').classList.add('active');
+            document.getElementById('tabTeacher').classList.remove('active');
+        });
+        document.getElementById('tabTeacher').addEventListener('click', () => {
+            selectedRole = 'teacher';
+            document.getElementById('tabTeacher').classList.add('active');
+            document.getElementById('tabStudent').classList.remove('active');
+        });
+
+        document.getElementById('toggleRegisterBtn').addEventListener('click', () => {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('nameGroup').style.display = isRegisterMode ? 'block' : 'none';
+            document.getElementById('loginBtn').innerHTML = isRegisterMode
+                ? '<i class="fas fa-user-plus"></i> Đăng ký'
+                : '<i class="fas fa-sign-in-alt"></i> Đăng nhập';
+            document.getElementById('toggleRegisterBtn').textContent = isRegisterMode
+                ? 'Đã có tài khoản? Đăng nhập'
+                : 'Chưa có tài khoản? Đăng ký';
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value;
+            const name = document.getElementById('authName').value.trim();
+            if (!email || !password) {
+                showNotification('Vui lòng nhập email và mật khẩu', 'warning');
+                return;
+            }
+            showLoading(isRegisterMode ? 'Đang đăng ký...' : 'Đang đăng nhập...');
+            try {
+                if (isRegisterMode) {
+                    if (!name) {
+                        hideLoading();
+                        showNotification('Vui lòng nhập họ tên', 'warning');
+                        return;
+                    }
+                    const cred = await auth.createUserWithEmailAndPassword(email, password);
+                    await db.collection('users').doc(cred.user.uid).set({
+                        name: name,
+                        email: email,
+                        role: selectedRole,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    showNotification('Đăng ký thành công!', 'success');
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    showNotification('Đăng nhập thành công!', 'success');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + (err.message || 'Không thể đăng nhập/đăng ký'), 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if (currentRoomId) leaveRoom();
+            auth.signOut();
+        });
+
+        // ============================================================
+        // PAGE NAVIGATION
+        // ============================================================
+        function showAuthPage() {
+            document.getElementById('authPage').classList.remove('hidden');
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('summaryPage').classList.add('hidden');
+            document.getElementById('roomPage').classList.add('hidden');
+        }
+        function showHomePage() {
+            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('summaryPage').classList.add('hidden');
+            document.getElementById('roomPage').classList.add('hidden');
+            const name = currentUserProfile?.name || 'Bạn';
+            const role = currentUserProfile?.role || 'student';
+            document.getElementById('welcomeText').textContent = `Xin chào ${name} (${role === 'teacher' ? 'Giáo viên' : 'Học sinh'})`;
+            if (role === 'teacher') {
+                document.getElementById('teacherHomeSection').classList.remove('hidden');
+            } else {
+                document.getElementById('teacherHomeSection').classList.add('hidden');
+            }
+        }
+        function goHome() {
+            if (currentRoomId) {
+                leaveRoom();
+            } else {
+                showHomePage();
+            }
+        }
+        document.getElementById('goSummaryBtn').addEventListener('click', () => {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('summaryPage').classList.remove('hidden');
+            document.getElementById('summaryResultBox').classList.add('hidden');
+        });
+
+        // ============================================================
+        // AI SUMMARY
+        // ============================================================
+        document.getElementById('requestSummaryBtn').addEventListener('click', async () => {
+            const subject = document.getElementById('sumSubject').value;
+            const grade = document.getElementById('sumGrade').value;
+            const lesson = document.getElementById('sumLesson').value.trim();
+            if (!lesson) {
+                showNotification('Vui lòng nhập tên bài học / đề mục', 'warning');
+                return;
+            }
+            showLoading('Đang tra cứu TOC và tóm tắt...');
+            try {
+                const toc = await loadTOC(subject, grade);
+                let lessonInfo = null;
+                if (toc) {
+                    lessonInfo = findLessonInTOC(toc, lesson);
+                }
+                const subjectName = { toan: 'Toán', van: 'Ngữ văn', khtn: 'KHTN', anh: 'Tiếng Anh' }[subject] || subject;
+                let prompt = `Bạn là giáo viên THCS chuyên môn ${subjectName} lớp ${grade}, sách Kết nối tri thức với cuộc sống.\n`;
+                if (lessonInfo) {
+                    prompt += `Bài học được xác định từ mục lục:\n- Tiêu đề: ${lessonInfo.title}\n- Đề mục / Outline: ${lessonInfo.outline || 'Không có'}\n- Trang: ${lessonInfo.page || 'N/A'}\n\n`;
+                } else {
+                    prompt += `Người dùng yêu cầu tóm tắt bài: "${lesson}". (Không tìm thấy trong TOC, hãy dựa vào kiến thức chuẩn chương trình THCS).\n\n`;
+                }
+                prompt += `Hãy tóm tắt KIẾN THỨC TRỌNG TÂM của bài học này cho học sinh lớp ${grade}, ngắn gọn, rõ ràng, có cấu trúc:\n1. Mục tiêu / Ý chính\n2. Kiến thức trọng tâm (công thức, khái niệm, quy tắc...)\n3. Ví dụ minh họa ngắn (nếu phù hợp)\n4. Lưu ý / Mẹo nhớ\n\nChỉ trả về nội dung tóm tắt, không thêm lời dẫn.`;
+
+                const API_KEY = getAPIKey();
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-5.4-nano',
+                        messages: [
+                            { role: 'system', content: 'Bạn là giáo viên THCS giỏi, tóm tắt kiến thức ngắn gọn, chính xác theo chương trình Kết nối tri thức.' },
+                            { role: 'user', content: prompt }
+                        ],
+                        max_tokens: 1200,
+                        temperature: 0.5
+                    })
+                });
+                if (!response.ok) throw new Error('API lỗi ' + response.status);
+                const data = await response.json();
+                const content = data.choices[0].message.content.trim();
+                const box = document.getElementById('summaryResultBox');
+                let header = `📚 ${subjectName} – Lớp ${grade}\n`;
+                if (lessonInfo) header += `📖 Bài: ${lessonInfo.title}\n`;
+                else header += `📖 Bài (theo yêu cầu): ${lesson}\n`;
+                header += `────────────────────────────\n\n`;
+                box.textContent = header + content;
+                box.classList.remove('hidden');
+                showNotification('Đã tóm tắt xong!', 'success');
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi khi tóm tắt: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // ============================================================
+        // CREATE / JOIN ROOM
+        // ============================================================
+        document.getElementById('createRoomBtn').addEventListener('click', createRoom);
+        document.getElementById('joinRoomBtn').addEventListener('click', joinRoom);
+        document.getElementById('leaveRoomBtn').addEventListener('click', leaveRoom);
+
+        function createRoom() {
+            if (!currentUser || currentUserProfile?.role !== 'teacher') {
+                showNotification('Chỉ giáo viên mới tạo được phòng', 'warning');
+                return;
+            }
+            const roomName = document.getElementById('roomName').value.trim();
+            const subject = document.getElementById('roomSubject').value;
+            const grade = document.getElementById('roomGrade').value;
+            const duration = parseInt(document.getElementById('roomDuration').value);
+            if (!roomName) {
+                showNotification('Vui lòng nhập tên phòng', 'warning');
+                return;
+            }
+            const roomId = 'room_' + Math.random().toString(36).substr(2, 9);
+            const now = new Date();
+            const endTimeDate = new Date(now.getTime() + duration * 60000);
+            const createBtn = document.getElementById('createRoomBtn');
+            createBtn.innerHTML = '<div class="loading"></div> Đang tạo...';
+            createBtn.disabled = true;
+
+            let roomData = {
+                name: roomName,
+                subject: subject,
+                grade: grade,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                createdBy: currentUser.uid,
+                duration: duration,
+                endTime: firebase.firestore.Timestamp.fromDate(endTimeDate),
+                status: 'active',
+                teacherId: currentUser.uid,
+                teacherName: currentUserProfile.name
+            };
+            if (selectedBankForRoom && selectedBankForRoom.contents?.length > 0) {
+                roomData.examMode = true;
+                roomData.examContents = selectedBankForRoom.contents;
+                roomData.examStarted = false;
+                roomData.selectedBankId = selectedBankForRoom.id;
+                roomData.selectedBankName = selectedBankForRoom.name;
+            }
+
+            db.collection('rooms').doc(roomId).set(roomData)
+            .then(() => {
+                return db.collection('rooms').doc(roomId).collection('participants').doc(currentUser.uid).set({
+                    name: currentUserProfile.name,
+                    joinedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastActive: firebase.firestore.FieldValue.serverTimestamp(),
+                    isTeacher: true,
+                    score: 0
+                });
+            })
+            .then(() => {
+                showNotification(`Đã tạo phòng "${roomName}" thành công!`, 'success');
+                document.getElementById('roomName').value = '';
+                clearSelectedBank();
+                joinRoomById(roomId);
+            })
+            .catch(err => {
+                console.error(err);
+                showNotification('Lỗi tạo phòng', 'error');
+            })
+            .finally(() => {
+                createBtn.innerHTML = '<i class="fas fa-video"></i> Tạo phòng học';
+                createBtn.disabled = false;
+            });
+        }
+
+        function joinRoom() {
+            const roomId = document.getElementById('roomId').value.trim();
+            if (!roomId) {
+                showNotification('Vui lòng nhập mã phòng', 'warning');
+                return;
+            }
+            document.getElementById('roomId').value = '';
+            joinRoomById(roomId);
+        }
+
+        function joinRoomById(roomId) {
+            if (!currentUser) return;
+            db.collection('rooms').doc(roomId).get().then(doc => {
+                if (!doc.exists) {
+                    showNotification('Phòng không tồn tại', 'warning');
+                    return;
+                }
+                const roomData = doc.data();
+                if (roomData.status !== 'active') {
+                    showNotification('Phòng đã đóng', 'warning');
+                    return;
+                }
+                const now = new Date();
+                const roomEndTime = roomData.endTime.toDate();
+                if (now > roomEndTime) {
+                    showNotification('Thời gian phòng đã hết', 'warning');
+                    db.collection('rooms').doc(roomId).update({ status: 'expired' });
+                    return;
+                }
+                currentRoomId = roomId;
+                isTeacher = roomData.teacherId === currentUser.uid;
+                isExamMode = roomData.examMode === true;
+                examStarted = roomData.examStarted === true;
+
+                db.collection('rooms').doc(roomId).collection('participants').doc(currentUser.uid).set({
+                    name: currentUserProfile.name,
+                    joinedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastActive: firebase.firestore.FieldValue.serverTimestamp(),
+                    isTeacher: isTeacher,
+                    score: 0
+                }, { merge: true }).then(() => {
+                    showRoomPage();
+                    document.getElementById('currentRoomName').textContent = roomData.name;
+                    document.getElementById('currentRoomId').textContent = roomId;
+                    document.getElementById('userAvatarHeader').textContent = (currentUserProfile.name || 'U').charAt(0).toUpperCase();
+                    const subjMap = { toan: 'Toán', van: 'Ngữ văn', khtn: 'KHTN', anh: 'Tiếng Anh' };
+                    document.getElementById('roomSubjectGrade').textContent = `${subjMap[roomData.subject] || roomData.subject} – Lớp ${roomData.grade}`;
+                    endTime = roomEndTime;
+                    if (!isExamMode || examStarted) startRoomTimer();
+                    else document.getElementById('roomTimeRemaining').innerHTML = `<i class="fas fa-clock"></i> <span>Chờ bắt đầu...</span>`;
+                    loadParticipants();
+                    loadContents();
+                    loadStudentSubmissions();
+                    updateContentControls();
+                    const bankControls = document.getElementById('bankControls');
+                    bankControls.style.display = (isTeacher && !(isExamMode && !examStarted)) ? 'flex' : 'none';
+                    const startExamBtn = document.getElementById('startExamBtn');
+                    startExamBtn.style.display = (isTeacher && isExamMode && !examStarted) ? 'flex' : 'none';
+                    showNotification(`Đã tham gia phòng "${roomData.name}"`, 'success');
+                });
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi tham gia phòng', 'error');
+            });
+        }
+
+        function showRoomPage() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('summaryPage').classList.add('hidden');
+            document.getElementById('roomPage').classList.remove('hidden');
+        }
+
+        function cleanupRoom() {
+            if (roomTimer) { clearInterval(roomTimer); roomTimer = null; }
+            if (participantsListener) { participantsListener(); participantsListener = null; }
+            if (roomListener) { roomListener(); roomListener = null; }
+            if (contentListener) { contentListener(); contentListener = null; }
+            if (submissionsListener) { submissionsListener(); submissionsListener = null; }
+            roomContents = [];
+            currentContentIndex = 0;
+            hasAnsweredCurrentContent = false;
+            isExamMode = false;
+            examStarted = false;
+        }
+
+        function startRoomTimer() {
+            if (roomTimer) clearInterval(roomTimer);
+            function updateTimer() {
+                if (!endTime) return;
+                const now = new Date();
+                const remain = endTime - now;
+                if (remain <= 0) {
+                    showNotification('Thời gian phòng đã hết', 'warning');
+                    leaveRoom();
+                    return;
+                }
+                const m = Math.floor(remain / 60000);
+                const s = Math.floor((remain % 60000) / 1000);
+                const el = document.getElementById('roomTimeRemaining');
+                el.innerHTML = `<i class="fas fa-clock"></i> <span>${m}:${s.toString().padStart(2,'0')}</span>`;
+                if (m < 5) el.classList.add('time-critical');
+                else el.classList.remove('time-critical');
+            }
+            updateTimer();
+            roomTimer = setInterval(updateTimer, 1000);
+        }
+
+        function leaveRoom() {
+            if (!currentRoomId || !currentUser) return;
+            db.collection('rooms').doc(currentRoomId).collection('participants').doc(currentUser.uid).delete()
+            .then(() => {
+                cleanupRoom();
+                currentRoomId = null;
+                showHomePage();
+                showNotification('Đã rời phòng', 'info');
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi rời phòng', 'error');
+            });
+        }
+
+        // ============================================================
+        // PARTICIPANTS + ROOM LISTENER
+        // ============================================================
+        function loadParticipants() {
+            if (!currentRoomId) return;
+            const listEl = document.getElementById('participantsList');
+            if (participantsListener) participantsListener();
+            participantsListener = db.collection('rooms').doc(currentRoomId).collection('participants')
+                .orderBy('joinedAt')
+                .onSnapshot(snapshot => {
+                    if (snapshot.empty) {
+                        listEl.innerHTML = `<div style="text-align:center;padding:40px 15px;color:#777;"><i class="fas fa-user-slash" style="font-size:2.2rem;margin-bottom:10px;"></i><p>Chưa có người tham gia</p></div>`;
+                        document.getElementById('participantCount').textContent = '0';
+                        return;
+                    }
+                    let html = '<div class="participants-grid">';
+                    let count = 0;
+                    snapshot.forEach(doc => {
+                        const p = doc.data();
+                        const pid = doc.id;
+                        count++;
+                        html += `
+                            <div class="participant-card ${pid === currentUser.uid ? 'participant-current' : ''}">
+                                <div class="participant-avatar">${(p.name||'?').charAt(0).toUpperCase()}</div>
+                                ${p.isTeacher ? '<div class="teacher-badge"><i class="fas fa-crown"></i></div>' : ''}
+                                <div class="participant-name">
+                                    ${p.name}
+                                    ${p.isTeacher ? '<span class="role-badge teacher">GV</span>' : '<span class="role-badge student">HS</span>'}
+                                </div>
+                                <div class="participant-score">${p.score || 0} điểm</div>
+                                ${pid === currentUser.uid ? '<div style="color:#FFA500;font-size:0.78rem;margin-top:4px;"><i class="fas fa-user-circle"></i> Bạn</div>' : ''}
+                            </div>`;
+                    });
+                    html += '</div>';
+                    listEl.innerHTML = html;
+                    document.getElementById('participantCount').textContent = count;
+                });
+
+            if (roomListener) roomListener();
+            roomListener = db.collection('rooms').doc(currentRoomId).onSnapshot(doc => {
+                if (!doc.exists) {
+                    showNotification('Phòng đã bị đóng', 'warning');
+                    leaveRoom();
+                    return;
+                }
+                const data = doc.data();
+                if (data.status === 'expired') {
+                    showNotification('Thời gian phòng đã hết', 'warning');
+                    leaveRoom();
+                    return;
+                }
+                if (data.endTime) {
+                    const newEnd = data.endTime.toDate();
+                    if (!endTime || newEnd.getTime() !== endTime.getTime()) {
+                        endTime = newEnd;
+                        startRoomTimer();
+                    }
+                }
+                isTeacher = data.teacherId === currentUser.uid;
+                const newExamMode = data.examMode === true;
+                const newExamStarted = data.examStarted === true;
+                if (newExamMode !== isExamMode || newExamStarted !== examStarted) {
+                    isExamMode = newExamMode;
+                    examStarted = newExamStarted;
+                    if (!isTeacher && isExamMode) {
+                        if (examStarted) {
+                            document.getElementById('waitingOverlay').classList.add('hidden');
+                            if (roomContents.length === 0) loadContents();
+                            startRoomTimer();
+                        } else {
+                            document.getElementById('waitingOverlay').classList.remove('hidden');
+                        }
+                    } else if (isTeacher && isExamMode && !examStarted) {
+                        document.getElementById('startExamBtn').style.display = 'flex';
+                        document.getElementById('waitingOverlay').classList.add('hidden');
+                    } else if (isTeacher && isExamMode && examStarted) {
+                        document.getElementById('startExamBtn').style.display = 'none';
+                    }
+                }
+                updateContentControls();
+                document.getElementById('bankControls').style.display = (isTeacher && !(isExamMode && !examStarted)) ? 'flex' : 'none';
+            });
+        }
+
+        // ============================================================
+        // CONTENTS + SUBMISSIONS
+        // ============================================================
+        function loadContents() {
+            if (!currentRoomId) return;
+            if (contentListener) contentListener();
+            contentListener = db.collection('rooms').doc(currentRoomId).collection('contents')
+                .orderBy('createdAt', 'asc')
+                .onSnapshot(snapshot => {
+                    roomContents = [];
+                    snapshot.forEach(doc => roomContents.push({ id: doc.id, ...doc.data() }));
+                    if (roomContents.length > 0) {
+                        if (currentContentIndex >= roomContents.length) currentContentIndex = 0;
+                        showContent(roomContents[currentContentIndex]);
+                        hasAnsweredCurrentContent = false;
+                        resetAnswerControls();
+                    } else {
+                        showNoContentMessage();
+                    }
+                    updateContentInfo();
+                });
+        }
+
+        function loadStudentSubmissions() {
+            if (!currentRoomId) return;
+            if (submissionsListener) submissionsListener();
+            submissionsListener = db.collection('rooms').doc(currentRoomId).collection('submissions')
+                .orderBy('submittedAt', 'desc')
+                .onSnapshot(snapshot => {
+                    const list = document.getElementById('submissionsList');
+                    if (snapshot.empty) {
+                        list.innerHTML = `<div style="text-align:center;padding:18px;color:#999;"><i class="fas fa-inbox"></i><p>Chưa có bài làm</p></div>`;
+                        return;
+                    }
+                    let html = '';
+                    snapshot.forEach(doc => {
+                        const s = doc.data();
+                        const statusClass = s.isCorrect === true ? 'submission-correct' : (s.isCorrect === false ? 'submission-incorrect' : 'submission-pending');
+                        const statusText = s.isCorrect === true ? 'Đúng' : (s.isCorrect === false ? 'Sai' : 'Chờ chấm');
+                        html += `
+                            <div class="submission-item">
+                                <div class="submission-student">
+                                    <i class="fas fa-user"></i> ${s.studentName || s.studentId}
+                                    <span class="role-badge ${s.isTeacher ? 'teacher' : 'student'}">${s.isTeacher ? 'GV' : 'HS'}</span>
+                                </div>
+                                <div class="submission-answer"><strong>Trả lời:</strong> ${s.answer || s.selectedOption || '—'}</div>
+                                <div>
+                                    <span class="submission-status ${statusClass}">${statusText}</span>
+                                    ${s.pointsEarned ? ` +${s.pointsEarned} điểm` : ''}
+                                </div>
+                                <div style="font-size:0.7rem;color:#999;margin-top:4px;">
+                                    ${s.submittedAt ? new Date(s.submittedAt.toDate()).toLocaleString('vi-VN') : ''}
+                                </div>
+                            </div>`;
+                    });
+                    list.innerHTML = html;
+                });
+        }
+
+        function saveSubmission(contentId, content, answer, isCorrect, pointsEarned) {
+            if (!currentRoomId) return;
+            db.collection('rooms').doc(currentRoomId).collection('submissions').add({
+                contentId,
+                studentId: currentUser.uid,
+                studentName: currentUserProfile.name,
+                isTeacher: isTeacher,
+                answer,
+                isCorrect,
+                pointsEarned,
+                submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                contentType: content.type,
+                difficulty: content.difficulty || 'medium'
+            }).catch(err => console.error(err));
+        }
+
+        function showContent(content) {
+            currentContentType = content.type || 'essay';
+            document.querySelectorAll('.content-type-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('data-type') === currentContentType);
+            });
+            switchContentType(currentContentType);
+
+            const diffMap = { easy: 'Dễ', medium: 'Trung bình', hard: 'Khó' };
+            const diffClass = { easy: 'diff-easy', medium: 'diff-medium', hard: 'diff-hard' };
+
+            if (content.type === 'essay') {
+                document.getElementById('essayQuestionText').textContent = content.question;
+                document.getElementById('essayDifficultyBadge').innerHTML = content.difficulty
+                    ? `<span class="difficulty-badge ${diffClass[content.difficulty] || 'diff-medium'}">${diffMap[content.difficulty] || content.difficulty}</span>`
+                    : '';
+            } else if (content.type === 'mcq') {
+                document.getElementById('mcqQuestionText').textContent = content.question;
+                document.getElementById('mcqDifficultyBadge').innerHTML = content.difficulty
+                    ? `<span class="difficulty-badge ${diffClass[content.difficulty] || 'diff-medium'}">${diffMap[content.difficulty] || content.difficulty}</span>`
+                    : '';
+                const container = document.getElementById('mcqOptionsContainer');
+                container.innerHTML = '';
+                if (content.options && Array.isArray(content.options)) {
+                    content.options.forEach((opt, idx) => {
+                        const id = `mcq_opt_${idx}`;
+                        const div = document.createElement('div');
+                        div.className = 'mcq-option';
+                        div.innerHTML = `<input type="radio" id="${id}" name="mcq_option" value="${opt.text.replace(/"/g,'&quot;')}"><label for="${id}">${opt.text}</label>`;
+                        container.appendChild(div);
+                        div.addEventListener('click', function() {
+                            document.querySelectorAll('.mcq-option').forEach(o => o.classList.remove('selected'));
+                            this.classList.add('selected');
+                            const radio = this.querySelector('input');
+                            if (radio) radio.checked = true;
+                        });
+                    });
+                }
+            }
+            updateContentInfo();
+        }
+
+        function switchContentType(type) {
+            document.querySelectorAll('.content-type-content').forEach(c => c.classList.add('hidden'));
+            const el = document.getElementById(type + 'Content');
+            if (el) el.classList.remove('hidden');
+            currentContentType = type;
+            document.querySelectorAll('.content-type-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('data-type') === type);
+            });
+        }
+
+        function showNoContentMessage() {
+            document.getElementById('essayQuestionText').textContent = 'Chưa có câu hỏi tự luận. Giáo viên hãy tạo câu hỏi!';
+            document.getElementById('mcqQuestionText').textContent = 'Chưa có câu hỏi trắc nghiệm. Giáo viên hãy tạo câu hỏi!';
+            document.getElementById('essayDifficultyBadge').innerHTML = '';
+            document.getElementById('mcqDifficultyBadge').innerHTML = '';
+            resetAnswerControls();
+        }
+
+        function resetAnswerControls() {
+            document.getElementById('essayAnswerInput').value = '';
+            document.getElementById('essayAnswerFeedback').style.display = 'none';
+            document.getElementById('submitEssayAnswerBtn').disabled = false;
+            document.getElementById('essayAnswerInput').disabled = false;
+            document.querySelectorAll('.mcq-option').forEach(o => {
+                o.classList.remove('selected');
+                o.style.pointerEvents = 'auto';
+                o.style.backgroundColor = '';
+                o.style.borderColor = '';
+            });
+            document.querySelectorAll('input[name="mcq_option"]').forEach(r => r.checked = false);
+            document.getElementById('mcqAnswerFeedback').style.display = 'none';
+            document.getElementById('submitMcqAnswerBtn').disabled = false;
+        }
+
+        function updateContentInfo() {
+            let text = '';
+            if (roomContents.length === 0) text = 'Chưa có nội dung';
+            else {
+                const c = roomContents[currentContentIndex];
+                const typeMap = { essay: 'Tự luận', mcq: 'Trắc nghiệm' };
+                text = `${typeMap[c.type] || 'Nội dung'} ${currentContentIndex + 1}/${roomContents.length}`;
+                if (c.points) text += ` • ${c.points} điểm`;
+                if (c.difficulty) {
+                    const d = { easy: 'Dễ', medium: 'TB', hard: 'Khó' };
+                    text += ` • ${d[c.difficulty] || c.difficulty}`;
+                }
+            }
+            document.getElementById('currentContentInfo').textContent = text;
+        }
+
+        // ============================================================
+        // CREATE QUESTIONS
+        // ============================================================
+        document.getElementById('createEssayBtn').addEventListener('click', openCreateEssayModal);
+        document.getElementById('saveEssayBtn').addEventListener('click', saveEssay);
+        document.getElementById('cancelCreateEssay').addEventListener('click', closeCreateEssayModal);
+        document.getElementById('closeCreateEssayModal').addEventListener('click', closeCreateEssayModal);
+        document.getElementById('submitEssayAnswerBtn').addEventListener('click', submitEssayAnswer);
+        document.getElementById('aiGenerateEssayBtn').addEventListener('click', () => {
+            openAiGenerateModal();
+            document.getElementById('aiContentType').value = 'essay';
+        });
+
+        document.getElementById('createMcqBtn').addEventListener('click', openCreateMcqModal);
+        document.getElementById('saveMcqBtn').addEventListener('click', saveMcq);
+        document.getElementById('cancelCreateMcq').addEventListener('click', closeCreateMcqModal);
+        document.getElementById('closeCreateMcqModal').addEventListener('click', closeCreateMcqModal);
+        document.getElementById('addMcqOptionBtn').addEventListener('click', addMcqOption);
+        document.getElementById('submitMcqAnswerBtn').addEventListener('click', submitMcqAnswer);
+        document.getElementById('aiGenerateMcqBtn').addEventListener('click', () => {
+            openAiGenerateModal();
+            document.getElementById('aiContentType').value = 'mcq';
+        });
+
+        document.getElementById('aiGenerateBtn').addEventListener('click', openAiGenerateModal);
+        document.getElementById('generateWithAiBtn').addEventListener('click', generateContentWithAI);
+        document.getElementById('cancelAiGenerate').addEventListener('click', closeAiGenerateModal);
+        document.getElementById('closeAiGenerateModal').addEventListener('click', closeAiGenerateModal);
+        document.getElementById('nextContentBtn').addEventListener('click', showNextContent);
+        document.getElementById('startExamBtn').addEventListener('click', startExam);
+
+        document.querySelectorAll('.content-type-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchContentType(this.getAttribute('data-type'));
+            });
+        });
+
+        function openCreateEssayModal() {
+            if (isExamMode && !examStarted) {
+                showNotification('Chưa thể tạo nội dung khi chưa bắt đầu thi!', 'warning');
+                return;
+            }
+            document.getElementById('createEssayModal').classList.add('active');
+            document.getElementById('essayQuestion').value = '';
+            document.getElementById('essayCorrectAnswer').value = '';
+            document.getElementById('essayPoints').value = '1';
+            document.getElementById('essayDifficulty').value = 'medium';
+            document.getElementById('saveEssayBtn').onclick = saveEssay;
+        }
+        function closeCreateEssayModal() {
+            document.getElementById('createEssayModal').classList.remove('active');
+        }
+        function openCreateMcqModal() {
+            if (isExamMode && !examStarted) {
+                showNotification('Chưa thể tạo nội dung khi chưa bắt đầu thi!', 'warning');
+                return;
+            }
+            document.getElementById('createMcqModal').classList.add('active');
+            document.getElementById('mcqQuestion').value = '';
+            document.getElementById('mcqPoints').value = '1';
+            document.getElementById('mcqDifficulty').value = 'medium';
+            document.getElementById('saveMcqBtn').onclick = saveMcq;
+            initializeMcqOptions();
+        }
+        function closeCreateMcqModal() {
+            document.getElementById('createMcqModal').classList.remove('active');
+        }
+        function openAiGenerateModal() {
+            if (isExamMode && !examStarted) {
+                showNotification('Chưa thể tạo nội dung khi chưa bắt đầu thi!', 'warning');
+                return;
+            }
+            document.getElementById('aiGenerateModal').classList.add('active');
+            document.getElementById('aiTopic').value = '';
+            document.getElementById('aiQuantity').value = '5';
+            document.getElementById('aiLoading').style.display = 'none';
+        }
+        function closeAiGenerateModal() {
+            document.getElementById('aiGenerateModal').classList.remove('active');
+        }
+
+        function initializeMcqOptions() {
+            const list = document.getElementById('mcqOptionsList');
+            list.innerHTML = '';
+            for (let i = 0; i < 4; i++) addMcqOption();
+        }
+        function addMcqOption() {
+            const list = document.getElementById('mcqOptionsList');
+            const idx = list.children.length;
+            const div = document.createElement('div');
+            div.className = 'option-input-group';
+            div.innerHTML = `
+                <input type="checkbox" class="mcq-correct-checkbox">
+                <input type="text" placeholder="Lựa chọn ${idx + 1}">
+                <button type="button" class="remove-option-btn" onclick="removeMcqOption(this)"><i class="fas fa-minus"></i></button>`;
+            list.appendChild(div);
+        }
+        window.removeMcqOption = function(btn) {
+            const list = document.getElementById('mcqOptionsList');
+            if (list.children.length > 2) btn.parentElement.remove();
+            else showNotification('Cần ít nhất 2 lựa chọn!', 'warning');
+        };
+
+        function saveEssay() {
+            const question = document.getElementById('essayQuestion').value.trim();
+            const correctAnswer = document.getElementById('essayCorrectAnswer').value.trim();
+            const points = parseInt(document.getElementById('essayPoints').value) || 1;
+            const difficulty = document.getElementById('essayDifficulty').value;
+            if (!question || !correctAnswer) {
+                showNotification('Vui lòng nhập câu hỏi và đáp án', 'warning');
+                return;
+            }
+            const answers = correctAnswer.split('\n').map(a => a.trim()).filter(a => a);
+            if (!answers.length) {
+                showNotification('Cần ít nhất 1 đáp án', 'warning');
+                return;
+            }
+            if (!currentRoomId) {
+                showNotification('Không tìm thấy phòng', 'error');
+                return;
+            }
+            const btn = document.getElementById('saveEssayBtn');
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            db.collection('rooms').doc(currentRoomId).collection('contents').add({
+                type: 'essay',
+                question,
+                correctAnswers: answers,
+                points,
+                difficulty,
+                createdBy: currentUser.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                showNotification('Đã tạo câu hỏi tự luận!', 'success');
+                closeCreateEssayModal();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi tạo câu hỏi', 'error');
+            }).finally(() => {
+                btn.innerHTML = 'Tạo câu hỏi';
+                btn.disabled = false;
+            });
+        }
+
+        function saveMcq() {
+            const question = document.getElementById('mcqQuestion').value.trim();
+            const points = parseInt(document.getElementById('mcqPoints').value) || 1;
+            const difficulty = document.getElementById('mcqDifficulty').value;
+            const options = [];
+            let hasCorrect = false;
+            document.querySelectorAll('#mcqOptionsList .option-input-group').forEach(group => {
+                const text = group.querySelector('input[type="text"]')?.value.trim();
+                const correct = group.querySelector('input[type="checkbox"]')?.checked;
+                if (text) {
+                    options.push({ text, correct: !!correct });
+                    if (correct) hasCorrect = true;
+                }
+            });
+            if (!question) { showNotification('Vui lòng nhập câu hỏi', 'warning'); return; }
+            if (options.length < 2) { showNotification('Cần ít nhất 2 lựa chọn', 'warning'); return; }
+            if (!hasCorrect) { showNotification('Cần chọn ít nhất 1 đáp án đúng', 'warning'); return; }
+            if (!currentRoomId) { showNotification('Không tìm thấy phòng', 'error'); return; }
+            const btn = document.getElementById('saveMcqBtn');
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            db.collection('rooms').doc(currentRoomId).collection('contents').add({
+                type: 'mcq',
+                question,
+                options,
+                points,
+                difficulty,
+                createdBy: currentUser.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                showNotification('Đã tạo câu hỏi trắc nghiệm!', 'success');
+                closeCreateMcqModal();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi tạo câu hỏi', 'error');
+            }).finally(() => {
+                btn.innerHTML = 'Tạo câu hỏi';
+                btn.disabled = false;
+            });
+        }
+
+        // ============================================================
+        // SUBMIT ANSWERS + SCORING
+        // ============================================================
+        function submitEssayAnswer() {
+            if (hasAnsweredCurrentContent) {
+                showNotification('Bạn đã trả lời rồi!', 'warning');
+                return;
+            }
+            const answer = document.getElementById('essayAnswerInput').value.trim().toLowerCase();
+            if (!answer) {
+                showNotification('Vui lòng nhập câu trả lời', 'warning');
+                return;
+            }
+            if (!roomContents.length || currentContentIndex >= roomContents.length) return;
+            const content = roomContents[currentContentIndex];
+            if (content.type !== 'essay') return;
+            const correctAnswers = content.correctAnswers || [];
+            const points = content.points || 1;
+            let isCorrect = false;
+            const norm = answer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '').trim();
+            for (const ca of correctAnswers) {
+                const nca = ca.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '').trim();
+                if (norm === nca) { isCorrect = true; break; }
+            }
+            const feedback = document.getElementById('essayAnswerFeedback');
+            if (isCorrect) {
+                feedback.textContent = `🎉 Đúng! +${points} điểm`;
+                feedback.className = 'answer-feedback answer-correct';
+                updateUserScore(points);
+                saveSubmission(content.id, content, answer, true, points);
+            } else {
+                feedback.textContent = `❌ Sai! Đáp án có thể là: ${correctAnswers.join(' / ')}`;
+                feedback.className = 'answer-feedback answer-incorrect';
+                saveSubmission(content.id, content, answer, false, 0);
+            }
+            feedback.style.display = 'block';
+            hasAnsweredCurrentContent = true;
+            document.getElementById('submitEssayAnswerBtn').disabled = true;
+            document.getElementById('essayAnswerInput').disabled = true;
+        }
+
+        function submitMcqAnswer() {
+            if (hasAnsweredCurrentContent) {
+                showNotification('Bạn đã trả lời rồi!', 'warning');
+                return;
+            }
+            const selected = document.querySelector('input[name="mcq_option"]:checked');
+            if (!selected) {
+                showNotification('Vui lòng chọn đáp án', 'warning');
+                return;
+            }
+            if (!roomContents.length || currentContentIndex >= roomContents.length) return;
+            const content = roomContents[currentContentIndex];
+            if (content.type !== 'mcq') return;
+            const selectedAnswer = selected.value;
+            const options = content.options || [];
+            const points = content.points || 1;
+            let correctAnswer = '';
+            for (const opt of options) {
+                if (opt.correct) { correctAnswer = opt.text; break; }
+            }
+            const isCorrect = selectedAnswer === correctAnswer;
+            const feedback = document.getElementById('mcqAnswerFeedback');
+            if (isCorrect) {
+                feedback.textContent = `🎉 Đúng! +${points} điểm`;
+                feedback.className = 'answer-feedback answer-correct';
+                updateUserScore(points);
+                saveSubmission(content.id, content, selectedAnswer, true, points);
+            } else {
+                feedback.textContent = `❌ Sai! Đáp án đúng: ${correctAnswer}`;
+                feedback.className = 'answer-feedback answer-incorrect';
+                saveSubmission(content.id, content, selectedAnswer, false, 0);
+            }
+            feedback.style.display = 'block';
+            hasAnsweredCurrentContent = true;
+            document.getElementById('submitMcqAnswerBtn').disabled = true;
+            document.querySelectorAll('.mcq-option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt.querySelector('input').value === correctAnswer) {
+                    opt.style.backgroundColor = 'rgba(76,175,80,0.12)';
+                    opt.style.borderColor = '#4CAF50';
+                }
+            });
+        }
+
+        function updateUserScore(points) {
+            if (!currentRoomId || !currentUser) return;
+            db.collection('rooms').doc(currentRoomId).collection('participants').doc(currentUser.uid).get()
+            .then(doc => {
+                if (doc.exists) {
+                    const cur = doc.data().score || 0;
+                    return db.collection('rooms').doc(currentRoomId).collection('participants').doc(currentUser.uid).update({
+                        score: cur + points
+                    });
+                }
+            }).catch(err => console.error(err));
+        }
+
+        function showNextContent() {
+            if (!roomContents.length) {
+                showNotification('Không có nội dung', 'warning');
+                return;
+            }
+            currentContentIndex = (currentContentIndex + 1) % roomContents.length;
+            showContent(roomContents[currentContentIndex]);
+            resetAnswerControls();
+            hasAnsweredCurrentContent = false;
+        }
+
+        function updateContentControls() {
+            const btns = [
+                document.getElementById('createEssayBtn'),
+                document.getElementById('createMcqBtn'),
+                document.getElementById('aiGenerateBtn')
+            ];
+            const show = isTeacher && !(isExamMode && !examStarted);
+            btns.forEach(b => b.style.display = show ? 'flex' : 'none');
+        }
+
+        // ============================================================
+        // AI GENERATE QUESTIONS (essay / mcq)
+        // ============================================================
+        async function generateContentWithAI() {
+            const topic = document.getElementById('aiTopic').value.trim();
+            const contentType = document.getElementById('aiContentType').value;
+            const quantity = parseInt(document.getElementById('aiQuantity').value) || 5;
+            const difficulty = document.getElementById('aiDifficulty').value;
+            if (!topic) {
+                showNotification('Vui lòng nhập chủ đề / tên bài', 'warning');
+                return;
+            }
+            document.getElementById('aiLoading').style.display = 'block';
+            document.getElementById('generateWithAiBtn').disabled = true;
+            try {
+                const API_KEY = getAPIKey();
+                let prompt = '';
+                if (contentType === 'essay') {
+                    prompt = `Tạo ${quantity} câu hỏi tự luận về chủ đề "${topic}" mức độ ${difficulty} cho học sinh THCS (sách Kết nối tri thức).
+Mỗi câu trả về JSON array:
+[
+  {
+    "question": "câu hỏi",
+    "correctAnswers": ["đáp án 1", "đáp án 2"],
+    "points": 1,
+    "difficulty": "${difficulty}"
+  }
+]
+Chỉ trả về JSON, không thêm text.`;
+                } else {
+                    prompt = `Tạo ${quantity} câu hỏi trắc nghiệm (4 lựa chọn, 1 đáp án đúng) về chủ đề "${topic}" mức độ ${difficulty} cho học sinh THCS.
+Mỗi câu trả về JSON array:
+[
+  {
+    "question": "câu hỏi",
+    "options": [
+      {"text": "A", "correct": false},
+      {"text": "B", "correct": true},
+      {"text": "C", "correct": false},
+      {"text": "D", "correct": false}
+    ],
+    "points": 1,
+    "difficulty": "${difficulty}"
+  }
+]
+Chỉ trả về JSON, không thêm text.`;
+                }
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + API_KEY
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-5.4-nano',
+                        messages: [
+                            { role: 'system', content: 'Bạn là giáo viên THCS, chỉ trả về JSON hợp lệ.' },
+                            { role: 'user', content: prompt }
+                        ],
+                        max_tokens: 2500,
+                        temperature: 0.6
+                    })
+                });
+                if (!response.ok) throw new Error('API error ' + response.status);
+                const data = await response.json();
+                let content = data.choices[0].message.content;
+                content = content.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const match = content.match(/\[[\s\S]*\]/);
+                if (!match) throw new Error('Không parse được JSON từ AI');
+                const items = JSON.parse(match[0]);
+                if (!Array.isArray(items) || !items.length) throw new Error('AI không tạo được câu hỏi');
+
+                if (currentRoomId) {
+                    let saved = 0;
+                    for (const item of items) {
+                        if (saved >= quantity) break;
+                        const payload = {
+                            type: contentType,
+                            question: item.question,
+                            points: item.points || 1,
+                            difficulty: item.difficulty || difficulty,
+                            createdBy: currentUser.uid,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            aiGenerated: true
+                        };
+                        if (contentType === 'essay') {
+                            payload.correctAnswers = item.correctAnswers || [item.answer || ''];
+                        } else {
+                            payload.options = item.options || [];
+                        }
+                        await db.collection('rooms').doc(currentRoomId).collection('contents').add(payload);
+                        saved++;
+                    }
+                    showNotification(`Đã tạo và lưu ${saved} câu hỏi bằng AI!`, 'success');
+                } else if (currentAddingBankId) {
+                    await saveAiContentToBank(currentAddingBankId, contentType, items);
+                } else {
+                    showNotification('Không có phòng hoặc ngân hàng để lưu', 'error');
+                }
+                closeAiGenerateModal();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi AI: ' + err.message, 'error');
+            } finally {
+                document.getElementById('aiLoading').style.display = 'none';
+                document.getElementById('generateWithAiBtn').disabled = false;
+            }
+        }
+
+        async function saveAiContentToBank(bankId, contentType, items) {
+            const bankRef = db.collection('questionBanks').doc(bankId);
+            const doc = await bankRef.get();
+            if (!doc.exists) throw new Error('Không tìm thấy đề');
+            const bank = doc.data();
+            const contents = bank.contents || [];
+            for (const item of items) {
+                const c = {
+                    type: contentType,
+                    question: item.question,
+                    points: item.points || 1,
+                    difficulty: item.difficulty || 'medium',
+                    createdBy: currentUser.uid,
+                    createdAt: Date.now(),
+                    aiGenerated: true
+                };
+                if (contentType === 'essay') c.correctAnswers = item.correctAnswers || [];
+                else c.options = item.options || [];
+                contents.push(c);
+            }
+            await bankRef.update({
+                contents,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showNotification(`Đã thêm ${items.length} câu hỏi AI vào đề!`, 'success');
+            openBankManagerModal();
+            loadBankList();
+        }
+
+        // ============================================================
+        // QUESTION BANKS
+        // ============================================================
+        document.getElementById('manageBankBtn').addEventListener('click', openBankManagerModal);
+        document.getElementById('homeManageBankBtn').addEventListener('click', openBankManagerModal);
+        document.getElementById('addFromBankBtn').addEventListener('click', openAddBankModal);
+        document.getElementById('createBankBtn').addEventListener('click', createNewBank);
+        document.getElementById('closeBankManagerModal').addEventListener('click', closeBankManagerModal);
+        document.getElementById('closeAddBankModal').addEventListener('click', closeAddBankModal);
+        document.getElementById('closeViewBankModal').addEventListener('click', () => document.getElementById('viewBankModal').classList.remove('active'));
+        document.getElementById('closeEditBankModal').addEventListener('click', () => document.getElementById('editBankModal').classList.remove('active'));
+        document.getElementById('cancelEditBank').addEventListener('click', () => document.getElementById('editBankModal').classList.remove('active'));
+        document.getElementById('saveEditBankBtn').addEventListener('click', saveBankEdit);
+        document.getElementById('selectBankForRoomBtn').addEventListener('click', openHomeBankModal);
+        document.getElementById('clearSelectedBankBtn').addEventListener('click', clearSelectedBank);
+        document.getElementById('closeHomeBankModal').addEventListener('click', closeHomeBankModal);
+        document.getElementById('showAddContentButtonsBtn').addEventListener('click', () => {
+            document.getElementById('bankContentButtons').style.display = 'flex';
+            document.getElementById('showAddContentButtonsBtn').style.display = 'none';
+        });
+        document.getElementById('bankHideContentButtonsBtn').addEventListener('click', () => {
+            document.getElementById('bankContentButtons').style.display = 'none';
+            document.getElementById('showAddContentButtonsBtn').style.display = 'block';
+        });
+        document.getElementById('bankCreateEssayBtn').addEventListener('click', () => openBankCreateModal('essay'));
+        document.getElementById('bankCreateMcqBtn').addEventListener('click', () => openBankCreateModal('mcq'));
+
+        function openBankManagerModal() {
+            if (currentUserProfile?.role !== 'teacher') {
+                showNotification('Chỉ giáo viên quản lý ngân hàng đề', 'warning');
+                return;
+            }
+            document.getElementById('bankManagerModal').classList.add('active');
+            loadBankList();
+            document.getElementById('bankContentButtons').style.display = 'none';
+            document.getElementById('showAddContentButtonsBtn').style.display = 'block';
+            document.getElementById('bankSelectedInfo').style.display = 'none';
+        }
+        function closeBankManagerModal() {
+            document.getElementById('bankManagerModal').classList.remove('active');
+            currentAddingBankId = null;
+        }
+        function openAddBankModal() {
+            if (!isTeacher) {
+                showNotification('Chỉ giáo viên mới thêm đề', 'warning');
+                return;
+            }
+            document.getElementById('addBankModal').classList.add('active');
+            loadAddBankList();
+        }
+        function closeAddBankModal() {
+            document.getElementById('addBankModal').classList.remove('active');
+        }
+        function openHomeBankModal() {
+            document.getElementById('homeBankModal').classList.add('active');
+            loadHomeBankList();
+        }
+        function closeHomeBankModal() {
+            document.getElementById('homeBankModal').classList.remove('active');
+        }
+
+        function loadBankList() {
+            const list = document.getElementById('bankList');
+            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            db.collection('questionBanks').where('teacherId', '==', currentUser.uid).get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                    list.innerHTML = `<div style="text-align:center;padding:40px;color:#999;"><i class="fas fa-database" style="font-size:2.5rem;margin-bottom:8px;"></i><p>Chưa có đề nào</p></div>`;
+                    return;
+                }
+                const banks = [];
+                snapshot.forEach(doc => banks.push({ id: doc.id, ...doc.data() }));
+                banks.sort((a, b) => {
+                    const ta = a.createdAt ? a.createdAt.toDate().getTime() : 0;
+                    const tb = b.createdAt ? b.createdAt.toDate().getTime() : 0;
+                    return tb - ta;
+                });
+                let html = '';
+                banks.forEach(bank => {
+                    const cnt = bank.contents ? bank.contents.length : 0;
+                    const created = bank.createdAt ? new Date(bank.createdAt.toDate()).toLocaleDateString('vi-VN') : 'N/A';
+                    html += `
+                        <div class="bank-item">
+                            <div class="bank-item-header">
+                                <div>
+                                    <div class="bank-item-name"><i class="fas fa-folder-open"></i> ${escapeHtml(bank.name)}</div>
+                                    <div class="bank-item-meta">${cnt} nội dung • ${created}</div>
+                                </div>
+                                <div class="bank-item-actions">
+                                    <button class="bank-view-btn" onclick="viewBankDetails('${bank.id}','${escapeHtml(bank.name)}')"><i class="fas fa-eye"></i></button>
+                                    <button class="bank-edit-btn" onclick="editBank('${bank.id}','${escapeHtml(bank.name)}')"><i class="fas fa-edit"></i></button>
+                                    <button class="bank-delete-btn" onclick="deleteBank('${bank.id}')"><i class="fas fa-trash"></i></button>
+                                    <button class="bank-add-btn" onclick="setBankForAdding('${bank.id}','${escapeHtml(bank.name)}')"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="bank-item-preview">${getBankPreview(bank.contents)}</div>
+                        </div>`;
+                });
+                list.innerHTML = html;
+            }).catch(err => {
+                console.error(err);
+                list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải dữ liệu</div>';
+            });
+        }
+
+        function setBankForAdding(bankId, bankName) {
+            currentAddingBankId = bankId;
+            document.getElementById('bankTargetName').textContent = bankName;
+            document.getElementById('bankSelectedInfo').style.display = 'block';
+            document.getElementById('bankContentButtons').style.display = 'flex';
+            document.getElementById('showAddContentButtonsBtn').style.display = 'none';
+            showNotification(`Đã chọn đề "${bankName}" để thêm nội dung`, 'success');
+        }
+
+        function openBankCreateModal(type) {
+            if (!currentAddingBankId) {
+                showNotification('Hãy chọn đề trước', 'warning');
+                return;
+            }
+            document.getElementById('bankManagerModal').classList.remove('active');
+            if (type === 'essay') {
+                document.getElementById('createEssayModal').classList.add('active');
+                document.getElementById('essayQuestion').value = '';
+                document.getElementById('essayCorrectAnswer').value = '';
+                document.getElementById('essayPoints').value = '1';
+                document.getElementById('essayDifficulty').value = 'medium';
+                document.getElementById('saveEssayBtn').onclick = saveEssayToBank;
+            } else {
+                document.getElementById('createMcqModal').classList.add('active');
+                document.getElementById('mcqQuestion').value = '';
+                document.getElementById('mcqPoints').value = '1';
+                document.getElementById('mcqDifficulty').value = 'medium';
+                initializeMcqOptions();
+                document.getElementById('saveMcqBtn').onclick = saveMcqToBank;
+            }
+        }
+
+        async function saveEssayToBank() {
+            const question = document.getElementById('essayQuestion').value.trim();
+            const correctAnswer = document.getElementById('essayCorrectAnswer').value.trim();
+            const points = parseInt(document.getElementById('essayPoints').value) || 1;
+            const difficulty = document.getElementById('essayDifficulty').value;
+            if (!question || !correctAnswer) { showNotification('Nhập đầy đủ', 'warning'); return; }
+            const answers = correctAnswer.split('\n').map(a => a.trim()).filter(a => a);
+            const btn = document.getElementById('saveEssayBtn');
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            try {
+                const bankRef = db.collection('questionBanks').doc(currentAddingBankId);
+                const doc = await bankRef.get();
+                const contents = (doc.data().contents || []);
+                contents.push({
+                    type: 'essay', question, correctAnswers: answers, points, difficulty,
+                    createdBy: currentUser.uid, createdAt: Date.now()
+                });
+                await bankRef.update({ contents, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                showNotification('Đã thêm câu tự luận vào đề!', 'success');
+                closeCreateEssayModal();
+                openBankManagerModal();
+                loadBankList();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + err.message, 'error');
+            } finally {
+                btn.innerHTML = 'Tạo câu hỏi';
+                btn.disabled = false;
+            }
+        }
+
+        async function saveMcqToBank() {
+            const question = document.getElementById('mcqQuestion').value.trim();
+            const points = parseInt(document.getElementById('mcqPoints').value) || 1;
+            const difficulty = document.getElementById('mcqDifficulty').value;
+            const options = [];
+            let hasCorrect = false;
+            document.querySelectorAll('#mcqOptionsList .option-input-group').forEach(g => {
+                const text = g.querySelector('input[type="text"]')?.value.trim();
+                const correct = g.querySelector('input[type="checkbox"]')?.checked;
+                if (text) { options.push({ text, correct: !!correct }); if (correct) hasCorrect = true; }
+            });
+            if (!question || options.length < 2 || !hasCorrect) {
+                showNotification('Kiểm tra lại câu hỏi và đáp án', 'warning');
+                return;
+            }
+            const btn = document.getElementById('saveMcqBtn');
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            try {
+                const bankRef = db.collection('questionBanks').doc(currentAddingBankId);
+                const doc = await bankRef.get();
+                const contents = (doc.data().contents || []);
+                contents.push({
+                    type: 'mcq', question, options, points, difficulty,
+                    createdBy: currentUser.uid, createdAt: Date.now()
+                });
+                await bankRef.update({ contents, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                showNotification('Đã thêm câu trắc nghiệm vào đề!', 'success');
+                closeCreateMcqModal();
+                openBankManagerModal();
+                loadBankList();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + err.message, 'error');
+            } finally {
+                btn.innerHTML = 'Tạo câu hỏi';
+                btn.disabled = false;
+            }
+        }
+
+        function getBankPreview(contents) {
+            if (!contents || !contents.length) return 'Chưa có nội dung';
+            const previews = contents.slice(0, 3).map(c => {
+                if (c.type === 'essay') return `✍️ ${c.question.substring(0, 45)}...`;
+                if (c.type === 'mcq') return `☑️ ${c.question.substring(0, 45)}...`;
+                return 'Nội dung';
+            });
+            if (contents.length > 3) previews.push(`... và ${contents.length - 3} nội dung khác`);
+            return previews.join('<br>');
+        }
+
+        function loadAddBankList() {
+            const list = document.getElementById('addBankList');
+            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            db.collection('questionBanks').where('teacherId', '==', currentUser.uid).get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                    list.innerHTML = `<div style="text-align:center;padding:40px;color:#999;"><p>Chưa có đề</p></div>`;
+                    return;
+                }
+                const banks = [];
+                snapshot.forEach(doc => banks.push({ id: doc.id, ...doc.data() }));
+                let html = '';
+                banks.forEach(bank => {
+                    const cnt = bank.contents ? bank.contents.length : 0;
+                    html += `
+                        <div class="bank-item">
+                            <div class="bank-item-header">
+                                <div>
+                                    <div class="bank-item-name"><i class="fas fa-folder-open"></i> ${escapeHtml(bank.name)}</div>
+                                    <div class="bank-item-meta">${cnt} nội dung</div>
+                                </div>
+                                <div class="bank-item-actions">
+                                    <button class="bank-add-btn" onclick="addBankToRoom('${bank.id}','${escapeHtml(bank.name)}')"><i class="fas fa-plus-circle"></i> Thêm vào phòng</button>
+                                </div>
+                            </div>
+                            <div class="bank-item-preview">${getBankPreview(bank.contents)}</div>
+                        </div>`;
+                });
+                list.innerHTML = html;
+            });
+        }
+
+        function createNewBank() {
+            const name = document.getElementById('newBankName').value.trim();
+            if (!name) { showNotification('Nhập tên đề', 'warning'); return; }
+            const btn = document.getElementById('createBankBtn');
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            db.collection('questionBanks').add({
+                name,
+                teacherId: currentUser.uid,
+                teacherName: currentUserProfile.name,
+                contents: [],
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                showNotification('Đã tạo đề mới!', 'success');
+                document.getElementById('newBankName').value = '';
+                loadBankList();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi tạo đề', 'error');
+            }).finally(() => {
+                btn.innerHTML = 'Tạo đề';
+                btn.disabled = false;
+            });
+        }
+
+        window.viewBankDetails = function(bankId, bankName) {
+            document.getElementById('viewBankName').textContent = bankName;
+            const view = document.getElementById('viewBankContent');
+            view.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            db.collection('questionBanks').doc(bankId).get().then(doc => {
+                if (!doc.exists) {
+                    view.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Không tìm thấy</div>';
+                    return;
+                }
+                const contents = doc.data().contents || [];
+                if (!contents.length) {
+                    view.innerHTML = '<div style="text-align:center;padding:40px;color:#999;">Chưa có nội dung</div>';
+                } else {
+                    let html = '';
+                    contents.forEach((c, i) => {
+                        html += `
+                            <div style="background:#f9f9f9;border-radius:8px;padding:12px;margin-bottom:10px;border-left:4px solid #FFA500;">
+                                <div style="font-weight:bold;color:#FFA500;margin-bottom:6px;">
+                                    ${i + 1}. ${c.type === 'essay' ? '✍️ Tự luận' : '☑️ Trắc nghiệm'}
+                                    ${c.difficulty ? `<span class="difficulty-badge diff-${c.difficulty}">${c.difficulty}</span>` : ''}
+                                </div>
+                                ${renderContentPreview(c)}
+                            </div>`;
+                    });
+                    view.innerHTML = html;
+                }
+                document.getElementById('viewBankModal').classList.add('active');
+            });
+        };
+
+        window.editBank = function(bankId, bankName) {
+            document.getElementById('editBankName').textContent = bankName;
+            document.getElementById('editBankTitle').value = bankName;
+            document.getElementById('editBankModal').dataset.bankId = bankId;
+            const list = document.getElementById('editBankContentsList');
+            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            db.collection('questionBanks').doc(bankId).get().then(doc => {
+                if (!doc.exists) {
+                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Không tìm thấy</div>';
+                    return;
+                }
+                const contents = doc.data().contents || [];
+                if (!contents.length) {
+                    list.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">Chưa có nội dung</div>';
+                } else {
+                    let html = '';
+                    contents.forEach((c, i) => {
+                        html += `
+                            <div style="background:#f9f9f9;border-radius:8px;padding:12px;margin-bottom:10px;border-left:4px solid #FFA500;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                    <div style="font-weight:bold;color:#FFA500;">
+                                        ${i + 1}. ${c.type === 'essay' ? '✍️' : '☑️'} ${c.type === 'essay' ? 'Tự luận' : 'Trắc nghiệm'}
+                                    </div>
+                                    <button class="remove-option-btn" onclick="removeContentFromBank(${i})" style="padding:4px 8px;"><i class="fas fa-trash"></i></button>
+                                </div>
+                                ${renderContentPreview(c)}
+                            </div>`;
+                    });
+                    list.innerHTML = html;
+                }
+                document.getElementById('editBankModal').classList.add('active');
+            });
+        };
+
+        window.removeContentFromBank = function(index) {
+            if (!confirm('Xóa nội dung này khỏi đề?')) return;
+            const bankId = document.getElementById('editBankModal').dataset.bankId;
+            db.collection('questionBanks').doc(bankId).get().then(doc => {
+                const contents = doc.data().contents || [];
+                contents.splice(index, 1);
+                return db.collection('questionBanks').doc(bankId).update({
+                    contents,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }).then(() => {
+                showNotification('Đã xóa nội dung', 'success');
+                editBank(bankId, document.getElementById('editBankName').textContent);
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi xóa', 'error');
+            });
+        };
+
+        function saveBankEdit() {
+            const bankId = document.getElementById('editBankModal').dataset.bankId;
+            const newName = document.getElementById('editBankTitle').value.trim();
+            if (!newName) { showNotification('Nhập tên đề', 'warning'); return; }
+            const btn = document.getElementById('saveEditBankBtn');
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            db.collection('questionBanks').doc(bankId).update({
+                name: newName,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                showNotification('Đã lưu!', 'success');
+                document.getElementById('editBankModal').classList.remove('active');
+                loadBankList();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi lưu', 'error');
+            }).finally(() => {
+                btn.innerHTML = 'Lưu thay đổi';
+                btn.disabled = false;
+            });
+        }
+
+        window.deleteBank = function(bankId) {
+            if (!confirm('Xóa đề này? Không thể hoàn tác!')) return;
+            db.collection('questionBanks').doc(bankId).delete()
+            .then(() => {
+                showNotification('Đã xóa đề', 'success');
+                loadBankList();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi xóa đề', 'error');
+            });
+        };
+
+        window.addBankToRoom = function(bankId, bankName) {
+            if (!currentRoomId) { showNotification('Không tìm thấy phòng', 'error'); return; }
+            if (!confirm(`Thêm đề "${bankName}" vào phòng hiện tại?`)) return;
+            db.collection('questionBanks').doc(bankId).get().then(doc => {
+                if (!doc.exists) throw new Error('Không tìm thấy đề');
+                const contents = doc.data().contents || [];
+                if (!contents.length) {
+                    showNotification('Đề trống', 'warning');
+                    return;
+                }
+                const batch = db.batch();
+                const col = db.collection('rooms').doc(currentRoomId).collection('contents');
+                contents.forEach(c => {
+                    const ref = col.doc();
+                    const copy = { ...c };
+                    delete copy.createdAt;
+                    batch.set(ref, {
+                        ...copy,
+                        createdBy: currentUser.uid,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        fromBank: true,
+                        fromBankId: bankId,
+                        fromBankName: bankName
+                    });
+                });
+                return batch.commit();
+            }).then(() => {
+                showNotification(`Đã thêm đề "${bankName}" vào phòng!`, 'success');
+                closeAddBankModal();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi thêm đề', 'error');
+            });
+        };
+
+        function loadHomeBankList() {
+            const list = document.getElementById('homeBankList');
+            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            db.collection('questionBanks').where('teacherId', '==', currentUser.uid).get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                    list.innerHTML = `<div style="text-align:center;padding:40px;color:#999;"><p>Chưa có đề</p></div>`;
+                    return;
+                }
+                const banks = [];
+                snapshot.forEach(doc => banks.push({ id: doc.id, ...doc.data() }));
+                let html = '';
+                banks.forEach(bank => {
+                    const cnt = bank.contents ? bank.contents.length : 0;
+                    html += `
+                        <div class="bank-item">
+                            <div class="bank-item-header">
+                                <div>
+                                    <div class="bank-item-name"><i class="fas fa-folder-open"></i> ${escapeHtml(bank.name)}</div>
+                                    <div class="bank-item-meta">${cnt} nội dung</div>
+                                </div>
+                                <div class="bank-item-actions">
+                                    <button class="bank-add-btn" onclick="selectBankForRoom('${bank.id}','${escapeHtml(bank.name)}')"><i class="fas fa-check-circle"></i> Chọn</button>
+                                </div>
+                            </div>
+                            <div class="bank-item-preview">${getBankPreview(bank.contents)}</div>
+                        </div>`;
+                });
+                list.innerHTML = html;
+            });
+        }
+
+        window.selectBankForRoom = function(bankId, bankName) {
+            db.collection('questionBanks').doc(bankId).get().then(doc => {
+                if (!doc.exists) { showNotification('Không tìm thấy đề', 'error'); return; }
+                const contents = doc.data().contents || [];
+                if (!contents.length) {
+                    showNotification('Đề trống, hãy thêm nội dung trước', 'warning');
+                    return;
+                }
+                selectedBankForRoom = { id: bankId, name: bankName, contents };
+                document.getElementById('selectedBankName').textContent = bankName;
+                document.getElementById('selectedBankDisplay').style.display = 'flex';
+                closeHomeBankModal();
+                showNotification(`Đã chọn đề "${bankName}"`, 'success');
+            });
+        };
+
+        function clearSelectedBank() {
+            selectedBankForRoom = null;
+            document.getElementById('selectedBankDisplay').style.display = 'none';
+            document.getElementById('selectedBankName').textContent = '';
+            showNotification('Đã bỏ chọn đề', 'info');
+        }
+
+        function startExam() {
+            if (!isTeacher || !currentRoomId) return;
+            const btn = document.getElementById('startExamBtn');
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            const roomRef = db.collection('rooms').doc(currentRoomId);
+            roomRef.get().then(doc => {
+                if (!doc.exists) return;
+                const data = doc.data();
+                if (!data.examMode) return;
+                const batch = db.batch();
+                batch.update(roomRef, {
+                    examStarted: true,
+                    examStartTime: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                const examContents = data.examContents || [];
+                if (examContents.length) {
+                    const col = roomRef.collection('contents');
+                    examContents.forEach(c => {
+                        const ref = col.doc();
+                        const copy = { ...c };
+                        delete copy.createdAt;
+                        batch.set(ref, {
+                            ...copy,
+                            createdBy: currentUser.uid,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            fromBank: true,
+                            fromBankId: data.selectedBankId,
+                            fromBankName: data.selectedBankName
+                        });
+                    });
+                }
+                return batch.commit();
+            }).then(() => {
+                const duration = 45;
+                const newEnd = new Date(Date.now() + duration * 60000);
+                endTime = newEnd;
+                return db.collection('rooms').doc(currentRoomId).update({
+                    endTime: firebase.firestore.Timestamp.fromDate(newEnd)
+                });
+            }).then(() => {
+                showNotification('Đã bắt đầu thi!', 'success');
+                btn.style.display = 'none';
+                startRoomTimer();
+                loadContents();
+            }).catch(err => {
+                console.error(err);
+                showNotification('Lỗi bắt đầu thi', 'error');
+                btn.innerHTML = '<i class="fas fa-play"></i> Bắt đầu thi';
+                btn.disabled = false;
+            });
+        }
+
+        // ============================================================
+        // HELPERS
+        // ============================================================
+        function renderContentPreview(c) {
+            if (c.type === 'essay') {
+                return `<div><strong>Câu hỏi:</strong> ${escapeHtml(c.question)}</div>
+                        <div><strong>Đáp án:</strong> ${(c.correctAnswers || []).join(' / ')}</div>
+                        <div><strong>Điểm:</strong> ${c.points || 1}</div>`;
+            }
+            if (c.type === 'mcq') {
+                const opts = c.options || [];
+                const correct = opts.filter(o => o.correct).map(o => o.text);
+                return `<div><strong>Câu hỏi:</strong> ${escapeHtml(c.question)}</div>
+                        <div><strong>Lựa chọn:</strong> ${opts.map(o => o.text).join(' | ')}</div>
+                        <div><strong>Đáp án đúng:</strong> ${correct.join(', ')}</div>
+                        <div><strong>Điểm:</strong> ${c.points || 1}</div>`;
+            }
+            return '';
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[m]);
+        }
+
+        function showNotification(msg, type) {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.className = `notification ${type}`;
+            setTimeout(() => n.classList.add('show'), 10);
+            setTimeout(() => n.classList.remove('show'), 4000);
+        }
+
+        window.addEventListener('beforeunload', () => {
+            if (currentRoomId && currentUser) {
+                db.collection('rooms').doc(currentRoomId).collection('participants').doc(currentUser.uid).delete().catch(() => {});
+            }
+        });
+    </script>
+</body>
+</html>
