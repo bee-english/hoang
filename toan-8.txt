@@ -1,0 +1,414 @@
+# TẬP 1
+
+## CHƯƠNG I. BIỂU THỨC ĐẠI SỐ
+
+* **Bài 1. Đơn thức**
+* 1. Đơn thức
+
+
+* 2. Đơn thức thu gọn
+
+
+* 3. Đơn thức đồng dạng
+
+
+
+
+* **Bài 2. Đa thức**
+* 1. Đa thức
+
+
+* 2. Đa thức thu gọn
+
+
+* 3. Giá trị của đa thức
+
+
+
+
+* **Bài 3. Phép cộng và phép trừ đa thức**
+* 1. Phép cộng đa thức
+
+
+* 2. Phép trừ đa thức
+
+
+
+
+* **Bài 4. Phép nhân đa thức**
+* 1. Nhân đơn thức với đa thức
+
+
+* 2. Nhân đa thức với đa thức
+
+
+
+
+* **Bài 5. Phép chia đa thức cho đơn thức**
+* 1. Phép chia đa thức cho đơn thức
+
+
+
+
+
+---
+
+## CHƯƠNG II. HẰNG ĐẲNG THỨC ĐÁNG NHỚ VÀ ỨNG DỤNG
+
+* **Bài 6. Hiệu hai bình phương. Bình phương của một tổng hay một hiệu**
+* 1. Hiệu hai bình phương
+
+
+* 2. Bình phương của một tổng
+
+
+* 3. Bình phương của một hiệu
+
+
+
+
+* **Bài 7. Lập phương của một tổng hay một hiệu**
+* 1. Lập phương của một tổng
+
+
+* 2. Lập phương của một hiệu
+
+
+
+
+* **Bài 8. Tổng và hiệu hai lập phương**
+* 1. Tổng hai lập phương
+
+
+* 2. Hiệu hai lập phương
+
+
+
+
+* **Bài 9. Phân tích đa thức thành nhân tử**
+* 1. Phân tích đa thức thành nhân tử bằng phương pháp đặt nhân tử chung
+
+
+* 2. Phân tích đa thức thành nhân tử bằng phương pháp dùng hằng đẳng thức
+
+
+* 3. Phân tích đa thức thành nhân tử bằng phương pháp nhóm hạng tử
+
+
+
+
+
+---
+
+## CHƯƠNG III. TỨ GIÁC
+
+* **Bài 10. Tứ giác**
+* 1. Tứ giác lồi
+
+
+* 2. Tổng các góc của một tứ giác lồi
+
+
+
+
+* **Bài 11. Hình thang cân**
+* 1. Hình thang. Hình thang cân
+
+
+* 2. Tính chất của hình thang cân
+
+
+* 3. Dấu hiệu nhận biết hình thang cân
+
+
+
+
+* **Bài 12. Hình bình hành**
+* 1. Hình bình hành
+
+
+* 2. Tính chất của hình bình hành
+
+
+* 3. Dấu hiệu nhận biết hình bình hành
+
+
+
+
+* **Bài 13. Hình chữ nhật**
+* 1. Hình chữ nhật
+
+
+* 2. Tính chất của hình chữ nhật
+
+
+* 3. Dấu hiệu nhận biết hình chữ nhật
+
+
+* 4. Đơn vị đo độ dài ứng với cạnh trung tuyến của tam giác vuông
+
+
+
+
+* **Bài 14. Hình thoi và hình vuông**
+* 1. Hình thoi
+
+
+* 2. Hình vuông
+
+
+
+
+
+---
+
+## CHƯƠNG IV. ĐỊNH LÝ THALÈS
+
+* **Bài 15. Định lý Thalès trong tam giác**
+* 1. Đoạn thẳng tỉ lệ
+
+
+* 2. Định lý Thalès trong tam giác
+
+
+
+
+* **Bài 16. Đường trung bình của tam giác**
+* 1. Đường trung bình của tam giác
+
+
+* 2. Tính chất đường trung bình của tam giác
+
+
+
+
+* **Bài 17. Tính chất đường phân giác của tam giác**
+* 1. Tính chất đường phân giác của tam giác
+
+
+
+
+
+---
+
+## CHƯƠNG V. DỮ LIỆU VÀ BIỂU ĐỒ
+
+* **Bài 18. Thu thập và phân loại dữ liệu**
+* 1. Thu thập dữ liệu
+
+
+* 2. Phân loại và tổ chức dữ liệu
+
+
+
+
+* **Bài 19. Biểu diễn dữ liệu bằng bảng, biểu đồ**
+* 1. Biểu diễn dữ liệu bằng biểu đồ đoạn thẳng
+
+
+* 2. Biểu diễn dữ liệu bằng biểu đồ hình quạt tròn
+
+
+
+
+* **Bài 20. Phân tích số liệu thống kê dựa trên biểu đồ**
+* 1. Phân tích số liệu
+
+
+
+
+
+---
+
+---
+
+# TẬP 2
+
+## CHƯƠNG VI. PHÂN THỨC ĐẠI SỐ
+
+* **Bài 21. Phân thức đại số**
+* 1. Phân thức đại số
+
+
+* 2. Hai phân thức bằng nhau
+
+
+
+
+* **Bài 22. Tính chất cơ bản của phân thức đại số**
+* 1. Tính chất cơ bản của phân thức
+
+
+* 2. Rút gọn phân thức
+
+
+* 3. Quy đồng mẫu thức nhiều phân thức
+
+
+
+
+* **Bài 23. Phép cộng và phép trừ phân thức đại số**
+* 1. Phép cộng phân thức
+
+
+* 2. Phép trừ phân thức
+
+
+
+
+* **Bài 24. Phép nhân và phép chia phân thức đại số**
+* 1. Phép nhân phân thức
+
+
+* 2. Phép chia phân thức
+
+
+
+
+
+---
+
+## CHƯƠNG VII. PHƯƠNG TRÌNH BẬC NHẤT MỘT ẨN
+
+* **Bài 25. Phương trình bậc nhất một ẩn**
+* 1. Phương trình bậc nhất một ẩn và cách giải
+
+
+
+
+* **Bài 26. Giải bài toán bằng cách lập phương trình**
+* 1. Các bước giải bài toán bằng cách lập phương trình
+
+
+
+
+
+---
+
+## CHƯƠNG VIII. HÀM SỐ VÀ ĐỒ THỊ
+
+* **Bài 27. Khái niệm hàm số**
+* 1. Hàm số
+
+
+* 2. Mặt phẳng tọa độ
+
+
+* 3. Đồ thị hàm số
+
+
+
+
+* **Bài 28. Hàm số bậc nhất**
+* 1. Hàm số bậc nhất
+
+
+* 2. Tính chất
+
+
+
+
+* **Bài 29. Đồ thị của hàm số bậc nhất**
+* 1. Đồ thị của hàm số bậc nhất
+
+
+* 2. Cách vẽ đồ thị hàm số bậc nhất
+
+
+
+
+* **Bài 30. Hệ số góc của đường thẳng**
+* 1. Góc tạo bởi đường thẳng và trục $Ox$
+
+
+* 2. Hệ số góc của đường thẳng
+
+
+
+
+
+---
+
+## CHƯƠNG IX. MỞ ĐẦU VỀ TÍNH XÁC SUẤT CỦA BIẾN CỐ
+
+* **Bài 31. Cách tính xác suất của biến cố ngẫu nhiên trong một số trò chơi đơn giản**
+* 1. Xác suất của biến cố ngẫu nhiên trong một số trò chơi đơn giản
+
+
+
+
+* **Bài 32. Mối liên hệ giữa xác suất thực nghiệm và xác suất**
+* 1. Mối liên hệ giữa xác suất thực nghiệm và xác suất
+
+
+
+
+
+---
+
+## CHƯƠNG X. ĐỒNG DẠNG TRONG TAM GIÁC
+
+* **Bài 33. Hai tam giác đồng dạng**
+* 1. Tam giác đồng dạng
+
+
+* 2. Định lý Thalès đảo
+
+
+
+
+* **Bài 34. Ba trường hợp đồng dạng của tam giác**
+* 1. Trường hợp đồng dạng thứ nhất (cạnh - cạnh - cạnh)
+
+
+* 2. Trường hợp đồng dạng thứ hai (cạnh - góc - cạnh)
+
+
+* 3. Trường hợp đồng dạng thứ ba (góc - góc)
+
+
+
+
+* **Bài 35. Định lý Pythagoras và ứng dụng**
+* 1. Định lý Pythagoras
+
+
+* 2. Ứng dụng của định lý Pythagoras
+
+
+
+
+* **Bài 36. Các trường hợp đồng dạng của tam giác vuông**
+* 1. Các trường hợp đồng dạng của tam giác vuông
+
+
+
+
+* **Bài 37. Hình đồng dạng**
+* 1. Hình đồng dạng phối cảnh
+
+
+* 2. Hình đồng dạng
+
+
+
+
+
+---
+
+## CHƯƠNG XI. MỘT SỐ HÌNH KHỐI TRONG THỰC TIỄN
+
+* **Bài 38. Hình chóp tam giác đều**
+* 1. Nhận biết hình chóp tam giác đều
+
+
+* 2. Diện tích xung quanh và thể tích của hình chóp tam giác đều
+
+
+
+
+* **Bài 39. Hình chóp tứ giác đều**
+* 1. Nhận biết hình chóp tứ giác đều
+
+
+* 2. Diện tích xung quanh và thể tích của hình chóp tứ giác đều
