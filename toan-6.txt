@@ -1,0 +1,473 @@
+# TẬP 1
+
+## CHƯƠNG I. TẬP HỢP CÁC SỐ TỰ NHIÊN
+
+* **Bài 1. Tập hợp**
+* 1. Tập hợp và phần tử của tập hợp
+
+
+* 2. Mô tả một tập hợp
+
+
+
+
+* **Bài 2. Cách ghi số tự nhiên**
+* 1. Biểu diễn số tự nhiên trên tia số
+
+
+* 2. Cách ghi số tự nhiên trong hệ thập phân
+
+
+* 3. Số La Mã
+
+
+
+
+* **Bài 3. Thứ tự trong tập hợp các số tự nhiên**
+* 1. So sánh hai số tự nhiên
+
+
+* 2. Thứ tự trong tập hợp các số tự nhiên
+
+
+
+
+* **Bài 4. Phép cộng và phép trừ số tự nhiên**
+* 1. Phép cộng số tự nhiên
+
+
+* 2. Phép trừ số tự nhiên
+
+
+
+
+* **Bài 5. Phép nhân và phép chia số tự nhiên**
+* 1. Phép nhân số tự nhiên
+
+
+* 2. Phép chia hết và phép chia có dư
+
+
+
+
+* **Bài 6. Lũy thừa với số mũ tự nhiên**
+* 1. Lũy thừa với số mũ tự nhiên
+
+
+* 2. Nhân hai lũy thừa cùng cơ số
+
+
+* 3. Chia hai lũy thừa cùng cơ số
+
+
+
+
+* **Bài 7. Thứ tự thực hiện các phép tính**
+* 1. Thứ tự thực hiện các phép tính trong biểu thức không có dấu ngoặc
+
+
+* 2. Thứ tự thực hiện các phép tính trong biểu thức có dấu ngoặc
+
+
+
+
+
+---
+
+## CHƯƠNG II. TÍNH CHIA HẾT TRONG TẬP HỢP CÁC SỐ TỰ NHIÊN
+
+* **Bài 8. Quan hệ chia hết và tính chất**
+* 1. Quan hệ chia hết
+
+
+* 2. Tính chất chia hết của một tổng
+
+
+
+
+* **Bài 9. Dấu hiệu chia hết**
+* 1. Dấu hiệu chia hết cho 2, cho 5
+
+
+* 2. Dấu hiệu chia hết cho 9, cho 3
+
+
+
+
+* **Bài 10. Số nguyên tố**
+* 1. Số nguyên tố và hợp số
+
+
+* 2. Phân tích một số ra thừa số nguyên tố
+
+
+
+
+* **Bài 11. Ước chung. Ước chung lớn nhất**
+* 1. Ước chung và ước chung lớn nhất
+
+
+* 2. Tìm ước chung lớn nhất bằng cách phân tích ra thừa số nguyên tố
+
+
+* 3. Rút gọn về phân số tối giản
+
+
+
+
+* **Bài 12. Bội chung. Bội chung nhỏ nhất**
+* 1. Bội chung và bội chung nhỏ nhất
+
+
+* 2. Tìm bội chung nhỏ nhất bằng cách phân tích ra thừa số nguyên tố
+
+
+* 3. Quy đồng mẫu các phân số
+
+
+
+
+
+---
+
+## CHƯƠNG III. SỐ NGUYÊN
+
+* **Bài 13. Tập hợp các số nguyên**
+* 1. Làm quen với số nguyên âm
+
+
+* 2. Tập hợp các số nguyên
+
+
+* 3. Thứ tự trong tập hợp các số nguyên
+
+
+
+
+* **Bài 14. Phép cộng và phép trừ số nguyên**
+* 1. Phép cộng hai số nguyên cùng dấu
+
+
+* 2. Phép cộng hai số nguyên khác dấu
+
+
+* 3. Tính chất của phép cộng số nguyên
+
+
+* 4. Phép trừ hai số nguyên
+
+
+
+
+* **Bài 15. Quy tắc dấu ngoặc**
+* 1. Quy tắc dấu ngoặc
+
+
+
+
+* **Bài 16. Phép nhân số nguyên**
+* 1. Phép nhân hai số nguyên khác dấu
+
+
+* 2. Phép nhân hai số nguyên cùng dấu
+
+
+* 3. Tính chất của phép nhân
+
+
+
+
+* **Bài 17. Phép chia hết. Ước và bội của một số nguyên**
+* 1. Phép chia hết trong tập hợp số nguyên
+
+
+* 2. Ước và bội của một số nguyên
+
+
+
+
+
+---
+
+## CHƯƠNG IV. MỘT SỐ HÌNH PHẲNG TRONG THỰC TIỄN
+
+* **Bài 18. Hình tam giác đều. Hình vuông. Hình lục giác đều**
+* 1. Tam giác đều
+
+
+* 2. Hình vuông
+
+
+* 3. Hình lục giác đều
+
+
+
+
+* **Bài 19. Hình chữ nhật. Hình thoi. Hình bình hành. Hình thang cân**
+* 1. Hình chữ nhật
+
+
+* 2. Hình thoi
+
+
+* 3. Hình bình hành
+
+
+* 4. Hình thang cân
+
+
+
+
+* **Bài 20. Chu vi và diện tích của một số tứ giác đã học**
+* 1. Chu vi và diện tích của hình chữ nhật, hình vuông
+
+
+* 2. Chu vi và diện tích của hình bình hành, hình thoi
+
+
+* 3. Chu vi và diện tích của hình thang
+
+
+
+
+
+---
+
+## CHƯƠNG V. TÍNH ĐỐI XỨNG CỦA HÌNH PHẲNG TRONG TỰ NHIÊN
+
+* **Bài 21. Hình có trục đối xứng**
+* 1. Trục đối xứng của một hình
+
+
+* 2. Hình có trục đối xứng trong thực tế
+
+
+
+
+* **Bài 22. Hình có tâm đối xứng**
+* 1. Tâm đối xứng của một hình
+
+
+* 2. Hình có tâm đối xứng trong thực tế
+
+
+
+
+
+---
+
+---
+
+# TẬP 2
+
+## CHƯƠNG VI. PHÂN SỐ
+
+* **Bài 23. Mở rộng phân số. Phân số bằng nhau**
+* 1. Khái niệm phân số
+
+
+* 2. Phân số bằng nhau
+
+
+
+
+* **Bài 24. So sánh phân số. Hỗn số dương**
+* 1. So sánh hai phân số
+
+
+* 2. Hỗn số dương
+
+
+
+
+* **Bài 25. Phép cộng và phép trừ phân số**
+* 1. Phép cộng phân số
+
+
+* 2. Tính chất của phép cộng phân số
+
+
+* 3. Phép trừ phân số
+
+
+
+
+* **Bài 26. Phép nhân và phép chia phân số**
+* 1. Phép nhân phân số
+
+
+* 2. Tính chất của phép nhân phân số
+
+
+* 3. Phép chia phân số
+
+
+
+
+* **Bài 27. Hai bài toán về phân số**
+* 1. Tìm giá trị phân số của một số cho trước
+
+
+* 2. Tìm một số biết giá trị một phân số của số đó
+
+
+
+
+
+---
+
+## CHƯƠNG VII. SỐ THẬP PHÂN
+
+* **Bài 28. Số thập phân**
+* 1. Số thập phân và số đối của nó
+
+
+* 2. So sánh hai số thập phân
+
+
+
+
+* **Bài 29. Tính toán với số thập phân**
+* 1. Phép cộng và phép trừ số thập phân
+
+
+* 2. Phép nhân và phép chia số thập phân
+
+
+
+
+* **Bài 30. Làm tròn và ước lượng**
+* 1. Làm tròn số
+
+
+* 2. Ước lượng kết quả tính toán
+
+
+
+
+* **Bài 31. Một số bài toán về tỉ số và tỉ số phần trăm**
+* 1. Tỉ số của hai đại lượng
+
+
+* 2. Tỉ số phần trăm
+
+
+* 3. Các bài toán cơ bản về tỉ số phần trăm
+
+
+
+
+
+---
+
+## CHƯƠNG VIII. NHỮNG HÌNH HÌNH HỌC CƠ BẢN
+
+* **Bài 32. Điểm và đường thẳng**
+* 1. Điểm thuộc đường thẳng, điểm không thuộc đường thẳng
+
+
+* 2. Đường thẳng đi qua hai điểm
+
+
+* 3. Ba điểm thẳng hàng
+
+
+* 4. Hai đường thẳng cắt nhau, song song
+
+
+
+
+* **Bài 33. Điểm nằm giữa hai điểm. Tia**
+* 1. Điểm nằm giữa hai điểm
+
+
+* 2. Tia
+
+
+
+
+* **Bài 34. Đoạn thẳng. Độ dài đoạn thẳng**
+* 1. Đoạn thẳng
+
+
+* 2. Độ dài đoạn thẳng
+
+
+
+
+* **Bài 35. Trung điểm của đoạn thẳng**
+* 1. Trung điểm của đoạn thẳng
+
+
+
+
+* **Bài 36. Góc**
+* 1. Góc
+
+
+* 2. Điểm nằm trong góc
+
+
+
+
+* **Bài 37. Số đo góc**
+* 1. Đo góc
+
+
+* 2. Các góc đặc biệt (Góc nhọn, góc vuông, góc tù, góc bẹt)
+
+
+
+
+
+---
+
+## CHƯƠNG IX. DỮ LIỆU VÀ XÁC SUẤT THỰC NGHIỆM
+
+* **Bài 38. Dữ liệu và thu thập dữ liệu**
+* 1. Dữ liệu thống kê
+
+
+* 2. Thu thập dữ liệu
+
+
+
+
+* **Bài 39. Bảng thống kê và biểu đồ tranh**
+* 1. Bảng thống kê
+
+
+* 2. Biểu đồ tranh
+
+
+
+
+* **Bài 40. Biểu đồ cột**
+* 1. Đọc biểu đồ cột
+
+
+* 2. Vẽ biểu đồ cột
+
+
+
+
+* **Bài 41. Biểu đồ cột kép**
+* 1. Đọc biểu đồ cột kép
+
+
+* 2. Vẽ biểu đồ cột kép
+
+
+
+
+* **Bài 42. Kết quả có thể và sự kiện trong trò chơi, thí nghiệm**
+* 1. Kết quả có thể của trò chơi, thí nghiệm
+
+
+* 2. Sự kiện
+
+
+
+
+* **Bài 43. Xác suất thực nghiệm**
+* 1. Xác suất thực nghiệm trong một số trò chơi đơn giản
