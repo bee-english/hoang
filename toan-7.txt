@@ -1,0 +1,400 @@
+# TẬP 1
+
+## CHƯƠNG I. SỐ HỮU TỈ
+
+* **Bài 1. Tập hợp các số hữu tỉ**
+* 1. Số hữu tỉ
+
+
+* 2. Biểu diễn số hữu tỉ trên trục số
+
+
+* 3. Số đối của số hữu tỉ
+
+
+* 4. So sánh hai số hữu tỉ
+
+
+
+
+* **Bài 2. Các phép tính với số hữu tỉ**
+* 1. Cộng và trừ số hữu tỉ
+
+
+* 2. Nhân và chia số hữu tỉ
+
+
+* 3. Tính chất của các phép tính số hữu tỉ
+
+
+
+
+* **Bài 3. Lũy thừa với số mũ tự nhiên của một số hữu tỉ**
+* 1. Lũy thừa với số mũ tự nhiên
+
+
+* 2. Tích và thương của hai lũy thừa cùng cơ số
+
+
+* 3. Lũy thừa của lũy thừa
+
+
+
+
+* **Bài 4. Thứ tự thực hiện các phép tính. Quy tắc chuyển vế**
+* 1. Thứ tự thực hiện các phép tính
+
+
+* 2. Quy tắc chuyển vế
+
+
+
+
+
+---
+
+## CHƯƠNG II. SỐ THỰC
+
+* **Bài 5. Làm quen với số thập phân vô hạn tuần hoàn**
+* 1. Số thập phân hữu hạn và số thập phân vô hạn tuần hoàn
+
+
+
+
+* **Bài 6. Số vô tỉ. Căn bậc hai số học**
+* 1. Số vô tỉ
+
+
+* 2. Căn bậc hai số học
+
+
+
+
+* **Bài 7. Tập hợp các số thực. Trục số thực**
+* 1. Tập hợp các số thực
+
+
+* 2. Trục số thực
+
+
+* 3. Giá trị tuyệt đối của một số thực
+
+
+
+
+
+---
+
+## CHƯƠNG III. GÓC VÀ ĐƯỜNG THẲNG SONG SONG
+
+* **Bài 8. Góc ở vị trí đặc biệt. Tia phân giác của một góc**
+* 1. Các góc ở vị trí đặc biệt
+
+
+* 2. Tia phân giác của một góc
+
+
+
+
+* **Bài 9. Hai đường thẳng song song và dấu hiệu nhận biết**
+* 1. Góc đồng vị. Góc so le trong
+
+
+* 2. Dấu hiệu nhận biết hai đường thẳng song song
+
+
+
+
+* **Bài 10. Tiên đề Euclid. Tính chất của hai đường thẳng song song**
+* 1. Tiên đề Euclid
+
+
+* 2. Tính chất của hai đường thẳng song song
+
+
+
+
+* **Bài 11. Định lý và chứng minh định lý**
+* 1. Định lý
+
+
+* 2. Chứng minh định lý
+
+
+
+
+
+---
+
+## CHƯƠNG IV. TAM GIÁC BẰNG NHAU
+
+* **Bài 12. Tổng các góc trong một tam giác**
+* 1. Tổng các góc trong một tam giác
+
+
+* 2. Góc ngoài của một tam giác
+
+
+
+
+* **Bài 13. Hai tam giác bằng nhau. Trường hợp bằng nhau thứ nhất của tam giác: cạnh - cạnh - cạnh**
+* 1. Hai tam giác bằng nhau
+
+
+* 2. Trường hợp bằng nhau cạnh - cạnh - cạnh (c.c.c)
+
+
+
+
+* **Bài 14. Trường hợp bằng nhau thứ hai và thứ ba của tam giác: cạnh - góc - cạnh, góc - cạnh - góc**
+* 1. Trường hợp bằng nhau cạnh - góc - cạnh (c.g.c)
+
+
+* 2. Trường hợp bằng nhau góc - cạnh - góc (g.c.g)
+
+
+
+
+* **Bài 15. Các trường hợp bằng nhau của tam giác vuông**
+* 1. Các trường hợp bằng nhau của tam giác vuông
+
+
+* 2. Trường hợp bằng nhau về cạnh huyền và cạnh góc vuông của tam giác vuông
+
+
+
+
+* **Bài 16. Tam giác cân. Đường trung trực của đoạn thẳng**
+* 1. Tam giác cân
+
+
+* 2. Đường trung trực của đoạn thẳng
+
+
+
+
+
+---
+
+## CHƯƠNG V. THU THẬP VÀ BIỂU DIỄN DỮ LIỆU
+
+* **Bài 17. Thu thập và phân loại dữ liệu**
+* 1. Thu thập dữ liệu
+
+
+* 2. Phân loại và tổ chức dữ liệu
+
+
+
+
+* **Bài 18. Biểu đồ hình quạt tròn**
+* 1. Đọc và biểu diễn dữ liệu trên biểu đồ hình quạt tròn
+
+
+* 2. Chuyển đổi dữ liệu từ biểu đồ hình quạt tròn sang bảng thống kê
+
+
+
+
+* **Bài 19. Biểu đồ đoạn thẳng**
+* 1. Đọc biểu đồ đoạn thẳng
+
+
+* 2. Vẽ biểu đồ đoạn thẳng
+
+
+
+
+
+---
+
+---
+
+# TẬP 2
+
+## CHƯƠNG VI. TỈ LỆ THỨC VÀ ĐẠI LƯỢNG TỈ LỆ
+
+* **Bài 20. Tỉ lệ thức**
+* 1. Tỉ lệ thức
+
+
+* 2. Tính chất của tỉ lệ thức
+
+
+
+
+* **Bài 21. Tính chất của dãy tỉ số bằng nhau**
+* 1. Tính chất của dãy tỉ số bằng nhau
+
+
+* 2. Chú ý khi áp dụng tính chất dãy tỉ số bằng nhau
+
+
+
+
+* **Bài 22. Đại lượng tỉ lệ thuận**
+* 1. Định nghĩa đại lượng tỉ lệ thuận
+
+
+* 2. Tính chất của đại lượng tỉ lệ thuận
+
+
+
+
+* **Bài 23. Đại lượng tỉ lệ nghịch**
+* 1. Định nghĩa đại lượng tỉ lệ nghịch
+
+
+* 2. Tính chất của đại lượng tỉ lệ nghịch
+
+
+
+
+
+---
+
+## CHƯƠNG VII. BIỂU THỨC ĐẠI SỐ VÀ ĐA THỨC MỘT BIẾN
+
+* **Bài 24. Biểu thức đại số**
+* 1. Khái niệm biểu thức đại số
+
+
+* 2. Giá trị của một biểu thức đại số
+
+
+
+
+* **Bài 25. Đa thức một biến**
+* 1. Đa thức một biến và nghiệm của đa thức
+
+
+* 2. Sắp xếp đa thức một biến
+
+
+
+
+* **Bài 26. Phép cộng và phép trừ đa thức một biến**
+* 1. Phép cộng đa thức một biến
+
+
+* 2. Phép trừ đa thức một biến
+
+
+
+
+* **Bài 27. Phép nhân đa thức một biến**
+* 1. Phép nhân đơn thức với đa thức
+
+
+* 2. Phép nhân đa thức với đa thức
+
+
+
+
+* **Bài 28. Phép chia đa thức một biến**
+* 1. Phép chia hết đa thức một biến
+
+
+* 2. Phép chia có dư đa thức một biến
+
+
+
+
+
+---
+
+## CHƯƠNG VIII. LÀM QUEN VỚI BIẾN CỐ VÀ XÁC SUẤT
+
+* **Bài 29. Làm quen với biến cố**
+* 1. Biến cố chắc chắn, biến cố không thể, biến cố ngẫu nhiên
+
+
+
+
+* **Bài 30. Làm quen với xác suất của biến cố**
+* 1. Xác suất của biến cố ngẫu nhiên trong một số trò chơi đơn giản
+
+
+* 2. Ý nghĩa của xác suất của biến cố
+
+
+
+
+
+---
+
+## CHƯƠNG IX. QUAN HỆ GIỮA CÁC YẾU TỐ TRONG MỘT TAM GIÁC. CÁC ĐƯỜNG ĐỒNG QUY CỦA TAM GIÁC
+
+* **Bài 31. Quan hệ giữa góc và cạnh đối diện trong một tam giác**
+* 1. Góc đối diện với cạnh lớn hơn
+
+
+* 2. Cạnh đối diện với góc lớn hơn
+
+
+
+
+* **Bài 32. Quan hệ giữa đường vuông góc và đường xiên**
+* 1. Đường vuông góc và đường xiên
+
+
+* 2. Quan hệ giữa đường vuông góc và đường xiên
+
+
+
+
+* **Bài 33. Quan hệ giữa ba cạnh của một tam giác**
+* 1. Bất đẳng thức tam giác
+
+
+
+
+* **Bài 34. Sự đồng quy của ba đường trung tuyến, ba đường phân giác trong một tam giác**
+* 1. Đường trung tuyến của tam giác
+
+
+* 2. Tính chất ba đường trung tuyến của tam giác
+
+
+* 3. Đường phân giác của tam giác
+
+
+* 4. Tính chất ba đường phân giác của tam giác
+
+
+
+
+* **Bài 35. Sự đồng quy của ba đường trung trực, ba đường cao trong một tam giác**
+* 1. Đường trung trực của tam giác
+
+
+* 2. Tính chất ba đường trung trực của tam giác
+
+
+* 3. Đường cao của tam giác
+
+
+* 4. Tính chất ba đường cao của tam giác
+
+
+
+
+
+---
+
+## CHƯƠNG X. MỘT SỐ HÌNH KHỐI TRONG THỰC TIỄN
+
+* **Bài 36. Hình hộp chữ nhật và hình lập phương**
+* 1. Nhắc lại về hình hộp chữ nhật và hình lập phương
+
+
+* 2. Diện tích xung quanh và thể tích của hình hộp chữ nhật, hình lập phương
+
+
+
+
+* **Bài 37. Hình lăng trụ đứng tam giác và hình lăng trụ đứng tứ giác**
+* 1. Nhận biết hình lăng trụ đứng tam giác và hình lăng trụ đứng tứ giác
+
+
+* 2. Diện tích xung quanh và thể tích của hình lăng trụ đứng tam giác, hình lăng trụ đứng tứ giác
