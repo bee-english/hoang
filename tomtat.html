@@ -512,6 +512,51 @@
         }
 
         // ============================================================
+        // LÀM SẠCH KÍ TỰ ĐẶC BIỆT (Markdown) ĐỂ HỌC SINH DỄ ĐỌC
+        // ============================================================
+        function cleanAIResponse(text) {
+            if (!text) return '';
+
+            let cleaned = text;
+
+            // Xóa code block
+            cleaned = cleaned.replace(/```[\s\S]*?```/g, '');
+            cleaned = cleaned.replace(/`([^`]+)`/g, '$1');
+
+            // Xóa tiêu đề markdown (# ## ### ...)
+            cleaned = cleaned.replace(/^#{1,6}\s*/gm, '');
+
+            // Xóa in đậm / in nghiêng markdown
+            cleaned = cleaned.replace(/\*\*\*(.*?)\*\*\*/g, '$1');
+            cleaned = cleaned.replace(/\*\*(.*?)\*\*/g, '$1');
+            cleaned = cleaned.replace(/\*(.*?)\*/g, '$1');
+            cleaned = cleaned.replace(/___(.*?)___/g, '$1');
+            cleaned = cleaned.replace(/__(.*?)__/g, '$1');
+            cleaned = cleaned.replace(/_(.*?)_/g, '$1');
+
+            // Xóa gạch đầu dòng markdown (* - +) ở đầu dòng, thay bằng dấu •
+            cleaned = cleaned.replace(/^[\s]*[\*\-\+]\s+/gm, '• ');
+
+            // Xóa số thứ tự dạng 1. 2. nếu bị dư dấu chấm lạ, giữ lại số
+            cleaned = cleaned.replace(/^(\d+)\.\s+/gm, '$1. ');
+
+            // Xóa dấu > quote
+            cleaned = cleaned.replace(/^>\s*/gm, '');
+
+            // Xóa đường kẻ ngang --- *** ___
+            cleaned = cleaned.replace(/^[\-\*\_]{3,}\s*$/gm, '');
+
+            // Xóa các kí tự đặc biệt còn sót lại ở đầu dòng
+            cleaned = cleaned.replace(/^[\*\#\-\_]+\s*/gm, '');
+
+            // Xóa khoảng trắng thừa
+            cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+            cleaned = cleaned.trim();
+
+            return cleaned;
+        }
+
+        // ============================================================
         // STATE
         // ============================================================
         let currentUser = null;
@@ -566,10 +611,9 @@
         }
 
         // ============================================================
-        // FILE SGK (SỬA ĐƯỜNG DẪN – KHÔNG CÓ THƯ MỤC sgk/)
+        // FILE SGK
         // ============================================================
         function getSgkFileUrl(subject, grade) {
-            // File nằm ngay thư mục gốc repo: toan-6.txt, van-7.txt, anh-9.txt, ...
             return `https://raw.githubusercontent.com/hmtuan002/hoang/main/${subject}-${grade}.txt`;
         }
         function getSubjectName(code) {
@@ -619,7 +663,6 @@
             chatHistory = [];
             currentChatId = null;
             currentSgkContent = null;
-            // Không thụt lề để tránh khoảng trắng thừa
             document.getElementById('chatMessages').innerHTML = '<div class="message-wrapper ai"><div class="message ai">Xin chào! Hãy chọn môn học và khối, sau đó nhập tên bài bạn muốn tôi tóm tắt kiến thức trọng tâm nhé.</div></div>';
             showNotification('Đã bắt đầu hội thoại mới', 'info');
         }
@@ -811,15 +854,46 @@
             if (contentForAI.length > 14000) {
                 contentForAI = contentForAI.substring(0, 14000) + '\n\n[... nội dung bị cắt bớt do quá dài ...]';
             }
-            const systemPrompt = `Bạn là giáo viên THCS giỏi, chuyên tóm tắt kiến thức trọng tâm sách giáo khoa Kết nối tri thức.
-Nhiệm vụ:
-- Dựa HOÀN TOÀN vào nội dung kiến thức được cung cấp bên dưới.
-- Tóm tắt kiến thức trọng tâm của bài / unit mà người dùng yêu cầu.
-- Trình bày rõ ràng, dễ hiểu, có cấu trúc (tiêu đề, gạch đầu dòng).
-- Nếu không tìm thấy bài tương ứng, hãy nói rõ "Hiện tại mình chưa có đủ dữ liệu về bài này. Bạn có thể hỏi bài khác hoặc kiểm tra lại tên bài không?".
-- Không bịa thêm kiến thức ngoài nội dung được cung cấp.
-- Không đề cập đến nguồn dữ liệu, file hay bất kỳ thông tin kỹ thuật nào.
-- Trả lời bằng tiếng Việt tự nhiên như một giáo viên đang giảng bài.`;
+
+            // System prompt được viết lại để CẤM hoàn toàn kí tự đặc biệt markdown
+            const systemPrompt = `Bạn là giáo viên THCS giỏi, chuyên tóm tắt kiến thức trọng tâm sách giáo khoa Kết nối tri thức cho học sinh.
+
+QUY TẮC BẮT BUỘC KHI TRẢ LỜI:
+1. Dựa HOÀN TOÀN vào nội dung kiến thức được cung cấp bên dưới.
+2. Tóm tắt kiến thức trọng tâm của bài / unit mà người dùng yêu cầu.
+3. Trình bày rõ ràng, dễ hiểu, có cấu trúc.
+4. Nếu không tìm thấy bài tương ứng, hãy nói rõ: Hiện tại mình chưa có đủ dữ liệu về bài này. Bạn có thể hỏi bài khác hoặc kiểm tra lại tên bài không?
+5. Không bịa thêm kiến thức ngoài nội dung được cung cấp.
+6. Không đề cập đến nguồn dữ liệu, file hay bất kỳ thông tin kỹ thuật nào.
+7. Trả lời bằng tiếng Việt tự nhiên như một giáo viên đang giảng bài.
+
+QUAN TRỌNG NHẤT - CẤM SỬ DỤNG KÍ TỰ ĐẶC BIỆT:
+- TUYỆT ĐỐI KHÔNG dùng dấu * (sao)
+- TUYỆT ĐỐI KHÔNG dùng dấu # (thăng)
+- TUYỆT ĐỐI KHÔNG dùng dấu ** hoặc *** 
+- TUYỆT ĐỐI KHÔNG dùng dấu _ hoặc __
+- TUYỆT ĐỐI KHÔNG dùng dấu \` (backtick)
+- TUYỆT ĐỐI KHÔNG dùng dấu > 
+- TUYỆT ĐỐI KHÔNG dùng đường kẻ --- hoặc ***
+- Không dùng bất kỳ định dạng Markdown nào.
+
+Cách trình bày được phép:
+- Dùng số thứ tự: 1. 2. 3.
+- Dùng dấu gạch đầu dòng bằng chữ: - hoặc •
+- Xuống dòng bình thường
+- Viết tiêu đề bằng chữ in hoa hoặc chữ thường bình thường, không cần kí hiệu đặc biệt
+
+Ví dụ cách viết đúng:
+Kiến thức trọng tâm
+
+1. Định nghĩa
+Nội dung giải thích...
+
+2. Công thức
+Công thức viết bình thường...
+
+3. Ví dụ
+Ví dụ minh họa...`;
 
             const userPrompt = `Môn: ${getSubjectName(subject)} - Lớp ${grade}
 
@@ -831,7 +905,7 @@ ${contentForAI}
 YÊU CẦU CỦA NGƯỜI DÙNG:
 ${userRequest}
 
-Hãy tóm tắt kiến thức trọng tâm theo yêu cầu trên.`;
+Hãy tóm tắt kiến thức trọng tâm theo yêu cầu trên. Nhớ tuyệt đối không dùng kí tự * # ** __ \` hoặc bất kỳ định dạng markdown nào.`;
 
             const response = await fetch(API_URL, {
                 method: 'POST',
@@ -846,7 +920,7 @@ Hãy tóm tắt kiến thức trọng tâm theo yêu cầu trên.`;
                         { role: 'user', content: userPrompt }
                     ],
                     max_tokens: 2000,
-                    temperature: 0.4
+                    temperature: 0.3
                 })
             });
 
@@ -855,7 +929,10 @@ Hãy tóm tắt kiến thức trọng tâm theo yêu cầu trên.`;
             }
             const data = await response.json();
             let content = data.choices[0].message.content;
-            content = content.replace(/```json/gi, '').replace(/```/g, '').trim();
+
+            // Làm sạch kí tự đặc biệt còn sót lại
+            content = cleanAIResponse(content);
+
             return content;
         }
     </script>
