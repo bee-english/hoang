@@ -341,9 +341,6 @@
                     <button class="btn btn-success" id="btnCreateExam" style="width:auto;flex:1;min-width:180px;">
                         <i class="fas fa-plus-circle"></i> Tạo đề mới
                     </button>
-                    <button class="btn btn-danger" id="teacherLogoutBtn" style="width:auto;">
-                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                    </button>
                 </div>
 
                 <h2 class="form-title"><i class="fas fa-folder-open"></i> Các đề đã tạo</h2>
@@ -438,10 +435,6 @@
                 <div id="studentHistoryList">
                     <div style="text-align:center;padding:20px;color:#999;">Đang tải...</div>
                 </div>
-
-                <button class="btn btn-danger" id="studentLogoutBtn" style="margin-top:18px;">
-                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                </button>
             </div>
         </div>
 
@@ -633,7 +626,7 @@
 
     <script>
         // ============================================================
-        // FIREBASE (GIỐNG HỆT TRANG MAIN + CODE LỚP HỌC – TÀI KHOẢN DÙNG CHUNG)
+        // FIREBASE
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
@@ -650,7 +643,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // API KEY (đảo ngược – GIỐNG HỆT CODE LỚP HỌC)
+        // API KEY
         // ============================================================
         function getAPIKey() {
             const originalKey = "v6xGqEar3C7yKR9K2GmO5dTZx2OLCg258qLWdF5o7kt5ImQu-ks";
@@ -695,26 +688,18 @@
         // ============================================================
         let currentUser = null;
         let currentUserProfile = null;
-
-        // Create exam state
         let draftQuestions = [];
-
-        // AI temp
         let pendingAiQuestions = [];
         let pendingAiType = 'essay';
-
-        // Take exam state
         let currentExam = null;
         let currentExamId = null;
         let examTimerInterval = null;
         let examEndTime = null;
-
-        // Grade state
         let currentSubmission = null;
         let currentSubmissionId = null;
 
         // ============================================================
-        // AUTH STATE (không có UI đăng nhập – dùng chung với main + lớp học)
+        // AUTH
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -755,30 +740,6 @@
             document.getElementById('needLoginPage').classList.remove('hidden');
         }
 
-        // Logout buttons
-        document.getElementById('teacherLogoutBtn').addEventListener('click', async () => {
-            showLoading('Đang đăng xuất...');
-            try {
-                await auth.signOut();
-                showNotification('Đã đăng xuất', 'info');
-            } catch (err) {
-                showNotification('Lỗi đăng xuất', 'error');
-            } finally {
-                hideLoading();
-            }
-        });
-        document.getElementById('studentLogoutBtn').addEventListener('click', async () => {
-            showLoading('Đang đăng xuất...');
-            try {
-                await auth.signOut();
-                showNotification('Đã đăng xuất', 'info');
-            } catch (err) {
-                showNotification('Lỗi đăng xuất', 'error');
-            } finally {
-                hideLoading();
-            }
-        });
-
         // ============================================================
         // PAGE NAVIGATION
         // ============================================================
@@ -806,7 +767,7 @@
         }
 
         // ============================================================
-        // TEACHER: LOAD EXAMS (ĐÃ SỬA – KHÔNG DÙNG orderBy ĐỂ TRÁNH INDEX)
+        // TEACHER: LOAD EXAMS
         // ============================================================
         function loadTeacherExams() {
             const list = document.getElementById('teacherExamList');
@@ -822,7 +783,6 @@
                     snap.forEach(doc => {
                         exams.push({ id: doc.id, ...doc.data() });
                     });
-                    // Sort client-side giống code Lớp học
                     exams.sort((a, b) => {
                         const ta = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate().getTime() : 0;
                         const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
@@ -1022,7 +982,6 @@
                 showNotification('Cần ít nhất 1 câu hỏi', 'warning');
                 return;
             }
-            // Validate
             for (const q of draftQuestions) {
                 if (!q.question || !q.question.trim()) {
                     showNotification('Có câu hỏi chưa nhập nội dung', 'warning');
@@ -1048,7 +1007,6 @@
             const grade = document.getElementById('examGrade').value;
             const duration = parseInt(document.getElementById('examDuration').value) || 45;
 
-            // Clean questions
             const questions = draftQuestions.map(q => {
                 const base = {
                     id: q.id,
@@ -1090,7 +1048,7 @@
         }
 
         // ============================================================
-        // AI GENERATE + REVIEW (GIỐNG HỆT CODE LỚP HỌC)
+        // AI GENERATE + REVIEW
         // ============================================================
         function openAiGenerateModal() {
             document.getElementById('aiGenerateModal').classList.add('active');
@@ -1301,7 +1259,7 @@ Chỉ trả về JSON, không thêm text.`;
         });
 
         // ============================================================
-        // EXAM DETAIL (Teacher) + NÚT XEM ĐỀ
+        // EXAM DETAIL + XEM ĐỀ
         // ============================================================
         window.openExamDetail = function(examId) {
             currentExamId = examId;
@@ -1337,7 +1295,6 @@ Chỉ trả về JSON, không thêm text.`;
             });
         });
 
-        // Nút Xem đề
         document.getElementById('btnViewExamQuestions').addEventListener('click', () => {
             if (!currentExam) {
                 showNotification('Chưa tải được đề', 'warning');
@@ -1405,7 +1362,6 @@ Chỉ trả về JSON, không thêm text.`;
             document.getElementById('viewExamModal').classList.remove('active');
         });
 
-        // Load submissions – KHÔNG dùng orderBy để tránh index
         function loadSubmissions(examId) {
             const list = document.getElementById('submissionList');
             list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
@@ -1420,7 +1376,6 @@ Chỉ trả về JSON, không thêm text.`;
                     snap.forEach(doc => {
                         subs.push({ id: doc.id, ...doc.data() });
                     });
-                    // Sort client-side
                     subs.sort((a, b) => {
                         const ta = a.submittedAt && a.submittedAt.toDate ? a.submittedAt.toDate().getTime() : 0;
                         const tb = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate().getTime() : 0;
@@ -1470,7 +1425,6 @@ Chỉ trả về JSON, không thêm text.`;
                     return;
                 }
                 currentSubmission = doc.data();
-                // Ensure currentExam is loaded
                 if (!currentExam || currentExam.id !== currentSubmission.examId) {
                     const examDoc = await db.collection('exams').doc(currentSubmission.examId).get();
                     if (examDoc.exists) {
@@ -1583,7 +1537,6 @@ Chỉ trả về JSON, không thêm text.`;
                 if (!match) throw new Error('Không parse được kết quả AI');
                 const results = JSON.parse(match[0]);
 
-                // Apply to UI
                 results.forEach(r => {
                     const scoreInput = document.querySelector(`.grade-score[data-qid="${r.questionId}"]`);
                     const fbInput = document.querySelector(`.grade-feedback[data-qid="${r.questionId}"]`);
@@ -1661,7 +1614,6 @@ Chỉ trả về JSON, không thêm text.`;
                     const doc = snap.docs[0];
                     const exam = { id: doc.id, ...doc.data() };
 
-                    // Kiểm tra đã nộp chưa – chỉ where studentId rồi lọc examId ở client (tránh composite index)
                     return db.collection('exam_submissions')
                         .where('studentId', '==', currentUser.uid)
                         .get()
@@ -1695,14 +1647,12 @@ Chỉ trả về JSON, không thêm text.`;
             document.getElementById('takeExamMeta').textContent =
                 `${subjName(exam.subject)} – Lớp ${exam.grade} • ${exam.questions?.length || 0} câu`;
 
-            // Timer
             const durationMin = exam.duration || 45;
             examEndTime = Date.now() + durationMin * 60 * 1000;
             if (examTimerInterval) clearInterval(examTimerInterval);
             examTimerInterval = setInterval(updateExamTimer, 1000);
             updateExamTimer();
 
-            // Render questions
             const container = document.getElementById('takeExamQuestions');
             let html = '';
             (exam.questions || []).forEach((q, idx) => {
@@ -1798,7 +1748,7 @@ Chỉ trả về JSON, không thêm text.`;
         }
 
         // ============================================================
-        // STUDENT HISTORY + RESULT (ĐÃ SỬA – KHÔNG DÙNG orderBy)
+        // STUDENT HISTORY + RESULT
         // ============================================================
         function loadStudentHistory() {
             const list = document.getElementById('studentHistoryList');
@@ -1814,13 +1764,11 @@ Chỉ trả về JSON, không thêm text.`;
                     snap.forEach(doc => {
                         subs.push({ id: doc.id, ...doc.data() });
                     });
-                    // Sort client-side
                     subs.sort((a, b) => {
                         const ta = a.submittedAt && a.submittedAt.toDate ? a.submittedAt.toDate().getTime() : 0;
                         const tb = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate().getTime() : 0;
                         return tb - ta;
                     });
-                    // Chỉ lấy 20 mới nhất
                     const limited = subs.slice(0, 20);
                     let html = '';
                     limited.forEach(s => {
