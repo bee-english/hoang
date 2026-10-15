@@ -1,0 +1,326 @@
+# TẬP 1
+
+## CHƯƠNG I. PHƯƠNG TRÌNH VÀ HỆ HAI PHƯƠNG TRÌNH BẬC NHẤT HAI ẨN
+
+* **Bài 1. Phương trình bậc nhất hai ẩn và hệ hai phương trình bậc nhất hai ẩn**
+* 1. Phương trình bậc nhất hai ẩn
+
+
+* 2. Hệ hai phương trình bậc nhất hai ẩn
+
+
+
+
+* **Bài 2. Giải hệ hai phương trình bậc nhất hai ẩn**
+* 1. Phương pháp thế
+
+
+* 2. Phương pháp cộng đại số
+
+
+
+
+* **Bài 3. Giải bài toán bằng cách lập hệ phương trình**
+* 1. Giải bài toán bằng cách lập hệ phương trình
+
+
+
+
+
+---
+
+## CHƯƠNG II. BẤT PHƯƠNG TRÌNH BẬC NHẤT MỘT ẨN
+
+* **Bài 4. Bất đẳng thức**
+* 1. Liên hệ giữa thứ tự và phép cộng
+
+
+* 2. Liên hệ giữa thứ tự và phép nhân
+
+
+* 3. Bất đẳng thức lớn hơn, nhỏ hơn
+
+
+
+
+* **Bài 5. Bất phương trình bậc nhất một ẩn**
+* 1. Bất phương trình bậc nhất một ẩn
+
+
+* 2. Cách giải bất phương trình bậc nhất một ẩn
+
+
+
+
+
+---
+
+## CHƯƠNG III. CĂN BẬC HAI VÀ CĂN BẬC BA
+
+* **Bài 6. Căn bậc hai và căn thức bậc hai**
+* 1. Căn bậc hai số học
+
+
+* 2. Căn thức bậc hai
+
+
+
+
+* **Bài 7. Khai căn bậc hai và phép nhân, phép chia**
+* 1. Khai căn bậc hai với phép nhân
+
+
+* 2. Khai căn bậc hai với phép chia
+
+
+
+
+* **Bài 8. Biến đổi đơn giản biểu thức chứa căn thức bậc hai**
+* 1. Đưa thừa số ra ngoài dấu căn
+
+
+* 2. Đưa thừa số vào trong dấu căn
+
+
+* 3. Khử mẫu của biểu thức lấy căn và trục căn thức ở mẫu
+
+
+
+
+* **Bài 9. Căn bậc ba và căn thức bậc ba**
+* 1. Căn bậc ba
+
+
+* 2. Căn thức bậc ba
+
+
+
+
+
+---
+
+## CHƯƠNG IV. HỆ THỨC LƯỢNG TRONG TAM GIÁC VUÔNG
+
+* **Bài 10. Tỉ số lượng giác của góc nhọn**
+* 1. Tỉ số lượng giác của góc nhọn
+
+
+* 2. Tỉ số lượng giác của hai góc phụ nhau
+
+
+
+
+* **Bài 11. Một số hệ thức giữa cạnh và góc trong tam giác vuông**
+* 1. Hệ thức giữa cạnh và góc trong tam giác vuông
+
+
+
+
+* **Bài 12. Ứng dụng thực tế của tỉ số lượng giác góc nhọn**
+* 1. Xác định chiều cao
+
+
+* 2. Xác định khoảng cách
+
+
+
+
+
+---
+
+## CHƯƠNG V. ĐƯỜNG TRÒN
+
+* **Bài 13. Mở đầu về đường tròn**
+* 1. Đường tròn. Tâm đối xứng và trục đối xứng của đường tròn
+
+
+* 2. Sự xác định đường tròn
+
+
+
+
+* **Bài 14. Vị trí tương đối của đường thẳng và đường tròn**
+* 1. Vị trí tương đối của đường thẳng và đường tròn
+
+
+
+
+* **Bài 15. Độ dài cung tròn, diện tích hình quạt tròn và hình vành khuyên**
+* 1. Độ dài cung tròn
+
+
+* 2. Diện tích hình quạt tròn và hình vành khuyên
+
+
+
+
+* **Bài 16. Tiếp tuyến của đường tròn**
+* 1. Dấu hiệu nhận biết tiếp tuyến của đường tròn
+
+
+
+
+* **Bài 17. Tính chất hai tiếp tuyến cắt nhau**
+* 1. Tính chất hai tiếp tuyến cắt nhau
+
+
+
+
+* **Bài 18. Góc nội tiếp**
+* 1. Góc nội tiếp
+
+
+* 2. Định lý về góc nội tiếp
+
+
+
+
+* **Bài 19. Góc ở tâm, góc có đỉnh ở bên trong đường tròn, góc có đỉnh ở bên ngoài đường tròn**
+* 1. Góc ở tâm
+
+
+* 2. Góc có đỉnh ở bên trong hay bên ngoài đường tròn
+
+
+
+
+* **Bài 20. Tứ giác nội tiếp**
+* 1. Khái niệm tứ giác nội tiếp
+
+
+* 2. Dấu hiệu nhận biết tứ giác nội tiếp
+
+
+
+
+* **Bài 21. Đường tròn ngoại tiếp, đường tròn nội tiếp tam giác**
+* 1. Đường tròn ngoại tiếp tam giác
+
+
+* 2. Đường tròn nội tiếp tam giác
+
+
+
+
+
+---
+
+---
+
+# TẬP 2
+
+## CHƯƠNG VI. HÀM SỐ $y = ax^2$ ($a \neq 0$). PHƯƠNG TRÌNH BẬC HAI MỘT ẨN
+
+* **Bài 22. Hàm số $y = ax^2$ ($a \neq 0$)**
+* 1. Đồ thị của hàm số $y = ax^2$ ($a \neq 0$)
+
+
+* 2. Tính chất của hàm số $y = ax^2$ ($a \neq 0$)
+
+
+
+
+* **Bài 23. Phương trình bậc hai một ẩn**
+* 1. Phương trình bậc hai một ẩn
+
+
+* 2. Công thức nghiệm của phương trình bậc hai
+
+
+
+
+* **Bài 24. Định lý Viète và ứng dụng**
+* 1. Định lý Viète
+
+
+* 2. Tìm hai số khi biết tổng và tích của chúng
+
+
+
+
+* **Bài 25. Giải bài toán bằng cách lập phương trình**
+* 1. Các bước giải bài toán bằng cách lập phương trình
+
+
+
+
+
+---
+
+## CHƯƠNG VII. TẦN SỐ VÀ TẦN SỐ TƯƠNG ĐỐI
+
+* **Bài 26. Bảng tần số và biểu đồ tần số**
+* 1. Bảng tần số
+
+
+* 2. Biểu đồ tần số
+
+
+
+
+* **Bài 27. Tần số tương đối và biểu đồ tần số tương đối**
+* 1. Tần số tương đối
+
+
+* 2. Biểu đồ tần số tương đối
+
+
+
+
+* **Bài 28. Bảng tần số ghép nhóm và biểu đồ tần số ghép nhóm**
+* 1. Bảng tần số ghép nhóm
+
+
+* 2. Biểu đồ tần số ghép nhóm
+
+
+
+
+* **Bài 29. Tần số tương đối ghép nhóm và biểu đồ tần số tương đối ghép nhóm**
+* 1. Tần số tương đối ghép nhóm
+
+
+* 2. Biểu đồ tần số tương đối ghép nhóm
+
+
+
+
+
+---
+
+## CHƯƠNG VIII. XÁC SUẤT CỦA BIẾN CỐ TRONG MỘT SỐ TRÒ CHƠI ĐƠN GIẢN
+
+* **Bài 30. Xác suất của biến cố**
+* 1. Không gian mẫu và biến cố
+
+
+* 2. Tính xác suất của biến cố
+
+
+
+
+
+---
+
+## CHƯƠNG IX. ĐƯỜNG TRÒN NGOẠI TIẾP VÀ ĐƯỜNG TRÒN NỘI TIẾP. HÌNH KHỐI TRONG THỰC TIỄN
+
+* **Bài 31. Đa giác đều**
+* 1. Đa giác đều
+
+
+* 2. Phép quay và tính đối xứng của đa giác đều
+
+
+
+
+* **Bài 32. Hình trụ và hình nón**
+* 1. Hình trụ
+
+
+* 2. Hình nón
+
+
+
+
+* **Bài 33. Hình cầu**
+* 1. Mặt cầu và hình cầu
