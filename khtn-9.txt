@@ -1,0 +1,496 @@
+# PHẦN 1. NĂNG LƯỢNG VÀ SỰ BIẾN ĐỔI
+
+## CHƯƠNG I. NĂNG LƯỢNG CƠ HỌC
+
+* **Bài 2. Động năng. Thế năng**
+* 1. Động năng
+
+
+* 2. Thế năng
+
+
+
+
+* **Bài 3. Cơ năng**
+* 1. Sự bảo toàn cơ năng
+
+
+
+
+* **Bài 4. Công và công suất**
+* 1. Công cơ học
+
+
+* 2. Công suất
+
+
+
+
+
+---
+
+## CHƯƠNG II. ÁNH SÁNG
+
+* **Bài 5. Khúc xạ ánh sáng**
+* 1. Hiện tượng khúc xạ ánh sáng
+
+
+* 2. Góc khúc xạ
+
+
+
+
+* **Bài 6. Phản xạ toàn phần**
+* 1. Hiện tượng phản xạ toàn phần
+
+
+* 2. Góc tới hạn phản xạ toàn phần
+
+
+
+
+* **Bài 7. Lăng kính**
+* 1. Cấu tạo lăng kính
+
+
+* 2. Đường đi của tia sáng qua lăng kính
+
+
+
+
+* **Bài 8. Thấu kính**
+* 1. Thấu kính hội tụ
+
+
+* 2. Thấu kính phân kì
+
+
+
+
+* **Bài 9. Thực hành đo tiêu cự của thấu kính hội tụ**
+* 1. Dụng cụ thí nghiệm
+
+
+* 2. Các bước tiến hành đo tiêu cự
+
+
+
+
+* **Bài 10. Kính lúp. Bài tập thấu kính**
+* 1. Kính lúp và số bội giác
+
+
+* 2. Các bài tập vận dụng về thấu kính
+
+
+
+
+
+---
+
+## CHƯƠNG III. ĐIỆN
+
+* **Bài 11. Điện trở. Định luật Ohm**
+* 1. Điện trở của dây dẫn
+
+
+* 2. Định luật Ohm
+
+
+
+
+* **Bài 12. Đoạn mạch nối tiếp, song song**
+* 1. Đoạn mạch nối tiếp
+
+
+* 2. Đoạn mạch song song
+
+
+
+
+* **Bài 13. Năng lượng của dòng điện và công suất điện**
+* 1. Năng lượng của dòng điện
+
+
+* 2. Công suất điện
+
+
+
+
+
+---
+
+## CHƯƠNG IV. ĐIỆN TỪ
+
+* **Bài 14. Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều**
+* 1. Hiện tượng cảm ứng điện từ
+
+
+* 2. Cấu tạo và hoạt động của máy phát điện xoay chiều
+
+
+
+
+* **Bài 15. Tác dụng của dòng điện xoay chiều**
+* 1. Tác dụng nhiệt, tác dụng quang, tác dụng từ của dòng điện xoay chiều
+
+
+
+
+
+---
+
+## CHƯƠNG V. NĂNG LƯỢNG VỚI CUỘC SỐNG
+
+* **Bài 16. Vòng năng lượng trên Trái Đất. Năng lượng hóa thạch**
+* 1. Vòng năng lượng trên Trái Đất
+
+
+* 2. Năng lượng hóa thạch
+
+
+
+
+* **Bài 17. Một số dạng năng lượng tái tạo**
+* 1. Năng lượng mặt trời, gió, nước, địa nhiệt
+
+
+
+
+
+---
+
+---
+
+# PHẦN 2. CHẤT VÀ SỰ BIẾN ĐỔI CỦA CHẤT
+
+## CHƯƠNG VI. KIM LOẠI. SỰ KHÁC NHAU CƠ BẢN GIỮA PHI KIM VÀ KIM LOẠI
+
+* **Bài 18. Tính chất chung của kim loại**
+* 1. Tính chất vật lí
+
+
+* 2. Tính chất hóa học
+
+
+
+
+* **Bài 19. Dãy hoạt động hóa học**
+* 1. Dãy hoạt động hóa học của kim loại
+
+
+* 2. Ý nghĩa của dãy hoạt động hóa học
+
+
+
+
+* **Bài 20. Tách kim loại và việc sử dụng hợp kim**
+* 1. Nguyên tắc tách kim loại
+
+
+* 2. Hợp kim và ứng dụng
+
+
+
+
+* **Bài 21. Sự khác nhau cơ bản giữa phi kim và kim loại**
+* 1. So sánh tính chất vật lí và hóa học giữa kim loại và phi kim
+
+
+
+
+
+---
+
+## CHƯƠNG VII. GIỚI THIỆU VỀ CHẤT HỮU CƠ. HYDROCARBON VÀ NGUỒN NHIÊN LIỆU
+
+* **Bài 22. Giới thiệu về hợp chất hữu cơ**
+* 1. Khái niệm hợp chất hữu cơ
+
+
+* 2. Đặc điểm chung của hợp chất hữu cơ
+
+
+
+
+* **Bài 23. Alkane**
+* 1. Khái niệm và đồng đẳng của alkane
+
+
+* 2. Tính chất hóa học
+
+
+
+
+* **Bài 24. Alkene**
+* 1. Khái niệm alkene
+
+
+* 2. Tính chất hóa học
+
+
+
+
+* **Bài 25. Nguồn nhiên liệu**
+* 1. Dầu mỏ, khí thiên nhiên và khí mỏ dầu
+
+
+* 2. Than đá và các nguồn nhiên liệu khác
+
+
+
+
+
+---
+
+## CHƯƠNG VIII. ETHYLIC ALCOHOL VÀ ACETIC ACID
+
+* **Bài 26. Ethylic alcohol**
+* 1. Tính chất vật lí và cấu tạo hóa học
+
+
+* 2. Tính chất hóa học và ứng dụng
+
+
+
+
+* **Bài 27. Acetic acid**
+* 1. Tính chất vật lí và cấu tạo hóa học
+
+
+* 2. Tính chất hóa học và ứng dụng
+
+
+
+
+
+---
+
+## CHƯƠNG IX. LIPID. CARBOHYDRATE. PROTEIN. POLYMER
+
+* **Bài 28. Lipid**
+* 1. Khái niệm và tính chất của lipid
+
+
+
+
+* **Bài 29. Carbohydrate. Glucose và saccharose**
+* 1. Glucose
+
+
+* 2. Saccharose
+
+
+
+
+* **Bài 30. Tinh bột và cellulose**
+* 1. Tinh bột
+
+
+* 2. Cellulose
+
+
+
+
+* **Bài 31. Protein**
+* 1. Cấu tạo và tính chất của protein
+
+
+
+
+* **Bài 32. Polymer**
+* 1. Khái niệm polymer
+
+
+* 2. Chất dẻo, tơ học, cao su
+
+
+
+
+
+---
+
+## CHƯƠNG X. KHAI THÁC TÀI NGUYÊN TỪ VỎ TRÁI ĐẤT
+
+* **Bài 33. Sơ lược về hóa học vỏ Trái Đất và khai thác tài nguyên từ vỏ Trái Đất**
+* 1. Thành phần hóa học vỏ Trái Đất
+
+
+
+
+* **Bài 34. Khai thác đá vôi. Công nghiệp silicate**
+* 1. Khai thác đá vôi và các sản phẩm từ đá vôi
+
+
+* 2. Sơ lược về công nghiệp silicate (gốm, thủy tinh, xi măng)
+
+
+
+
+* **Bài 35. Khai thác nhiên liệu hóa thạch. Nguồn carbon. Chu trình carbon và sự ấm lên toàn cầu**
+* 1. Khai thác nhiên liệu hóa thạch
+
+
+* 2. Chu trình carbon và hiệu ứng nhà kính
+
+
+
+
+
+---
+
+---
+
+# PHẦN 3. VẬT SỐNG
+
+## CHƯƠNG XI. DI TRUYỀN HỌC MENDEL. CƠ SỞ PHÂN TỬ CỦA HIỆN TƯỢNG DI TRUYỀN
+
+* **Bài 36. Khái quát về di truyền học**
+* 1. Đối tượng và nội dung của di truyền học
+
+
+
+
+* **Bài 37. Các quy luật di truyền của Mendel**
+* 1. Thí nghiệm của Mendel
+
+
+* 2. Quy luật phân ly và phân ly độc lập
+
+
+
+
+* **Bài 38. Nucleic acid và gene**
+* 1. Cấu trúc DNA
+
+
+* 2. Khái niệm gene
+
+
+
+
+* **Bài 39. Tái bản DNA và phiên mã tạo RNA**
+* 2. Quá trình phiên mã
+
+
+
+
+* **Bài 40. Dịch mã và mối quan hệ từ gene đến tính trạng**
+* 1. Quá trình dịch mã
+
+
+* 2. Mối quan hệ từ gene đến tính trạng
+
+
+
+
+* **Bài 41. Đột biến gene**
+* 1. Khái niệm và các dạng đột biến gene
+
+
+* 2. Nguyên nhân và vai trò của đột biến gene
+
+
+
+
+
+---
+
+## CHƯƠNG XII. DI TRUYỀN NHIỄM SẮC THỂ
+
+* **Bài 42. Nhiễm sắc thể và bộ nhiễm sắc thể**
+* 1. Hình thái và cấu trúc nhiễm sắc thể
+
+
+* 2. Bộ nhiễm sắc thể lưỡng bội và đơn bội
+
+
+
+
+* **Bài 43. Nguyên phân và giảm phân**
+* 1. Quá trình nguyên phân
+
+
+* 2. Quá trình giảm phân
+
+
+
+
+* **Bài 44. NST giới tính và cơ chế xác định giới tính**
+* 1. Nhiễm sắc thể giới tính
+
+
+* 2. Cơ chế xác định giới tính
+
+
+
+
+* **Bài 45. Di truyền liên kết**
+* 1. Hiện tượng di truyền liên kết gene
+
+
+
+
+* **Bài 46. Đột biến NST**
+* 1. Đột biến cấu trúc nhiễm sắc thể
+
+
+* 2. Đột biến số lượng nhiễm sắc thể
+
+
+
+
+
+---
+
+## CHƯƠNG XIII. DI TRUYỀN HỌC VỚI CON NGƯỜI VÀ ĐỜI SỐNG
+
+* **Bài 47. Di truyền học với con người**
+* 1. Di truyền y học và tư vấn di truyền
+
+
+* 2. Di truyền học với hôn nhân và pháp luật
+
+
+
+
+* **Bài 48. Ứng dụng công nghệ di truyền vào đời sống**
+* 1. Công nghệ DNA tái tổ hợp
+
+
+* 2. Ứng dụng công nghệ tế bào và công nghệ gene
+
+
+
+
+
+---
+
+## CHƯƠNG XIV. TIẾN HÓA
+
+* **Bài 49. Khái niệm tiến hóa và các hình thức chọn lọc**
+* 1. Khái niệm tiến hóa
+
+
+* 2. Chọn lọc tự nhiên và chọn lọc nhân tạo
+
+
+
+
+* **Bài 50. Cơ chế tiến hóa**
+* 1. Quan niệm của Darwin về cơ chế tiến hóa
+
+
+* 2. Tiến hóa theo quan niệm hiện đại
+
+
+
+
+* **Bài 51. Sự phát sinh và phát triển sự sống trên Trái Đất**
+* 1. Giai đoạn tiến hóa hóa học
+
+
+* 2. Giai đoạn tiến hóa tiền sinh học
+
+
+* 3. Giai đoạn tiến hóa sinh học qua các đại địa chất
