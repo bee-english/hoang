@@ -478,7 +478,6 @@
                 </div>
                 <button class="btn btn-secondary" id="joinRoomBtn"><i class="fas fa-door-open"></i> Tham gia phòng</button>
 
-                <button class="btn btn-danger" id="logoutBtn" style="margin-top:20px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
             </div>
         </div>
 
@@ -891,13 +890,6 @@
             }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            if (currentRoomId) leaveRoom();
-            auth.signOut().then(() => {
-                showNotification('Đã đăng xuất', 'info');
-            });
-        });
-
         // ============================================================
         // PAGE NAVIGATION
         // ============================================================
@@ -975,7 +967,7 @@
                     lastActive: firebase.firestore.FieldValue.serverTimestamp(),
                     isTeacher: true,
                     score: 0
-                });
+
             })
             .then(() => {
                 showNotification(`Đã tạo phòng "${roomName}" thành công!`, 'success');
@@ -990,7 +982,7 @@
             .finally(() => {
                 createBtn.innerHTML = '<i class="fas fa-video"></i> Tạo phòng học';
                 createBtn.disabled = false;
-            });
+
         }
 
         function joinRoom() {
@@ -1052,11 +1044,11 @@
                     const startExamBtn = document.getElementById('startExamBtn');
                     startExamBtn.style.display = (isTeacher && isExamMode && !examStarted) ? 'flex' : 'none';
                     showNotification(`Đã tham gia phòng "${roomData.name}"`, 'success');
-                });
+
             }).catch(err => {
                 console.error(err);
                 showNotification('Lỗi tham gia phòng', 'error');
-            });
+
         }
 
         function showRoomPage() {
@@ -1111,7 +1103,7 @@
             }).catch(err => {
                 console.error(err);
                 showNotification('Lỗi rời phòng', 'error');
-            });
+
         }
 
         // ============================================================
@@ -1146,11 +1138,11 @@
                                 <div class="participant-score">${p.score || 0} điểm</div>
                                 ${pid === currentUser.uid ? '<div style="color:#FFA500;font-size:0.78rem;margin-top:4px;"><i class="fas fa-user-circle"></i> Bạn</div>' : ''}
                             </div>`;
-                    });
+
                     html += '</div>';
                     listEl.innerHTML = html;
                     document.getElementById('participantCount').textContent = count;
-                });
+
 
             if (roomListener) roomListener();
             roomListener = db.collection('rooms').doc(currentRoomId).onSnapshot(doc => {
@@ -1195,7 +1187,7 @@
                 }
                 updateContentControls();
                 document.getElementById('bankControls').style.display = (isTeacher && !(isExamMode && !examStarted)) ? 'flex' : 'none';
-            });
+
         }
 
         // ============================================================
@@ -1218,7 +1210,7 @@
                         showNoContentMessage();
                     }
                     updateContentInfo();
-                });
+
         }
 
         function loadStudentSubmissions() {
@@ -1252,9 +1244,9 @@
                                     ${s.submittedAt ? new Date(s.submittedAt.toDate()).toLocaleString('vi-VN') : ''}
                                 </div>
                             </div>`;
-                    });
+
                     list.innerHTML = html;
-                });
+
         }
 
         function saveSubmission(contentId, content, answer, isCorrect, pointsEarned) {
@@ -1277,7 +1269,7 @@
             currentContentType = content.type || 'essay';
             document.querySelectorAll('.content-type-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.getAttribute('data-type') === currentContentType);
-            });
+
             switchContentType(currentContentType);
 
             const diffMap = { easy: 'Dễ', medium: 'Trung bình', hard: 'Khó' };
@@ -1307,8 +1299,8 @@
                             this.classList.add('selected');
                             const radio = this.querySelector('input');
                             if (radio) radio.checked = true;
-                        });
-                    });
+
+
                 }
             }
             updateContentInfo();
@@ -1321,7 +1313,7 @@
             currentContentType = type;
             document.querySelectorAll('.content-type-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.getAttribute('data-type') === type);
-            });
+
         }
 
         function showNoContentMessage() {
@@ -1342,7 +1334,7 @@
                 o.style.pointerEvents = 'auto';
                 o.style.backgroundColor = '';
                 o.style.borderColor = '';
-            });
+
             document.querySelectorAll('input[name="mcq_option"]').forEach(r => r.checked = false);
             document.getElementById('mcqAnswerFeedback').style.display = 'none';
             document.getElementById('submitMcqAnswerBtn').disabled = false;
@@ -1375,7 +1367,7 @@
         document.getElementById('aiGenerateEssayBtn').addEventListener('click', () => {
             openAiGenerateModal();
             document.getElementById('aiContentType').value = 'essay';
-        });
+
 
         document.getElementById('createMcqBtn').addEventListener('click', openCreateMcqModal);
         document.getElementById('saveMcqBtn').addEventListener('click', saveMcq);
@@ -1386,7 +1378,7 @@
         document.getElementById('aiGenerateMcqBtn').addEventListener('click', () => {
             openAiGenerateModal();
             document.getElementById('aiContentType').value = 'mcq';
-        });
+
 
         document.getElementById('aiGenerateBtn').addEventListener('click', openAiGenerateModal);
         document.getElementById('generateWithAiBtn').addEventListener('click', generateContentWithAI);
@@ -1398,8 +1390,8 @@
         document.querySelectorAll('.content-type-tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 switchContentType(this.getAttribute('data-type'));
-            });
-        });
+
+
 
         function openCreateEssayModal() {
             if (isExamMode && !examStarted) {
@@ -1505,7 +1497,7 @@
             }).finally(() => {
                 btn.innerHTML = 'Tạo câu hỏi';
                 btn.disabled = false;
-            });
+
         }
 
         function saveMcq() {
@@ -1521,7 +1513,7 @@
                     options.push({ text, correct: !!correct });
                     if (correct) hasCorrect = true;
                 }
-            });
+
             if (!question) { showNotification('Vui lòng nhập câu hỏi', 'warning'); return; }
             if (options.length < 2) { showNotification('Cần ít nhất 2 lựa chọn', 'warning'); return; }
             if (!hasCorrect) { showNotification('Cần chọn ít nhất 1 đáp án đúng', 'warning'); return; }
@@ -1546,7 +1538,7 @@
             }).finally(() => {
                 btn.innerHTML = 'Tạo câu hỏi';
                 btn.disabled = false;
-            });
+
         }
 
         // ============================================================
@@ -1631,7 +1623,7 @@
                     opt.style.backgroundColor = 'rgba(76,175,80,0.12)';
                     opt.style.borderColor = '#4CAF50';
                 }
-            });
+
         }
 
         function updateUserScore(points) {
@@ -1642,7 +1634,7 @@
                     const cur = doc.data().score || 0;
                     return db.collection('rooms').doc(currentRoomId).collection('participants').doc(currentUser.uid).update({
                         score: cur + points
-                    });
+
                 }
             }).catch(err => console.error(err));
         }
@@ -1730,7 +1722,7 @@ Chỉ trả về JSON, không thêm text.`;
                         max_tokens: 2500,
                         temperature: 0.6
                     })
-                });
+
                 if (!response.ok) throw new Error('API error ' + response.status);
                 const data = await response.json();
                 let content = data.choices[0].message.content;
@@ -1826,7 +1818,7 @@ Chỉ trả về JSON, không thêm text.`;
                     `;
                 }
                 list.appendChild(div);
-            });
+
             document.getElementById('aiReviewModal').classList.add('active');
         }
 
@@ -1838,11 +1830,11 @@ Chỉ trả về JSON, không thêm text.`;
         document.getElementById('closeAiReviewModal').addEventListener('click', () => {
             document.getElementById('aiReviewModal').classList.remove('active');
             pendingAiQuestions = [];
-        });
+
         document.getElementById('cancelAiReview').addEventListener('click', () => {
             document.getElementById('aiReviewModal').classList.remove('active');
             pendingAiQuestions = [];
-        });
+
 
         document.getElementById('confirmSaveAiQuestions').addEventListener('click', async () => {
             const items = [];
@@ -1864,7 +1856,7 @@ Chỉ trả về JSON, không thêm text.`;
                         points,
                         difficulty,
                         aiGenerated: true
-                    });
+
                 } else {
                     const options = [];
                     let hasCorrect = false;
@@ -1875,7 +1867,7 @@ Chỉ trả về JSON, không thêm text.`;
                             options.push({ text, correct: !!correct });
                             if (correct) hasCorrect = true;
                         }
-                    });
+
                     if (options.length < 2 || !hasCorrect) return;
                     items.push({
                         type: 'mcq',
@@ -1884,9 +1876,9 @@ Chỉ trả về JSON, không thêm text.`;
                         points,
                         difficulty,
                         aiGenerated: true
-                    });
+
                 }
-            });
+
 
             if (items.length === 0) {
                 showNotification('Không còn câu hỏi hợp lệ để lưu', 'warning');
@@ -1933,7 +1925,7 @@ Chỉ trả về JSON, không thêm text.`;
                 btn.innerHTML = '<i class="fas fa-check"></i> Xác nhận & Lưu đề';
                 btn.disabled = false;
             }
-        });
+
 
         async function saveAiContentToBank(bankId, contentType, items) {
             const bankRef = db.collection('questionBanks').doc(bankId);
@@ -1958,7 +1950,7 @@ Chỉ trả về JSON, không thêm text.`;
             await bankRef.update({
                 contents,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+
             showNotification(`Đã thêm ${items.length} câu hỏi AI vào đề!`, 'success');
             openBankManagerModal();
             loadBankList();
@@ -1983,11 +1975,11 @@ Chỉ trả về JSON, không thêm text.`;
         document.getElementById('showAddContentButtonsBtn').addEventListener('click', () => {
             document.getElementById('bankContentButtons').style.display = 'flex';
             document.getElementById('showAddContentButtonsBtn').style.display = 'none';
-        });
+
         document.getElementById('bankHideContentButtonsBtn').addEventListener('click', () => {
             document.getElementById('bankContentButtons').style.display = 'none';
             document.getElementById('showAddContentButtonsBtn').style.display = 'block';
-        });
+
         document.getElementById('bankCreateEssayBtn').addEventListener('click', () => openBankCreateModal('essay'));
         document.getElementById('bankCreateMcqBtn').addEventListener('click', () => openBankCreateModal('mcq'));
 
@@ -2040,7 +2032,7 @@ Chỉ trả về JSON, không thêm text.`;
                     const ta = a.createdAt ? a.createdAt.toDate().getTime() : 0;
                     const tb = b.createdAt ? b.createdAt.toDate().getTime() : 0;
                     return tb - ta;
-                });
+
                 let html = '';
                 banks.forEach(bank => {
                     const cnt = bank.contents ? bank.contents.length : 0;
@@ -2061,12 +2053,12 @@ Chỉ trả về JSON, không thêm text.`;
                             </div>
                             <div class="bank-item-preview">${getBankPreview(bank.contents)}</div>
                         </div>`;
-                });
+
                 list.innerHTML = html;
             }).catch(err => {
                 console.error(err);
                 list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải dữ liệu</div>';
-            });
+
         }
 
         function setBankForAdding(bankId, bankName) {
@@ -2118,7 +2110,7 @@ Chỉ trả về JSON, không thêm text.`;
                 contents.push({
                     type: 'essay', question, correctAnswers: answers, points, difficulty,
                     createdBy: currentUser.uid, createdAt: Date.now()
-                });
+
                 await bankRef.update({ contents, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
                 showNotification('Đã thêm câu tự luận vào đề!', 'success');
                 closeCreateEssayModal();
@@ -2143,7 +2135,7 @@ Chỉ trả về JSON, không thêm text.`;
                 const text = g.querySelector('input[type="text"]')?.value.trim();
                 const correct = g.querySelector('input[type="checkbox"]')?.checked;
                 if (text) { options.push({ text, correct: !!correct }); if (correct) hasCorrect = true; }
-            });
+
             if (!question || options.length < 2 || !hasCorrect) {
                 showNotification('Kiểm tra lại câu hỏi và đáp án', 'warning');
                 return;
@@ -2158,7 +2150,7 @@ Chỉ trả về JSON, không thêm text.`;
                 contents.push({
                     type: 'mcq', question, options, points, difficulty,
                     createdBy: currentUser.uid, createdAt: Date.now()
-                });
+
                 await bankRef.update({ contents, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
                 showNotification('Đã thêm câu trắc nghiệm vào đề!', 'success');
                 closeCreateMcqModal();
@@ -2179,7 +2171,7 @@ Chỉ trả về JSON, không thêm text.`;
                 if (c.type === 'essay') return `✍️ ${c.question.substring(0, 45)}...`;
                 if (c.type === 'mcq') return `☑️ ${c.question.substring(0, 45)}...`;
                 return 'Nội dung';
-            });
+
             if (contents.length > 3) previews.push(`... và ${contents.length - 3} nội dung khác`);
             return previews.join('<br>');
         }
@@ -2211,9 +2203,9 @@ Chỉ trả về JSON, không thêm text.`;
                             </div>
                             <div class="bank-item-preview">${getBankPreview(bank.contents)}</div>
                         </div>`;
-                });
+
                 list.innerHTML = html;
-            });
+
         }
 
         function createNewBank() {
@@ -2239,7 +2231,7 @@ Chỉ trả về JSON, không thêm text.`;
             }).finally(() => {
                 btn.innerHTML = 'Tạo đề';
                 btn.disabled = false;
-            });
+
         }
 
         window.viewBankDetails = function(bankId, bankName) {
@@ -2265,11 +2257,11 @@ Chỉ trả về JSON, không thêm text.`;
                                 </div>
                                 ${renderContentPreview(c)}
                             </div>`;
-                    });
+
                     view.innerHTML = html;
                 }
                 document.getElementById('viewBankModal').classList.add('active');
-            });
+
         };
 
         window.editBank = function(bankId, bankName) {
@@ -2299,11 +2291,11 @@ Chỉ trả về JSON, không thêm text.`;
                                 </div>
                                 ${renderContentPreview(c)}
                             </div>`;
-                    });
+
                     list.innerHTML = html;
                 }
                 document.getElementById('editBankModal').classList.add('active');
-            });
+
         };
 
         window.removeContentFromBank = function(index) {
@@ -2315,14 +2307,14 @@ Chỉ trả về JSON, không thêm text.`;
                 return db.collection('questionBanks').doc(bankId).update({
                     contents,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+
             }).then(() => {
                 showNotification('Đã xóa nội dung', 'success');
                 editBank(bankId, document.getElementById('editBankName').textContent);
             }).catch(err => {
                 console.error(err);
                 showNotification('Lỗi xóa', 'error');
-            });
+
         };
 
         function saveBankEdit() {
@@ -2345,7 +2337,7 @@ Chỉ trả về JSON, không thêm text.`;
             }).finally(() => {
                 btn.innerHTML = 'Lưu thay đổi';
                 btn.disabled = false;
-            });
+
         }
 
         window.deleteBank = function(bankId) {
@@ -2357,7 +2349,7 @@ Chỉ trả về JSON, không thêm text.`;
             }).catch(err => {
                 console.error(err);
                 showNotification('Lỗi xóa đề', 'error');
-            });
+
         };
 
         window.addBankToRoom = function(bankId, bankName) {
@@ -2383,8 +2375,8 @@ Chỉ trả về JSON, không thêm text.`;
                         fromBank: true,
                         fromBankId: bankId,
                         fromBankName: bankName
-                    });
-                });
+
+
                 return batch.commit();
             }).then(() => {
                 showNotification(`Đã thêm đề "${bankName}" vào phòng!`, 'success');
@@ -2392,7 +2384,7 @@ Chỉ trả về JSON, không thêm text.`;
             }).catch(err => {
                 console.error(err);
                 showNotification('Lỗi thêm đề', 'error');
-            });
+
         };
 
         function loadHomeBankList() {
@@ -2422,9 +2414,9 @@ Chỉ trả về JSON, không thêm text.`;
                             </div>
                             <div class="bank-item-preview">${getBankPreview(bank.contents)}</div>
                         </div>`;
-                });
+
                 list.innerHTML = html;
-            });
+
         }
 
         window.selectBankForRoom = function(bankId, bankName) {
@@ -2440,7 +2432,7 @@ Chỉ trả về JSON, không thêm text.`;
                 document.getElementById('selectedBankDisplay').style.display = 'flex';
                 closeHomeBankModal();
                 showNotification(`Đã chọn đề "${bankName}"`, 'success');
-            });
+
         };
 
         function clearSelectedBank() {
@@ -2464,7 +2456,7 @@ Chỉ trả về JSON, không thêm text.`;
                 batch.update(roomRef, {
                     examStarted: true,
                     examStartTime: firebase.firestore.FieldValue.serverTimestamp()
-                });
+
                 const examContents = data.examContents || [];
                 if (examContents.length) {
                     const col = roomRef.collection('contents');
@@ -2479,8 +2471,8 @@ Chỉ trả về JSON, không thêm text.`;
                             fromBank: true,
                             fromBankId: data.selectedBankId,
                             fromBankName: data.selectedBankName
-                        });
-                    });
+
+
                 }
                 return batch.commit();
             }).then(() => {
@@ -2489,7 +2481,7 @@ Chỉ trả về JSON, không thêm text.`;
                 endTime = newEnd;
                 return db.collection('rooms').doc(currentRoomId).update({
                     endTime: firebase.firestore.Timestamp.fromDate(newEnd)
-                });
+
             }).then(() => {
                 showNotification('Đã bắt đầu thi!', 'success');
                 btn.style.display = 'none';
@@ -2500,7 +2492,7 @@ Chỉ trả về JSON, không thêm text.`;
                 showNotification('Lỗi bắt đầu thi', 'error');
                 btn.innerHTML = '<i class="fas fa-play"></i> Bắt đầu thi';
                 btn.disabled = false;
-            });
+
         }
 
         // ============================================================
@@ -2542,7 +2534,7 @@ Chỉ trả về JSON, không thêm text.`;
             if (currentRoomId && currentUser) {
                 db.collection('rooms').doc(currentRoomId).collection('participants').doc(currentUser.uid).delete().catch(() => {});
             }
-        });
+
     </script>
 </body>
 </html>
