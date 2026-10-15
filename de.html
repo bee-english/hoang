@@ -250,6 +250,53 @@
             line-height: 1.5;
         }
 
+        /* View Exam Questions */
+        .view-q-item {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border-left: 5px solid #FFA500;
+        }
+        .view-q-item.mcq { border-left-color: #2196F3; }
+        .view-q-header {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .view-q-text {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .view-q-answer {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        .view-q-options {
+            margin-top: 8px;
+        }
+        .view-q-option {
+            padding: 6px 10px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+        }
+        .view-q-option.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
         @media (max-width: 640px) {
             .container { padding: 20px; margin: 0 8px; }
             .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
@@ -449,9 +496,14 @@
                         <strong>Mã đề:</strong>
                         <span class="exam-code-badge" id="detailExamCode">DE_XXXX</span>
                     </div>
-                    <button class="btn btn-sm btn-secondary" id="btnCopyCode">
-                        <i class="fas fa-copy"></i> Sao chép mã
-                    </button>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="btn btn-sm btn-secondary" id="btnCopyCode">
+                            <i class="fas fa-copy"></i> Sao chép mã
+                        </button>
+                        <button class="btn btn-sm" id="btnViewExamQuestions" style="background:linear-gradient(135deg,#FF9800,#F57C00);">
+                            <i class="fas fa-eye"></i> Xem đề
+                        </button>
+                    </div>
                 </div>
 
                 <h2 class="form-title"><i class="fas fa-users"></i> Danh sách bài làm của học sinh</h2>
@@ -546,6 +598,23 @@
                     <button class="modal-btn" id="btnConfirmAiQuestions" style="background:linear-gradient(135deg,#4CAF50,#2E7D32);">
                         <i class="fas fa-check"></i> Thêm vào đề
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== VIEW EXAM QUESTIONS MODAL ========== -->
+        <div id="viewExamModal" class="modal">
+            <div class="modal-content wide">
+                <span class="material-symbols-outlined close" id="closeViewExamModal">close</span>
+                <div class="modal-header">
+                    <h3><i class="fas fa-file-alt"></i> Xem đề: <span id="viewExamTitle"></span></h3>
+                </div>
+                <div class="modal-body">
+                    <div id="viewExamMeta" style="color:#666;font-size:0.9rem;margin-bottom:16px;"></div>
+                    <div id="viewExamQuestionsList" style="max-height:60vh;overflow-y:auto;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary" id="btnCloseViewExam">Đóng</button>
                 </div>
             </div>
         </div>
@@ -1232,7 +1301,7 @@ Chỉ trả về JSON, không thêm text.`;
         });
 
         // ============================================================
-        // EXAM DETAIL (Teacher)
+        // EXAM DETAIL (Teacher) + NÚT XEM ĐỀ
         // ============================================================
         window.openExamDetail = function(examId) {
             currentExamId = examId;
@@ -1266,6 +1335,74 @@ Chỉ trả về JSON, không thêm text.`;
             }).catch(() => {
                 showNotification('Không thể sao chép, hãy copy thủ công: ' + code, 'info');
             });
+        });
+
+        // Nút Xem đề
+        document.getElementById('btnViewExamQuestions').addEventListener('click', () => {
+            if (!currentExam) {
+                showNotification('Chưa tải được đề', 'warning');
+                return;
+            }
+            openViewExamModal(currentExam);
+        });
+
+        function openViewExamModal(exam) {
+            document.getElementById('viewExamTitle').textContent = exam.title || 'Đề thi';
+            document.getElementById('viewExamMeta').textContent =
+                `${subjName(exam.subject)} – Lớp ${exam.grade} • ${exam.questions?.length || 0} câu • ${exam.duration || 45} phút • Mã: ${exam.code}`;
+
+            const list = document.getElementById('viewExamQuestionsList');
+            const questions = exam.questions || [];
+            if (questions.length === 0) {
+                list.innerHTML = '<div style="text-align:center;padding:30px;color:#999;">Đề này chưa có câu hỏi</div>';
+            } else {
+                let html = '';
+                questions.forEach((q, idx) => {
+                    const diffClass = q.difficulty === 'easy' ? 'diff-easy' : (q.difficulty === 'hard' ? 'diff-hard' : 'diff-medium');
+                    const diffText = q.difficulty === 'easy' ? 'Dễ' : (q.difficulty === 'hard' ? 'Khó' : 'Trung bình');
+                    if (q.type === 'essay') {
+                        html += `
+                            <div class="view-q-item">
+                                <div class="view-q-header">
+                                    <span>Câu ${idx + 1} – Tự luận (${q.points || 1} điểm)</span>
+                                    <span class="difficulty-badge ${diffClass}">${diffText}</span>
+                                </div>
+                                <div class="view-q-text">${escapeHtml(q.question)}</div>
+                                <div class="view-q-answer">
+                                    <strong>Đáp án đúng:</strong> ${(q.correctAnswers || []).join(' / ') || 'Chưa có'}
+                                </div>
+                            </div>`;
+                    } else {
+                        let optsHtml = '';
+                        (q.options || []).forEach((o, oi) => {
+                            const isCorrect = o.correct;
+                            optsHtml += `
+                                <div class="view-q-option ${isCorrect ? 'correct' : ''}">
+                                    ${String.fromCharCode(65 + oi)}. ${escapeHtml(o.text)}
+                                    ${isCorrect ? ' <i class="fas fa-check"></i>' : ''}
+                                </div>`;
+                        });
+                        html += `
+                            <div class="view-q-item mcq">
+                                <div class="view-q-header">
+                                    <span>Câu ${idx + 1} – Trắc nghiệm (${q.points || 1} điểm)</span>
+                                    <span class="difficulty-badge ${diffClass}">${diffText}</span>
+                                </div>
+                                <div class="view-q-text">${escapeHtml(q.question)}</div>
+                                <div class="view-q-options">${optsHtml}</div>
+                            </div>`;
+                    }
+                });
+                list.innerHTML = html;
+            }
+            document.getElementById('viewExamModal').classList.add('active');
+        }
+
+        document.getElementById('closeViewExamModal').addEventListener('click', () => {
+            document.getElementById('viewExamModal').classList.remove('active');
+        });
+        document.getElementById('btnCloseViewExam').addEventListener('click', () => {
+            document.getElementById('viewExamModal').classList.remove('active');
         });
 
         // Load submissions – KHÔNG dùng orderBy để tránh index
