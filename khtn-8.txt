@@ -1,0 +1,488 @@
+# TẬP 1
+
+## CHƯƠNG I. PHẢN ỨNG HÓA HỌC
+
+* **Bài 1. Sử dụng một số hóa chất, thiết bị cơ bản trong phòng thí nghiệm**
+* 1. Một số dụng cụ và hóa chất thí nghiệm
+
+
+* 2. An toàn khi sử dụng hóa chất và thiết bị thí nghiệm
+
+
+
+
+* **Bài 2. Phản ứng hóa học**
+* 1. Biến đổi vật lí và biến đổi hóa học
+
+
+* 2. Phản ứng hóa học
+
+
+* 3. Năng lượng của phản ứng hóa học
+
+
+
+
+* **Bài 3. Mol và tỉ khối của chất khí**
+* 1. Mol
+
+
+* 2. Chuyển đổi giữa lượng chất và khối lượng
+
+
+* 3. Thể tích mol của chất khí
+
+
+* 4. Tỉ khối của chất khí
+
+
+
+
+* **Bài 4. Dung dịch và nồng độ**
+* 1. Dung dịch
+
+
+* 2. Độ tan của một chất trong nước
+
+
+* 3. Nồng độ dung dịch
+
+
+
+
+* **Bài 5. Định luật bảo toàn khối lượng và phương trình hóa học**
+* 1. Định luật bảo toàn khối lượng
+
+
+* 2. Phương trình hóa học
+
+
+
+
+
+---
+
+## CHƯƠNG II. ACID - BASE - PH - OXIDE - MUỐI
+
+* **Bài 6. Acid**
+* 1. Khái niệm acid
+
+
+* 2. Tính chất hóa học của acid
+
+
+* 3. Một số acid thông dụng
+
+
+
+
+* **Bài 7. Base**
+* 1. Khái niệm base
+
+
+* 2. Tính chất hóa học của base
+
+
+* 3. Một số base thông dụng
+
+
+
+
+* **Bài 8. Thang đo pH**
+* 1. Ý nghĩa của pH
+
+
+* 2. Chất chỉ thị pH
+
+
+
+
+* **Bài 9. Oxide**
+* 1. Khái niệm oxide
+
+
+* 2. Phân loại oxide
+
+
+* 3. Tính chất hóa học của oxide
+
+
+
+
+* **Bài 10. Muối**
+* 1. Khái niệm muối
+
+
+* 2. Tên gọi của muối
+
+
+* 3. Tính chất hóa học của muối
+
+
+* 4. Mối quan hệ giữa các hợp chất vô cơ
+
+
+
+
+
+---
+
+## CHƯƠNG III. KHỐI LƯỢNG RIÊNG VÀ ÁP SUẤT
+
+* **Bài 11. Khối lượng riêng**
+* 1. Khối lượng riêng
+
+
+* 2. Tính khối lượng riêng
+
+
+
+
+* **Bài 12. Áp suất**
+* 1. Tác dụng của áp lực lên bề mặt
+
+
+* 2. Áp suất
+
+
+
+
+* **Bài 13. Áp suất chất lỏng**
+* 1. Tác dụng của chất lỏng lên vật nhúng trong nó
+
+
+* 2. Áp suất chất lỏng
+
+
+
+
+* **Bài 14. Áp suất khí quyển**
+* 1. Áp suất khí quyển là gì?
+
+
+* 2. Độ lớn của áp suất khí quyển
+
+
+
+
+* **Bài 15. Lực đẩy Archimedes**
+* 1. Tác dụng của chất lỏng đối với vật nhúng trong nó
+
+
+* 2. Độ lớn của lực đẩy Archimedes
+
+
+
+
+
+---
+
+## CHƯƠNG IV. TÁC DỤNG LÀM QUAY CỦA LỰC. ĐÒN BẨY
+
+* **Bài 16. Moment lực. Tác dụng làm quay của lực**
+* 1. Tác dụng làm quay của lực
+
+
+* 2. Moment lực
+
+
+
+
+* **Bài 17. Đòn bẩy và ứng dụng**
+* 1. Tìm hiểu về đòn bẩy
+
+
+* 2. Tác dụng của đòn bẩy trong thực tế
+
+
+
+
+
+---
+
+---
+
+# TẬP 2
+
+## CHƯƠNG V. ĐIỆN
+
+* **Bài 18. Điện tích**
+* 1. Sự nhiễm điện do cọ xát
+
+
+* 2. Hai loại điện tích
+
+
+
+
+* **Bài 19. Dòng điện. Nguồn điện**
+* 1. Dòng điện
+
+
+* 2. Nguồn điện
+
+
+
+
+* **Bài 20. Mạch điện đơn giản**
+* 1. Sơ đồ mạch điện
+
+
+* 2. Các bộ phận chính của mạch điện
+
+
+
+
+* **Bài 21. Tác dụng của dòng điện**
+* 1. Tác dụng nhiệt và tác dụng phát sáng
+
+
+* 2. Tác dụng từ, tác dụng hóa học và tác dụng sinh lí
+
+
+
+
+* **Bài 22. Cường độ dòng điện. Hiệu điện thế**
+* 1. Cường độ dòng điện
+
+
+* 2. Hiệu điện thế
+
+
+
+
+
+---
+
+## CHƯƠNG VI. NHIỆT
+
+* **Bài 23. Năng lượng nhiệt**
+* 1. Năng lượng nhiệt là gì?
+
+
+* 2. Sự truyền năng lượng nhiệt
+
+
+
+
+* **Bài 24. Sự truyền nhiệt**
+* 1. Dẫn nhiệt
+
+
+* 2. Đối lưu
+
+
+* 3. Bức xạ nhiệt
+
+
+
+
+* **Bài 25. Sự nở vì nhiệt**
+* 1. Sự nở vì nhiệt của chất rắn
+
+
+* 2. Sự nở vì nhiệt của chất lỏng
+
+
+* 3. Sự nở vì nhiệt của chất khí
+
+
+
+
+
+---
+
+## CHƯƠNG VII. CƠ THỂ NGƯỜI
+
+* **Bài 26. Hệ vận động ở người**
+* 1. Cấu tạo và chức năng của hệ vận động
+
+
+* 2. Vệ sinh và bệnh tật về hệ vận động
+
+
+
+
+* **Bài 27. Tiêu hóa ở người**
+* 1. Cấu tạo và chức năng của ống tiêu hóa và các tuyến tiêu hóa
+
+
+* 2. Quá trình tiêu hóa ở các cơ quan
+
+
+* 3. Vệ sinh hệ tiêu hóa
+
+
+
+
+* **Bài 28. Hệ hô hấp ở người**
+* 1. Cấu tạo và chức năng của hệ hô hấp
+
+
+* 2. Quá trình hô hấp
+
+
+* 3. Vệ sinh hệ hô hấp
+
+
+
+
+* **Bài 29. Hệ tuần hoàn ở người**
+* 1. Cấu tạo hệ tuần hoàn
+
+
+* 2. Quá trình luân chuyển máu
+
+
+* 3. Miễn dịch và tiêm vaccine
+
+
+
+
+* **Bài 30. Hệ bài tiết ở người**
+* 1. Cấu tạo hệ bài tiết nước tiểu
+
+
+* 2. Quá trình tạo và thải nước tiểu
+
+
+* 3. Vệ sinh hệ bài tiết
+
+
+
+
+* **Bài 31. Da và điều hòa thân nhiệt ở người**
+* 1. Cấu tạo và chức năng của da
+
+
+* 2. Bảo vệ và chăm sóc da
+
+
+* 3. Điều hòa thân nhiệt
+
+
+
+
+* **Bài 32. Hệ thần kinh và các giác quan ở người**
+* 1. Hệ thần kinh
+
+
+* 2. Các giác quan (thị giác và thính giác)
+
+
+
+
+* **Bài 33. Hệ nội tiết ở người**
+* 1. Khái niệm hệ nội tiết
+
+
+* 2. Các tuyến nội tiết chính trong cơ thể
+
+
+
+
+* **Bài 34. Hệ sinh sản ở người**
+* 1. Cấu tạo và chức năng cơ quan sinh sản
+
+
+* 2. Thụ tinh và mang thai
+
+
+
+
+
+---
+
+## CHƯƠNG VIII. SINH THÁI
+
+* **Bài 35. Môi trường và các nhân tố sinh thái**
+* 1. Môi trường sống của sinh vật
+
+
+* 2. Các nhân tố sinh thái
+
+
+
+
+* **Bài 36. Quần thể sinh vật**
+* 1. Khái niệm quần thể sinh vật
+
+
+* 2. Các đặc trưng cơ bản của quần thể
+
+
+
+
+* **Bài 37. Quần xã sinh vật**
+* 1. Khái niệm quần xã sinh vật
+
+
+* 2. Đặc điểm của quần xã
+
+
+
+
+* **Bài 38. Hệ sinh thái**
+* 1. Khái niệm hệ sinh thái
+
+
+* 2. Trao đổi chất và chuyển hóa năng lượng trong hệ sinh thái
+
+
+
+
+* **Bài 39. Sinh quyển**
+* 1. Khái niệm sinh quyển
+
+
+* 2. Các khu sinh học trên Trái Đất
+
+
+
+
+* **Bài 40. Cân bằng sinh học**
+* 1. Khái niệm cân bằng sinh học
+
+
+* 2. Nguyên nhân gây mất cân bằng sinh học và bảo vệ môi trường
+
+
+
+
+
+---
+
+## CHƯƠNG IX. TIẾN HÓA
+
+* **Bài 41. Di truyền và biến dị**
+* 1. Di truyền
+
+
+* 2. Biến dị
+
+
+
+
+* **Bài 42. ADN và gene**
+* 1. Cấu trúc và chức năng của ADN
+
+
+* 2. Gene và ý nghĩa của gene
+
+
+
+
+* **Bài 43. Nhiễm sắc thể**
+* 1. Cấu trúc và hình thái nhiễm sắc thể
+
+
+* 2. Bộ nhiễm sắc thể đặc trưng
+
+
+
+
+* **Bài 44. Tiến hóa của sinh giới**
+* 1. Sơ lược về lịch sử phát triển của sinh giới
+
+
+* 2. Thuyết tiến hóa của Darwin
