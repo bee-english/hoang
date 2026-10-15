@@ -478,7 +478,6 @@
                 </div>
                 <button class="btn btn-secondary" id="joinRoomBtn"><i class="fas fa-door-open"></i> Tham gia phòng</button>
 
-                <button class="btn btn-danger" id="logoutBtn" style="margin-top:20px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
             </div>
         </div>
 
@@ -889,13 +888,6 @@
                 currentUserProfile = null;
                 showNeedLoginPage();
             }
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            if (currentRoomId) leaveRoom();
-            auth.signOut().then(() => {
-                showNotification('Đã đăng xuất', 'info');
-            });
         });
 
         // ============================================================
