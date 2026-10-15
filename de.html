@@ -564,7 +564,7 @@
 
     <script>
         // ============================================================
-        // FIREBASE (GIỐNG HỆT TRANG MAIN – TÀI KHOẢN DÙNG CHUNG)
+        // FIREBASE (GIỐNG HỆT TRANG MAIN + CODE LỚP HỌC – TÀI KHOẢN DÙNG CHUNG)
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
@@ -581,7 +581,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // API KEY (đảo ngược để che)
+        // API KEY (đảo ngược – GIỐNG HỆT CODE LỚP HỌC)
         // ============================================================
         function getAPIKey() {
             const originalKey = "v6xGqEar3C7yKR9K2GmO5dTZx2OLCg258qLWdF5o7kt5ImQu-ks";
@@ -645,7 +645,7 @@
         let currentSubmissionId = null;
 
         // ============================================================
-        // AUTH STATE (không có UI đăng nhập – dùng chung với main)
+        // AUTH STATE (không có UI đăng nhập – dùng chung với main + lớp học)
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
@@ -737,26 +737,34 @@
         }
 
         // ============================================================
-        // TEACHER: LOAD EXAMS
+        // TEACHER: LOAD EXAMS (ĐÃ SỬA – KHÔNG DÙNG orderBy ĐỂ TRÁNH INDEX)
         // ============================================================
         function loadTeacherExams() {
             const list = document.getElementById('teacherExamList');
             list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
             db.collection('exams').where('teacherId', '==', currentUser.uid)
-                .orderBy('createdAt', 'desc')
                 .get()
                 .then(snap => {
                     if (snap.empty) {
                         list.innerHTML = '<div style="text-align:center;padding:40px;color:#999;"><i class="fas fa-folder-open" style="font-size:2.5rem;margin-bottom:8px;"></i><p>Chưa có đề nào. Hãy tạo đề mới!</p></div>';
                         return;
                     }
-                    let html = '';
+                    const exams = [];
                     snap.forEach(doc => {
-                        const e = doc.data();
-                        const created = e.createdAt ? new Date(e.createdAt.toDate()).toLocaleDateString('vi-VN') : 'N/A';
+                        exams.push({ id: doc.id, ...doc.data() });
+                    });
+                    // Sort client-side giống code Lớp học
+                    exams.sort((a, b) => {
+                        const ta = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate().getTime() : 0;
+                        const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
+                        return tb - ta;
+                    });
+                    let html = '';
+                    exams.forEach(e => {
+                        const created = e.createdAt && e.createdAt.toDate ? new Date(e.createdAt.toDate()).toLocaleDateString('vi-VN') : 'N/A';
                         const qCount = e.questions ? e.questions.length : 0;
                         html += `
-                            <div class="exam-card" onclick="openExamDetail('${doc.id}')">
+                            <div class="exam-card" onclick="openExamDetail('${e.id}')">
                                 <div class="exam-card-header">
                                     <div>
                                         <div class="exam-card-title">${escapeHtml(e.title)}</div>
@@ -767,10 +775,10 @@
                                     <span class="exam-code-badge">${e.code}</span>
                                 </div>
                                 <div class="exam-actions">
-                                    <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();openExamDetail('${doc.id}')">
+                                    <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();openExamDetail('${e.id}')">
                                         <i class="fas fa-eye"></i> Xem & Chấm
                                     </button>
-                                    <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteExam('${doc.id}')">
+                                    <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteExam('${e.id}')">
                                         <i class="fas fa-trash"></i> Xóa
                                     </button>
                                 </div>
@@ -780,7 +788,7 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải dữ liệu. Có thể cần tạo index Firestore cho truy vấn.</div>';
+                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải dữ liệu: ' + (err.message || err) + '</div>';
                 });
         }
 
@@ -1013,7 +1021,7 @@
         }
 
         // ============================================================
-        // AI GENERATE + REVIEW
+        // AI GENERATE + REVIEW (GIỐNG HỆT CODE LỚP HỌC)
         // ============================================================
         function openAiGenerateModal() {
             document.getElementById('aiGenerateModal').classList.add('active');
@@ -1260,21 +1268,30 @@ Chỉ trả về JSON, không thêm text.`;
             });
         });
 
+        // Load submissions – KHÔNG dùng orderBy để tránh index
         function loadSubmissions(examId) {
             const list = document.getElementById('submissionList');
             list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
             db.collection('exam_submissions').where('examId', '==', examId)
-                .orderBy('submittedAt', 'desc')
                 .get()
                 .then(snap => {
                     if (snap.empty) {
                         list.innerHTML = '<div style="text-align:center;padding:30px;color:#999;">Chưa có học sinh nào nộp bài</div>';
                         return;
                     }
-                    let html = '';
+                    const subs = [];
                     snap.forEach(doc => {
-                        const s = doc.data();
-                        const time = s.submittedAt ? new Date(s.submittedAt.toDate()).toLocaleString('vi-VN') : '';
+                        subs.push({ id: doc.id, ...doc.data() });
+                    });
+                    // Sort client-side
+                    subs.sort((a, b) => {
+                        const ta = a.submittedAt && a.submittedAt.toDate ? a.submittedAt.toDate().getTime() : 0;
+                        const tb = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate().getTime() : 0;
+                        return tb - ta;
+                    });
+                    let html = '';
+                    subs.forEach(s => {
+                        const time = s.submittedAt && s.submittedAt.toDate ? new Date(s.submittedAt.toDate()).toLocaleString('vi-VN') : '';
                         const statusClass = s.status === 'graded' ? 'status-graded' : (s.status === 'ai_graded' ? 'status-ai' : 'status-pending');
                         const statusText = s.status === 'graded' ? 'Đã chấm' : (s.status === 'ai_graded' ? 'AI đã chấm' : 'Chờ chấm');
                         const scoreText = s.totalScore != null ? `${s.totalScore}/${s.maxScore}` : '—';
@@ -1289,7 +1306,7 @@ Chỉ trả về JSON, không thêm text.`;
                                 </div>
                                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
                                     <span>Điểm: <strong>${scoreText}</strong></span>
-                                    <button class="btn btn-sm btn-purple" onclick="openGradePage('${doc.id}')">
+                                    <button class="btn btn-sm btn-purple" onclick="openGradePage('${s.id}')">
                                         <i class="fas fa-pen"></i> ${s.status === 'graded' || s.status === 'ai_graded' ? 'Xem / Sửa điểm' : 'Chấm bài'}
                                     </button>
                                 </div>
@@ -1299,7 +1316,7 @@ Chỉ trả về JSON, không thêm text.`;
                 })
                 .catch(err => {
                     console.error(err);
-                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải danh sách bài làm. Có thể cần tạo index Firestore.</div>';
+                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải danh sách bài làm: ' + (err.message || err) + '</div>';
                 });
         }
 
@@ -1507,18 +1524,17 @@ Chỉ trả về JSON, không thêm text.`;
                     const doc = snap.docs[0];
                     const exam = { id: doc.id, ...doc.data() };
 
-                    // Check if already submitted
+                    // Kiểm tra đã nộp chưa – chỉ where studentId rồi lọc examId ở client (tránh composite index)
                     return db.collection('exam_submissions')
-                        .where('examId', '==', exam.id)
                         .where('studentId', '==', currentUser.uid)
-                        .limit(1)
                         .get()
                         .then(subSnap => {
                             hideLoading();
-                            if (!subSnap.empty) {
-                                const sub = subSnap.docs[0].data();
+                            const existing = subSnap.docs.find(d => d.data().examId === exam.id);
+                            if (existing) {
+                                const sub = existing.data();
                                 if (sub.status === 'graded' || sub.status === 'ai_graded') {
-                                    showStudentResult(subSnap.docs[0].id, sub, exam);
+                                    showStudentResult(existing.id, sub, exam);
                                 } else {
                                     showNotification('Bạn đã nộp bài đề này rồi (đang chờ chấm)', 'info');
                                 }
@@ -1564,7 +1580,6 @@ Chỉ trả về JSON, không thêm text.`;
                     let opts = '';
                     (q.options || []).forEach((o, oi) => {
                         const oid = `opt_${q.id}_${oi}`;
-                        const safeText = escapeHtml(o.text).replace(/'/g, "\\'");
                         opts += `
                             <div class="mcq-option-item" onclick="selectMcqOption(this, '${q.id}')">
                                 <input type="radio" name="mcq_${q.id}" id="${oid}" value="${escapeHtml(o.text)}">
@@ -1646,24 +1661,33 @@ Chỉ trả về JSON, không thêm text.`;
         }
 
         // ============================================================
-        // STUDENT HISTORY + RESULT
+        // STUDENT HISTORY + RESULT (ĐÃ SỬA – KHÔNG DÙNG orderBy)
         // ============================================================
         function loadStudentHistory() {
             const list = document.getElementById('studentHistoryList');
             list.innerHTML = '<div style="text-align:center;padding:16px;">Đang tải...</div>';
             db.collection('exam_submissions').where('studentId', '==', currentUser.uid)
-                .orderBy('submittedAt', 'desc')
-                .limit(20)
                 .get()
                 .then(snap => {
                     if (snap.empty) {
                         list.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">Chưa làm đề nào</div>';
                         return;
                     }
-                    let html = '';
+                    const subs = [];
                     snap.forEach(doc => {
-                        const s = doc.data();
-                        const time = s.submittedAt ? new Date(s.submittedAt.toDate()).toLocaleString('vi-VN') : '';
+                        subs.push({ id: doc.id, ...doc.data() });
+                    });
+                    // Sort client-side
+                    subs.sort((a, b) => {
+                        const ta = a.submittedAt && a.submittedAt.toDate ? a.submittedAt.toDate().getTime() : 0;
+                        const tb = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate().getTime() : 0;
+                        return tb - ta;
+                    });
+                    // Chỉ lấy 20 mới nhất
+                    const limited = subs.slice(0, 20);
+                    let html = '';
+                    limited.forEach(s => {
+                        const time = s.submittedAt && s.submittedAt.toDate ? new Date(s.submittedAt.toDate()).toLocaleString('vi-VN') : '';
                         const statusClass = s.status === 'graded' ? 'status-graded' : (s.status === 'ai_graded' ? 'status-ai' : 'status-pending');
                         const statusText = s.status === 'graded' ? 'Đã có điểm' : (s.status === 'ai_graded' ? 'AI đã chấm' : 'Chờ chấm');
                         const scoreText = s.totalScore != null ? `${s.totalScore}/${s.maxScore}` : '—';
@@ -1679,7 +1703,7 @@ Chỉ trả về JSON, không thêm text.`;
                                 <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
                                     <strong>Điểm: ${scoreText}</strong>
                                     ${s.status === 'graded' || s.status === 'ai_graded' ? `
-                                        <button class="btn btn-sm btn-secondary" onclick="viewStudentResult('${doc.id}')">
+                                        <button class="btn btn-sm btn-secondary" onclick="viewStudentResult('${s.id}')">
                                             <i class="fas fa-eye"></i> Xem chi tiết
                                         </button>` : ''}
                                 </div>
@@ -1689,7 +1713,7 @@ Chỉ trả về JSON, không thêm text.`;
                 })
                 .catch(err => {
                     console.error(err);
-                    list.innerHTML = '<div style="text-align:center;padding:16px;color:red;">Lỗi tải lịch sử. Có thể cần tạo index Firestore.</div>';
+                    list.innerHTML = '<div style="text-align:center;padding:16px;color:red;">Lỗi tải lịch sử: ' + (err.message || err) + '</div>';
                 });
         }
 
