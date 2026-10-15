@@ -93,76 +93,108 @@
             margin-bottom: 0;
         }
 
-        /* Chat area */
+        /* ==================== CHAT UI ==================== */
         .chat-container {
-            background: #f8f9fa;
-            border-radius: 16px;
+            background: #f0f2f5;
+            border-radius: 18px;
             border: 1px solid #e0e0e0;
-            height: 420px;
+            height: 460px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.03);
         }
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 20px 16px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
+
+        .message-wrapper {
+            display: flex;
+            width: 100%;
+        }
+        .message-wrapper.user {
+            justify-content: flex-end;
+        }
+        .message-wrapper.ai {
+            justify-content: flex-start;
+        }
+
         .message {
-            max-width: 85%;
-            padding: 12px 16px;
-            border-radius: 14px;
-            font-size: 0.95rem;
+            max-width: 78%;
+            padding: 13px 17px;
+            border-radius: 18px;
+            font-size: 0.96rem;
             line-height: 1.55;
             white-space: pre-wrap;
             word-break: break-word;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
+
         .message.user {
-            align-self: flex-end;
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: white;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 5px;
         }
+
         .message.ai {
-            align-self: flex-start;
             background: white;
-            border: 1px solid #e0e0e0;
             color: #333;
-            border-bottom-left-radius: 4px;
+            border: 1px solid #e8e8e8;
+            border-bottom-left-radius: 5px;
         }
+
         .message.system {
             align-self: center;
-            background: #e3f2fd;
-            color: #1565c0;
+            background: #fff3e0;
+            color: #e65100;
             font-size: 0.88rem;
             text-align: center;
-            max-width: 95%;
+            max-width: 90%;
+            border-radius: 12px;
+            box-shadow: none;
+            border: 1px solid #ffe0b2;
         }
+
         .chat-input-area {
             display: flex;
             gap: 10px;
-            padding: 12px 14px;
+            padding: 14px 16px;
             background: white;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid #e8e8e8;
+            align-items: flex-end;
         }
         .chat-input-area textarea {
             flex: 1;
             min-height: 48px;
             max-height: 120px;
             resize: none;
-            border-radius: 12px;
-            padding: 11px 14px;
+            border-radius: 14px;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .chat-input-area textarea:focus {
+            border-color: #FFA500;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255,165,0,0.12);
         }
         .chat-input-area button {
-            width: auto;
-            padding: 0 20px;
-            margin-top: 0;
-            border-radius: 12px;
-            align-self: flex-end;
+            width: 48px;
             height: 48px;
+            padding: 0;
+            margin-top: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
         .info-box {
@@ -173,6 +205,105 @@
             margin-bottom: 18px;
             font-size: 0.9rem;
             color: #5d4037;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            backdrop-filter: blur(3px);
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            padding: 26px;
+            border-radius: 18px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #FFD700;
+        }
+        .modal-header h3 {
+            color: #FFA500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.3rem;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .modal-btn {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .modal-btn.secondary {
+            background: linear-gradient(135deg, #666, #555);
+        }
+        .close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            cursor: pointer;
+            color: #666;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close:hover { background: rgba(0,0,0,0.1); }
+
+        /* History item */
+        .history-item {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #FFA500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .history-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            background: #fff8e1;
+        }
+        .history-item-title {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+        .history-item-meta {
+            font-size: 0.82rem;
+            color: #888;
         }
 
         .notification {
@@ -220,25 +351,17 @@
             line-height: 1.5;
         }
 
-        .current-sgk-info {
-            background: #e8f5e9;
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 14px;
-            font-size: 0.9rem;
-            color: #2e7d32;
-            display: none;
-        }
-        .current-sgk-info.show {
-            display: block;
-        }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        .chat-messages::-webkit-scrollbar-thumb:hover { background: #aaa; }
 
         @media (max-width: 640px) {
             .container { padding: 20px; margin: 0 8px; }
             .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
             .page { padding: 60px 10px 30px; }
-            .chat-container { height: 380px; }
-            .message { max-width: 92%; }
+            .chat-container { height: 400px; }
+            .message { max-width: 88%; }
         }
     </style>
 </head>
@@ -279,7 +402,7 @@
                     <strong><i class="fas fa-info-circle"></i> Hướng dẫn:</strong><br>
                     1. Chọn <strong>Môn học</strong> và <strong>Khối</strong>.<br>
                     2. Nhập tên bài / Unit bạn muốn tóm tắt (ví dụ: <em>Unit 1 Local Community</em> hoặc <em>Phương trình bậc nhất một ẩn</em>).<br>
-                    3. AI sẽ đọc nội dung từ file SGK trên GitHub và tóm tắt kiến thức trọng tâm.
+                    3. AI sẽ tóm tắt kiến thức trọng tâm của bài học cho bạn.
                 </div>
 
                 <div class="select-row">
@@ -303,31 +426,45 @@
                     </div>
                 </div>
 
-                <div class="current-sgk-info" id="currentSgkInfo">
-                    <i class="fas fa-book"></i> Đang sử dụng file: <strong id="currentFileName">—</strong>
-                </div>
-
                 <div class="chat-container">
                     <div class="chat-messages" id="chatMessages">
-                        <div class="message system">
-                            Chào bạn! Hãy chọn môn và khối, sau đó nhập tên bài học bạn muốn tóm tắt.
+                        <div class="message-wrapper ai">
+                            <div class="message ai">
+                                Xin chào! Hãy chọn môn học và khối, sau đó nhập tên bài bạn muốn tôi tóm tắt kiến thức trọng tâm nhé.
+                            </div>
                         </div>
                     </div>
                     <div class="chat-input-area">
                         <textarea id="userInput" placeholder="Ví dụ: Tóm tắt Unit 1 Local Community hoặc Tóm tắt bài Phương trình bậc nhất một ẩn..." rows="1"></textarea>
-                        <button class="btn btn-purple" id="btnSend" style="width:auto;">
+                        <button class="btn btn-purple" id="btnSend">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
 
                 <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
-                    <button class="btn btn-outline btn-sm" id="btnClearChat" style="flex:1;">
-                        <i class="fas fa-trash"></i> Xóa hội thoại
+                    <button class="btn btn-outline btn-sm" id="btnNewChat" style="flex:1;">
+                        <i class="fas fa-plus"></i> Hội thoại mới
                     </button>
-                    <button class="btn btn-danger btn-sm" id="logoutBtn" style="flex:1;">
-                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    <button class="btn btn-secondary btn-sm" id="btnViewHistory" style="flex:1;">
+                        <i class="fas fa-history"></i> Lịch sử hội thoại
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== HISTORY MODAL ========== -->
+        <div id="historyModal" class="modal">
+            <div class="modal-content">
+                <span class="material-symbols-outlined close" id="closeHistoryModal">close</span>
+                <div class="modal-header">
+                    <h3><i class="fas fa-history"></i> Lịch sử hội thoại</h3>
+                </div>
+                <div id="historyList" style="max-height:55vh;overflow-y:auto;">
+                    <div style="text-align:center;padding:30px;color:#999;">Đang tải...</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary" id="btnCloseHistory">Đóng</button>
                 </div>
             </div>
         </div>
@@ -346,7 +483,7 @@
 
     <script>
         // ============================================================
-        // FIREBASE (GIỐNG HỆT TRANG MAIN + 2 CHỨC NĂNG KHÁC)
+        // FIREBASE
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
@@ -363,7 +500,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // API KEY (GIỐNG HỆT 2 CHỨC NĂNG KIA)
+        // API KEY
         // ============================================================
         function getAPIKey() {
             const originalKey = "v6xGqEar3C7yKR9K2GmO5dTZx2OLCg258qLWdF5o7kt5ImQu-ks";
@@ -405,9 +542,11 @@
         // ============================================================
         let currentUser = null;
         let currentUserProfile = null;
-        let chatHistory = []; // lưu lịch sử chat để gửi context cho AI
-        let currentSgkContent = null; // nội dung file SGK hiện tại
-        let currentFileName = '';
+        let chatHistory = [];          // tin nhắn của cuộc hội thoại hiện tại
+        let currentChatId = null;      // id document Firestore của cuộc chat hiện tại
+        let currentSgkContent = null;
+        let lastSubject = '';
+        let lastGrade = '';
 
         // ============================================================
         // AUTH
@@ -451,27 +590,12 @@
             hideAllPages();
             document.getElementById('summaryPage').classList.remove('hidden');
             document.getElementById('welcomeText').textContent = `Xin chào ${currentUserProfile?.name || 'bạn'}!`;
-            updateCurrentFileInfo();
         }
 
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            showLoading('Đang đăng xuất...');
-            try {
-                await auth.signOut();
-                showNotification('Đã đăng xuất', 'info');
-            } catch (err) {
-                showNotification('Lỗi đăng xuất', 'error');
-            } finally {
-                hideLoading();
-            }
-        });
-
         // ============================================================
-        // FILE SGK MAPPING
+        // FILE SGK (ẨN HOÀN TOÀN)
         // ============================================================
         function getSgkFileUrl(subject, grade) {
-            // Đường dẫn raw GitHub
-            // Bạn cần tạo thư mục sgk/ và 16 file như hướng dẫn
             return `https://raw.githubusercontent.com/hmtuan002/hoang/main/sgk/${subject}-${grade}.txt`;
         }
 
@@ -479,65 +603,213 @@
             return { toan: 'Toán', van: 'Ngữ văn', khtn: 'KHTN', anh: 'Tiếng Anh' }[code] || code;
         }
 
-        function updateCurrentFileInfo() {
-            const subject = document.getElementById('subjectSelect').value;
-            const grade = document.getElementById('gradeSelect').value;
-            currentFileName = `${subject}-${grade}.txt`;
-            document.getElementById('currentFileName').textContent = currentFileName;
-            document.getElementById('currentSgkInfo').classList.add('show');
-            // Reset nội dung đã load khi đổi môn/khối
+        document.getElementById('subjectSelect').addEventListener('change', () => {
             currentSgkContent = null;
-        }
-
-        document.getElementById('subjectSelect').addEventListener('change', updateCurrentFileInfo);
-        document.getElementById('gradeSelect').addEventListener('change', updateCurrentFileInfo);
+        });
+        document.getElementById('gradeSelect').addEventListener('change', () => {
+            currentSgkContent = null;
+        });
 
         // ============================================================
         // CHAT UI
         // ============================================================
         function addMessage(role, content) {
             const container = document.getElementById('chatMessages');
-            const div = document.createElement('div');
-            div.className = `message ${role}`;
-            div.textContent = content;
-            container.appendChild(div);
+            const wrapper = document.createElement('div');
+            wrapper.className = `message-wrapper ${role}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = `message ${role}`;
+            bubble.textContent = content;
+
+            wrapper.appendChild(bubble);
+            container.appendChild(wrapper);
             container.scrollTop = container.scrollHeight;
         }
 
-        document.getElementById('btnClearChat').addEventListener('click', () => {
-            if (!confirm('Xóa toàn bộ hội thoại?')) return;
-            chatHistory = [];
-            currentSgkContent = null;
-            document.getElementById('chatMessages').innerHTML = `
-                <div class="message system">
-                    Chào bạn! Hãy chọn môn và khối, sau đó nhập tên bài học bạn muốn tóm tắt.
-                </div>`;
-            showNotification('Đã xóa hội thoại', 'info');
+        function renderChatFromHistory(messages) {
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = '';
+            messages.forEach(msg => {
+                addMessage(msg.role, msg.content);
+            });
+        }
+
+        // ============================================================
+        // HỘI THOẠI MỚI
+        // ============================================================
+        document.getElementById('btnNewChat').addEventListener('click', () => {
+            if (chatHistory.length > 0 && !confirm('Bắt đầu hội thoại mới? Nội dung hiện tại sẽ được lưu vào lịch sử.')) {
+                return;
+            }
+            startNewChat();
         });
 
-        // Enter để gửi (Shift+Enter xuống dòng)
+        function startNewChat() {
+            chatHistory = [];
+            currentChatId = null;
+            currentSgkContent = null;
+            document.getElementById('chatMessages').innerHTML = `
+                <div class="message-wrapper ai">
+                    <div class="message ai">
+                        Xin chào! Hãy chọn môn học và khối, sau đó nhập tên bài bạn muốn tôi tóm tắt kiến thức trọng tâm nhé.
+                    </div>
+                </div>`;
+            showNotification('Đã bắt đầu hội thoại mới', 'info');
+        }
+
+        // ============================================================
+        // LỊCH SỬ HỘI THOẠI
+        // ============================================================
+        document.getElementById('btnViewHistory').addEventListener('click', openHistoryModal);
+        document.getElementById('closeHistoryModal').addEventListener('click', closeHistoryModal);
+        document.getElementById('btnCloseHistory').addEventListener('click', closeHistoryModal);
+
+        function openHistoryModal() {
+            document.getElementById('historyModal').classList.add('active');
+            loadHistoryList();
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').classList.remove('active');
+        }
+
+        function loadHistoryList() {
+            const list = document.getElementById('historyList');
+            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+
+            db.collection('summary_histories')
+                .where('userId', '==', currentUser.uid)
+                .get()
+                .then(snap => {
+                    if (snap.empty) {
+                        list.innerHTML = '<div style="text-align:center;padding:40px;color:#999;"><i class="fas fa-comments" style="font-size:2.5rem;margin-bottom:10px;"></i><p>Chưa có lịch sử hội thoại nào</p></div>';
+                        return;
+                    }
+
+                    const items = [];
+                    snap.forEach(doc => {
+                        items.push({ id: doc.id, ...doc.data() });
+                    });
+
+                    // Sắp xếp mới nhất trước
+                    items.sort((a, b) => {
+                        const ta = a.updatedAt && a.updatedAt.toDate ? a.updatedAt.toDate().getTime() : 0;
+                        const tb = b.updatedAt && b.updatedAt.toDate ? b.updatedAt.toDate().getTime() : 0;
+                        return tb - ta;
+                    });
+
+                    let html = '';
+                    items.forEach(item => {
+                        const time = item.updatedAt && item.updatedAt.toDate
+                            ? new Date(item.updatedAt.toDate()).toLocaleString('vi-VN')
+                            : 'N/A';
+                        const title = item.title || 'Hội thoại không tiêu đề';
+                        const meta = `${getSubjectName(item.subject)} – Lớp ${item.grade} • ${time}`;
+
+                        html += `
+                            <div class="history-item" onclick="loadChatHistory('${item.id}')">
+                                <div class="history-item-title">${escapeHtml(title)}</div>
+                                <div class="history-item-meta">${meta}</div>
+                            </div>`;
+                    });
+                    list.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error(err);
+                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải lịch sử</div>';
+                });
+        }
+
+        window.loadChatHistory = function(chatId) {
+            showLoading('Đang tải hội thoại...');
+            db.collection('summary_histories').doc(chatId).get()
+                .then(doc => {
+                    if (!doc.exists) {
+                        hideLoading();
+                        showNotification('Không tìm thấy hội thoại', 'error');
+                        return;
+                    }
+                    const data = doc.data();
+                    currentChatId = chatId;
+                    chatHistory = data.messages || [];
+                    currentSgkContent = null; // sẽ load lại khi cần
+
+                    // Cập nhật select môn + khối
+                    if (data.subject) document.getElementById('subjectSelect').value = data.subject;
+                    if (data.grade) document.getElementById('gradeSelect').value = data.grade;
+                    lastSubject = data.subject || '';
+                    lastGrade = data.grade || '';
+
+                    renderChatFromHistory(chatHistory);
+                    closeHistoryModal();
+                    hideLoading();
+                    showNotification('Đã tải hội thoại', 'success');
+                })
+                .catch(err => {
+                    hideLoading();
+                    showNotification('Lỗi tải hội thoại', 'error');
+                    console.error(err);
+                });
+        };
+
+        // Lưu hội thoại hiện tại lên Firestore
+        async function saveCurrentChat() {
+            if (!currentUser || chatHistory.length === 0) return;
+
+            const subject = document.getElementById('subjectSelect').value;
+            const grade = document.getElementById('gradeSelect').value;
+
+            // Tạo tiêu đề từ tin nhắn đầu tiên của user
+            let title = 'Hội thoại mới';
+            const firstUserMsg = chatHistory.find(m => m.role === 'user');
+            if (firstUserMsg) {
+                title = firstUserMsg.content.substring(0, 60) + (firstUserMsg.content.length > 60 ? '...' : '');
+            }
+
+            const payload = {
+                userId: currentUser.uid,
+                subject,
+                grade,
+                title,
+                messages: chatHistory,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                if (currentChatId) {
+                    await db.collection('summary_histories').doc(currentChatId).update(payload);
+                } else {
+                    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    const docRef = await db.collection('summary_histories').add(payload);
+                    currentChatId = docRef.id;
+                }
+            } catch (err) {
+                console.error('Lỗi lưu lịch sử:', err);
+            }
+        }
+
+        // ============================================================
+        // GỬI TIN NHẮN
+        // ============================================================
         document.getElementById('userInput').addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
             }
         });
-
         document.getElementById('btnSend').addEventListener('click', sendMessage);
 
-        // ============================================================
-        // LOAD SGK CONTENT FROM GITHUB
-        // ============================================================
         async function loadSgkContent(subject, grade) {
             const url = getSgkFileUrl(subject, grade);
             try {
                 const res = await fetch(url);
                 if (!res.ok) {
-                    throw new Error(`Không tìm thấy file ${subject}-${grade}.txt trên GitHub (HTTP ${res.status})`);
+                    throw new Error('Không thể tải dữ liệu bài học. Vui lòng thử lại sau.');
                 }
                 const text = await res.text();
                 if (!text || text.trim().length < 20) {
-                    throw new Error('File tồn tại nhưng nội dung quá ngắn hoặc trống');
+                    throw new Error('Dữ liệu bài học chưa sẵn sàng. Vui lòng thử lại sau.');
                 }
                 return text;
             } catch (err) {
@@ -545,9 +817,6 @@
             }
         }
 
-        // ============================================================
-        // GỬI TIN NHẮN + GỌI AI
-        // ============================================================
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const text = input.value.trim();
@@ -559,39 +828,32 @@
             const subject = document.getElementById('subjectSelect').value;
             const grade = document.getElementById('gradeSelect').value;
 
-            // Hiển thị tin nhắn người dùng
             addMessage('user', text);
             input.value = '';
             chatHistory.push({ role: 'user', content: text });
 
-            // Disable nút gửi
             const btnSend = document.getElementById('btnSend');
             btnSend.disabled = true;
             btnSend.innerHTML = '<div class="loading"></div>';
 
             try {
-                // Load file SGK nếu chưa có hoặc đã đổi môn/khối
-                if (!currentSgkContent) {
-                    addMessage('system', `Đang tải nội dung SGK ${getSubjectName(subject)} lớp ${grade} từ GitHub...`);
+                if (!currentSgkContent || lastSubject !== subject || lastGrade !== grade) {
                     currentSgkContent = await loadSgkContent(subject, grade);
-                    // Xóa thông báo đang tải
-                    const msgs = document.getElementById('chatMessages');
-                    const lastSys = msgs.querySelector('.message.system:last-child');
-                    if (lastSys && lastSys.textContent.includes('Đang tải')) {
-                        lastSys.remove();
-                    }
-                    addMessage('system', `Đã tải thành công file ${subject}-${grade}.txt`);
+                    lastSubject = subject;
+                    lastGrade = grade;
                 }
 
-                // Gọi AI
                 const summary = await callAIForSummary(text, subject, grade, currentSgkContent);
                 addMessage('ai', summary);
                 chatHistory.push({ role: 'assistant', content: summary });
 
+                // Lưu lịch sử sau mỗi lần AI trả lời
+                await saveCurrentChat();
+
             } catch (err) {
                 console.error(err);
-                addMessage('system', 'Lỗi: ' + err.message);
-                showNotification('Lỗi: ' + err.message, 'error');
+                addMessage('system', err.message || 'Đã xảy ra lỗi. Vui lòng thử lại.');
+                showNotification(err.message || 'Đã xảy ra lỗi', 'error');
             } finally {
                 btnSend.disabled = false;
                 btnSend.innerHTML = '<i class="fas fa-paper-plane"></i>';
@@ -601,7 +863,6 @@
         async function callAIForSummary(userRequest, subject, grade, sgkContent) {
             const API_KEY = getAPIKey();
 
-            // Cắt bớt nếu nội dung quá dài (giữ khoảng 12000 ký tự để an toàn)
             let contentForAI = sgkContent;
             if (contentForAI.length > 14000) {
                 contentForAI = contentForAI.substring(0, 14000) + '\n\n[... nội dung bị cắt bớt do quá dài ...]';
@@ -610,16 +871,17 @@
             const systemPrompt = `Bạn là giáo viên THCS giỏi, chuyên tóm tắt kiến thức trọng tâm sách giáo khoa Kết nối tri thức.
 
 Nhiệm vụ:
-- Dựa HOÀN TOÀN vào nội dung SGK được cung cấp bên dưới.
+- Dựa HOÀN TOÀN vào nội dung kiến thức được cung cấp bên dưới.
 - Tóm tắt kiến thức trọng tâm của bài / unit mà người dùng yêu cầu.
 - Trình bày rõ ràng, dễ hiểu, có cấu trúc (tiêu đề, gạch đầu dòng).
-- Nếu không tìm thấy bài tương ứng trong nội dung SGK, hãy nói rõ "Không tìm thấy nội dung bài này trong file SGK hiện tại".
+- Nếu không tìm thấy bài tương ứng, hãy nói rõ "Hiện tại mình chưa có đủ dữ liệu về bài này. Bạn có thể hỏi bài khác hoặc kiểm tra lại tên bài không?".
 - Không bịa thêm kiến thức ngoài nội dung được cung cấp.
-- Trả lời bằng tiếng Việt.`;
+- Không đề cập đến nguồn dữ liệu, file hay bất kỳ thông tin kỹ thuật nào.
+- Trả lời bằng tiếng Việt tự nhiên như một giáo viên đang giảng bài.`;
 
             const userPrompt = `Môn: ${getSubjectName(subject)} - Lớp ${grade}
 
-NỘI DUNG SGK:
+NỘI DUNG KIẾN THỨC:
 """
 ${contentForAI}
 """
@@ -647,7 +909,7 @@ Hãy tóm tắt kiến thức trọng tâm theo yêu cầu trên.`;
             });
 
             if (!response.ok) {
-                throw new Error('API error ' + response.status);
+                throw new Error('AI đang bận, vui lòng thử lại sau ít phút.');
             }
 
             const data = await response.json();
