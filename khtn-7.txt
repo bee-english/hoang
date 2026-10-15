@@ -1,0 +1,499 @@
+* **Bài 1. Phương pháp và kĩ năng học tập môn Khoa học tự nhiên**
+* 1. Phương pháp tìm hiểu tự nhiên
+
+
+* 2. Một số kĩ năng học tập môn Khoa học tự nhiên
+
+
+* 3. Sử dụng các dụng cụ đo trong môn Khoa học tự nhiên
+
+
+* 4. Báo cáo kết quả tìm hiểu tự nhiên
+
+
+
+
+
+---
+
+# CHƯƠNG I. NGUYÊN TỬ. SƠ LƯỢC VỀ BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HÓA HỌC
+
+* **Bài 2. Nguyên tử**
+* 1. Mô hình nguyên tử
+
+
+* 2. Cấu tạo nguyên tử
+
+
+
+
+* **Bài 3. Nguyên tố hóa học**
+* 1. Nguyên tố hóa học
+
+
+* 2. Kí hiệu hóa học
+
+
+
+
+* **Bài 4. Sơ lược về bảng tuần hoàn các nguyên tố hóa học**
+* 1. Nguyên tắc sắp xếp các nguyên tố hóa học trong bảng tuần hoàn
+
+
+* 2. Cấu tạo bảng tuần hoàn các nguyên tố hóa học
+
+
+* 3. Vị trí của các nhóm nguyên tố trong bảng tuần hoàn
+
+
+
+
+
+---
+
+# CHƯƠNG II. PHÂN TỬ. LIÊN KẾT HÓA HỌC
+
+* **Bài 5. Phân tử - Đơn chất - Hợp chất**
+* 1. Phân tử
+
+
+* 2. Đơn chất
+
+
+* 3. Hợp chất
+
+
+
+
+* **Bài 6. Giới thiệu về liên kết hóa học**
+* 1. Vỏ nguyên tử khí hiếm
+
+
+* 2. Liên kết ion
+
+
+* 3. Liên kết cộng hóa trị
+
+
+
+
+* **Bài 7. Hóa trị và công thức hóa học**
+* 1. Hóa trị
+
+
+* 2. Quy tắc hóa trị
+
+
+* 3. Công thức hóa học
+
+
+* 4. Tính phần trăm khối lượng các nguyên tố trong hợp chất
+
+
+* 5. Xác định công thức hóa học
+
+
+
+
+
+---
+
+# CHƯƠNG III. TỐC ĐỘ
+
+* **Bài 8. Tốc độ chuyển động**
+* 1. Khái niệm tốc độ chuyển động
+
+
+* 2. Đơn vị đo tốc độ
+
+
+
+
+* **Bài 9. Đo tốc độ**
+* 1. Cách đo tốc độ bằng dụng cụ thực hành
+
+
+* 2. Đo tốc độ bằng thiết bị bắn tốc độ
+
+
+
+
+* **Bài 10. Đồ thị quãng đường - thời gian**
+* 1. Lập bảng ghi số liệu quãng đường - thời gian
+
+
+* 2. Vẽ đồ thị quãng đường - thời gian
+
+
+* 3. Tìm quãng đường (hoặc tốc độ, thời gian) từ đồ thị
+
+
+
+
+* **Bài 11. Thảo luận về ảnh hưởng của tốc độ trong an toàn giao thông**
+* 1. Tốc độ và khoảng cách an toàn giữa các xe
+
+
+* 2. Một số quy định về tốc độ trong giao thông đường bộ
+
+
+
+
+
+---
+
+# CHƯƠNG IV. ÂM THANH
+
+* **Bài 12. Sóng âm**
+* 1. Dao động và sóng
+
+
+* 2. Nguồn âm
+
+
+* 3. Môi trường truyền âm
+
+
+
+
+* **Bài 13. Độ to và độ cao của âm**
+* 1. Độ cao của âm và tần số
+
+
+* 2. Độ to của âm và biên độ dao động
+
+
+
+
+* **Bài 14. Phản xạ âm, chống ô nhiễm tiếng ồn**
+* 1. Phản xạ âm và âm phản xạ
+
+
+* 2. Vật phản xạ âm tốt và vật phản xạ âm kém
+
+
+* 3. Chống ô nhiễm tiếng ồn
+
+
+
+
+
+---
+
+# CHƯƠNG V. ÁNH SÁNG
+
+* **Bài 15. Năng lượng ánh sáng. Tia sáng, vùng tối**
+* 1. Năng lượng ánh sáng
+
+
+* 2. Chùm sáng và tia sáng
+
+
+* 3. Vùng tối và vùng nửa tối
+
+
+
+
+* **Bài 16. Sự phản xạ ánh sáng**
+* 1. Hiện tượng phản xạ ánh sáng
+
+
+* 2. Định luật phản xạ ánh sáng
+
+
+* 3. Phản xạ và phản xạ tán xạ
+
+
+
+
+* **Bài 17. Ảnh của vật qua gương phẳng**
+* 1. Tính chất ảnh tạo bởi gương phẳng
+
+
+* 2. Dựng ảnh của một vật qua gương phẳng
+
+
+
+
+
+---
+
+# CHƯƠNG VI. TỪ
+
+* **Bài 18. Nam châm**
+* 1. Tính chất từ của nam châm
+
+
+* 2. Các cực từ của nam châm
+
+
+* 3. Tương tác giữa hai nam châm
+
+
+
+
+* **Bài 19. Từ trường**
+* 1. Từ trường
+
+
+* 2. Từ phổ
+
+
+* 3. Đường sức từ
+
+
+
+
+* **Bài 20. Chế tạo nam châm điện đơn giản**
+* 1. Nam châm điện
+
+
+* 2. Chế tạo nam châm điện đơn giản
+
+
+
+
+
+---
+
+# CHƯƠNG VII. TRAO ĐỔI CHẤT VÀ CHUYỂN HÓA NĂNG LƯỢNG Ở SINH VẬT
+
+* **Bài 21. Khái quát về trao đổi chất và chuyển hóa năng lượng**
+* 1. Trao đổi chất và chuyển hóa năng lượng
+
+
+* 2. Vai trò của trao đổi chất và chuyển hóa năng lượng đối với sinh vật
+
+
+
+
+* **Bài 22. Quang hợp ở thực vật**
+* 1. Khái niệm quang hợp ở thực vật
+
+
+* 2. Mối quan hệ giữa cấu tạo lá và chức năng quang hợp
+
+
+
+
+* **Bài 23. Một số yếu tố ảnh hưởng đến quang hợp**
+* 1. Ánh sáng
+
+
+* 2. Khí carbon dioxide
+
+
+* 3. Nước
+
+
+* 4. Nhiệt độ
+
+
+* 5. Trồng và bảo vệ cây xanh
+
+
+
+
+* **Bài 24. Thực hành: Chứng minh quang hợp ở cây xanh**
+* 1. Thí nghiệm chứng minh quang hợp giải phóng khí oxygen
+
+
+* 2. Thí nghiệm chứng minh lá cây tạo thành tinh bột khi có ánh sáng
+
+
+
+
+* **Bài 25. Hô hấp tế bào**
+* 1. Khái niệm hô hấp tế bào
+
+
+* 2. Mối quan hệ hai chiều giữa quang hợp và hô hấp tế bào
+
+
+
+
+* **Bài 26. Một số yếu tố ảnh hưởng đến hô hấp tế bào**
+* 1. Một số yếu tố ảnh hưởng đến hô hấp tế bào
+
+
+* 2. Vận dụng hô hấp tế bào vào thực tiễn bảo quản lương thực, thực phẩm
+
+
+
+
+* **Bài 27. Thực hành: Hô hấp ở thực vật**
+* 1. Thí nghiệm chứng minh hạt nấm/hạt nảy mầm có hô hấp tế bào
+
+
+* 2. Thí nghiệm chứng minh hô hấp tế bào hấp thụ oxygen và thải carbon dioxide
+
+
+
+
+* **Bài 28. Trao đổi khí ở sinh vật**
+* 1. Khái niệm trao đổi khí
+
+
+* 2. Trao đổi khí ở thực vật
+
+
+* 3. Trao đổi khí ở động vật
+
+
+
+
+* **Bài 29. Vai trò của nước và chất dinh dưỡng đối với sinh vật**
+* 1. Vai trò của nước đối với cơ thể sinh vật
+
+
+* 2. Vai trò của các chất dinh dưỡng đối với cơ thể sinh vật
+
+
+
+
+* **Bài 30. Trao đổi nước và chất dinh dưỡng ở thực vật**
+* 1. Quá trình hấp thụ nước và khoáng ở rễ
+
+
+* 2. Quá trình vận chuyển nước và chất khoáng trong thân
+
+
+* 3. Quá trình thoát hơi nước ở lá
+
+
+
+
+* **Bài 31. Trao đổi nước và chất dinh dưỡng ở động vật**
+* 1. Con đường thu nhận và vận chuyển chất dinh dưỡng ở động vật
+
+
+* 2. Con đường thu nhận và thải nước ở động vật
+
+
+* 3. Vận dụng trao đổi nước và chất dinh dưỡng vào thực tiễn
+
+
+
+
+* **Bài 32. Thực hành: Chứng minh thân vận chuyển nước và lá thoát hơi nước**
+* 1. Thí nghiệm chứng minh thân vận chuyển nước
+
+
+* 2. Thí nghiệm chứng minh lá thoát hơi nước
+
+
+
+
+
+---
+
+# CHƯƠNG VIII. CẢM ỨNG Ở SINH VẬT
+
+* **Bài 33. Cảm ứng ở sinh vật và tập tính ở động vật**
+* 1. Cảm ứng ở sinh vật
+
+
+* 2. Tập tính ở động vật
+
+
+
+
+* **Bài 34. Vận dụng hiện tượng cảm ứng ở sinh vật vào thực tiễn**
+* 1. Ứng dụng cảm ứng ở thực vật trong trồng trọt
+
+
+* 2. Ứng dụng tập tính ở động vật trong chăn nuôi và bảo vệ sản xuất
+
+
+
+
+* **Bài 35. Thực hành: Cảm ứng ở sinh vật**
+* 1. Quan sát hiện tượng hướng sáng, hướng nước, hướng trọng lực của cây
+
+
+* 2. Thảo luận và ghi chép kết quả thí nghiệm
+
+
+
+
+
+---
+
+# CHƯƠNG IX. SINH TRƯỞNG VÀ PHÁT TRIỂN Ở SINH VẬT
+
+* **Bài 36. Khái quát về sinh trưởng và phát triển ở sinh vật**
+* 1. Khái niệm sinh trưởng và phát triển
+
+
+* 2. Các giai đoạn sinh trưởng và phát triển ở sinh vật
+
+
+* 3. Mô phân sinh và sự sinh trưởng ở thực vật
+
+
+
+
+* **Bài 37. Ứng dụng sinh trưởng và phát triển ở sinh vật vào thực tiễn**
+* 1. Các yếu tố ảnh hưởng đến sinh trưởng và phát triển ở sinh vật
+
+
+* 2. Ứng dụng sinh trưởng và phát triển trong trồng trọt và chăn nuôi
+
+
+
+
+* **Bài 38. Thực hành: Quan sát, mô tả sự sinh trưởng và phát triển ở một số sinh vật**
+* 1. Quan sát sự sinh trưởng và phát triển ở thực vật (hạt nảy mầm)
+
+
+* 2. Quan sát sự sinh trưởng và phát triển ở động vật (vòng đời của muỗi/bướm/ếch)
+
+
+
+
+
+---
+
+# CHƯƠNG X. SINH SẢN Ở SINH VẬT
+
+* **Bài 39. Sinh sản vô tính ở sinh vật**
+* 1. Khái niệm sinh sản vô tính
+
+
+* 2. Các hình thức sinh sản vô tính ở thực vật
+
+
+* 3. Các hình thức sinh sản vô tính ở động vật
+
+
+* 4. Ứng dụng sinh sản vô tính ở sinh vật vào thực tiễn
+
+
+
+
+* **Bài 40. Sinh sản hữu tính ở sinh vật**
+* 1. Khái niệm sinh sản hữu tính
+
+
+* 2. Sinh sản hữu tính ở thực vật có hoa
+
+
+* 3. Sinh sản hữu tính ở động vật
+
+
+
+
+* **Bài 41. Một số yếu tố ảnh hưởng và điều hòa, điều khiển sinh sản ở sinh vật**
+* 1. Một số yếu tố ảnh hưởng đến sinh sản ở sinh vật
+
+
+* 2. Điều hòa, điều khiển sinh sản ở sinh vật
+
+
+
+
+* **Bài 42. Cơ thể sinh vật là một thể thống nhất**
+* 1. Mối quan hệ giữa các tế bào/mô/cơ quan trong cơ thể
+
+
+* 2. Cơ thể sinh vật là một hệ thống tự điều chỉnh
