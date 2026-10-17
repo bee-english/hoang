@@ -1107,7 +1107,7 @@ Chỉ trả về JSON, không thêm text.`;
                         'Authorization': 'Bearer ' + API_KEY
                     },
                     body: JSON.stringify({
-                        model: 'gpt-5.4-nano',
+                        model: 'gpt-4.1-mini-2025-04-14',
                         messages: [
                             { role: 'system', content: 'Bạn là giáo viên THCS, chỉ trả về JSON hợp lệ.' },
                             { role: 'user', content: prompt }
@@ -1520,7 +1520,7 @@ Chỉ trả về JSON, không thêm text.`;
                         'Authorization': 'Bearer ' + API_KEY
                     },
                     body: JSON.stringify({
-                        model: 'gpt-5.4-nano',
+                        model: 'gpt-4.1-mini-2025-04-14',
                         messages: [
                             { role: 'system', content: 'Bạn là giáo viên chấm điểm công bằng, chỉ trả về JSON.' },
                             { role: 'user', content: prompt }
