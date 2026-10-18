@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOHA – Admin Panel</title>
+    <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        :root {
+            font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            font-weight: 400;
+            color-scheme: light;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --primary: #FFA500;
+            --primary-light: #FFD700;
+            --secondary: #2196F3;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --purple: #9C27B0;
+            --dark: #1a1a2e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; overflow-x: hidden; font-family: 'Inter', system-ui, sans-serif; }
+        #app { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .home-button {
+            position: fixed; top: 18px; left: 18px; z-index: 1000;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 50px; padding: 10px 18px;
+            font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3); transition: all 0.3s; text-decoration: none;
+        }
+        .home-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4); }
+
+        .page {
+            width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
+            padding: 70px 20px 40px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .page.hidden { display: none !important; }
+
+        .container {
+            width: 100%; max-width: 1280px; background: rgba(255,255,255,0.97);
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); padding: 28px;
+        }
+
+        .logo-section { text-align: center; margin-bottom: 20px; }
+        .logo-section img { width: 60px; height: 60px; margin-bottom: 6px; }
+        .logo-section h1 {
+            font-size: 1.75rem; font-weight: 700;
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .logo-section p { color: #666; margin-top: 4px; font-size: 0.92rem; }
+
+        .form-title { color: #FFA500; margin-bottom: 14px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 0.9rem; }
+        input, select, textarea {
+            width: 100%; padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px;
+            font-size: 0.95rem; transition: all 0.2s; background: white; font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #FFA500; outline: none; box-shadow: 0 0 0 3px rgba(255,165,0,0.12);
+        }
+
+        .btn {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 600;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,215,0,0.3); }
+        .btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+        .btn-secondary { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+        .btn-success { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+        .btn-danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .btn-purple { background: linear-gradient(135deg, #9C27B0, #673AB7); }
+        .btn-outline { background: transparent; border: 2px solid #FFA500; color: #FFA500; }
+        .btn-sm { width: auto; padding: 7px 12px; font-size: 0.82rem; }
+        .btn-dark { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+
+        .need-login-box, .unauthorized-box { text-align: center; padding: 40px 24px; }
+        .need-login-box i, .unauthorized-box i { font-size: 3rem; color: #FFA500; margin-bottom: 16px; }
+        .need-login-box h2, .unauthorized-box h2 { font-size: 1.4rem; margin-bottom: 10px; color: #333; }
+        .need-login-box p, .unauthorized-box p { color: #666; margin-bottom: 20px; line-height: 1.5; }
+
+        /* Tabs */
+        .admin-tabs {
+            display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap;
+            border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;
+        }
+        .admin-tab {
+            padding: 10px 16px; border-radius: 10px 10px 0 0; cursor: pointer;
+            font-weight: 600; color: #666; background: #f5f5f5; transition: all 0.2s;
+            display: flex; align-items: center; gap: 7px; font-size: 0.9rem;
+        }
+        .admin-tab:hover { background: #fff3e0; color: #FFA500; }
+        .admin-tab.active {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; box-shadow: 0 3px 10px rgba(255,165,0,0.25);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Stats */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px; margin-bottom: 22px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
+            border-radius: 14px; padding: 16px 12px; text-align: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06); border-left: 5px solid #FFA500;
+        }
+        .stat-card.blue { border-left-color: #2196F3; }
+        .stat-card.green { border-left-color: #4CAF50; }
+        .stat-card.purple { border-left-color: #9C27B0; }
+        .stat-card.red { border-left-color: #f44336; }
+        .stat-card.teal { border-left-color: #00bcd4; }
+        .stat-card.orange { border-left-color: #ff9800; }
+        .stat-number { font-size: 1.65rem; font-weight: 800; color: #333; }
+        .stat-label { font-size: 0.8rem; color: #777; margin-top: 3px; }
+
+        /* Tables */
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid #eee; }
+        table.admin-table { width: 100%; border-collapse: collapse; background: white; }
+        .admin-table th, .admin-table td {
+            padding: 11px 13px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 0.88rem;
+        }
+        .admin-table th { background: #f8f8f8; font-weight: 700; color: #555; white-space: nowrap; }
+        .admin-table tr:hover { background: #fafafa; }
+        .admin-table .actions { display: flex; gap: 5px; flex-wrap: wrap; }
+
+        .badge {
+            display: inline-block; padding: 3px 9px; border-radius: 12px;
+            font-size: 0.73rem; font-weight: 700;
+        }
+        .badge-admin { background: #f3e5f5; color: #7b1fa2; }
+        .badge-teacher { background: #fff3e0; color: #ef6c00; }
+        .badge-student { background: #e3f2fd; color: #1565c0; }
+        .badge-active { background: #e8f5e9; color: #2e7d32; }
+        .badge-blocked { background: #ffebee; color: #c62828; }
+        .badge-pending { background: #fff3e0; color: #ef6c00; }
+        .badge-graded { background: #e8f5e9; color: #2e7d32; }
+        .badge-ai { background: #f3e5f5; color: #7b1fa2; }
+
+        .search-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+        .search-bar input { flex: 1; min-width: 180px; }
+
+        .empty-state { text-align: center; padding: 45px 20px; color: #999; }
+        .empty-state i { font-size: 2.6rem; margin-bottom: 10px; display: block; }
+
+        /* Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center;
+            padding: 15px; backdrop-filter: blur(3px);
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white; padding: 26px; border-radius: 18px; width: 100%; max-width: 720px;
+            max-height: 88vh; overflow-y: auto; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal-content.wide { max-width: 920px; }
+        .modal-header { margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #FFD700; }
+        .modal-header h3 { color: #FFA500; display: flex; align-items: center; gap: 8px; font-size: 1.25rem; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 2px solid #e0e0e0; }
+        .modal-btn {
+            padding: 10px 18px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem;
+        }
+        .modal-btn.secondary { background: linear-gradient(135deg, #666, #555); }
+        .close {
+            position: absolute; top: 12px; right: 12px; cursor: pointer; color: #666;
+            width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .close:hover { background: rgba(0,0,0,0.1); }
+
+        .notification {
+            position: fixed; top: 20px; right: 20px; padding: 13px 20px; border-radius: 12px; color: white;
+            font-weight: 700; z-index: 3000; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transform: translateX(150%); transition: transform 0.4s; max-width: 340px;
+        }
+        .notification.show { transform: translateX(0); }
+        .notification.success { background: linear-gradient(135deg, #00b09b, #96c93d); }
+        .notification.info { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
+        .notification.warning { background: linear-gradient(135deg, #f46b45, #eea849); }
+        .notification.error { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+
+        #loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
+            flex-direction: column; gap: 16px;
+        }
+        #loading-overlay.show { display: flex; }
+        .loading {
+            display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .detail-box {
+            background: #f9f9f9; border-radius: 12px; padding: 14px; margin-bottom: 12px;
+            border-left: 4px solid #FFA500;
+        }
+        .detail-box.mcq { border-left-color: #2196F3; }
+        .detail-box.essay { border-left-color: #FF9800; }
+        .detail-box.chat-user { border-left-color: #FFA500; background: #fff8e1; }
+        .detail-box.chat-ai { border-left-color: #2196F3; }
+
+        .chat-bubble {
+            padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; line-height: 1.5;
+            white-space: pre-wrap; word-break: break-word;
+        }
+        .chat-bubble.user { background: linear-gradient(135deg, #FFD700, #FFA500); color: white; margin-left: 20%; }
+        .chat-bubble.ai { background: #f0f4f8; color: #333; margin-right: 20%; border: 1px solid #e0e0e0; }
+
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .admin-tabs { gap: 4px; }
+            .admin-tab { padding: 8px 11px; font-size: 0.8rem; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <a href="https://hmtuan002.github.io/hoang/main" class="home-button">
+            <i class="fas fa-home"></i> Trang chính
+        </a>
+
+        <!-- NEED LOGIN -->
+        <div id="needLoginPage" class="page hidden">
+            <div class="container" style="max-width:520px;">
+                <div class="logo-section">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
+                    <h1>LOHA Admin</h1>
+                    <p>Quản trị hệ thống</p>
+                </div>
+                <div class="need-login-box">
+                    <i class="fas fa-lock"></i>
+                    <h2>Bạn cần đăng nhập</h2>
+                    <p>Vui lòng đăng nhập tại <strong>Trang chính</strong> trước khi truy cập trang quản trị.</p>
+                    <a href="https://hmtuan002.github.io/hoang/main" class="btn" style="text-decoration:none;">
+                        <i class="fas fa-home"></i> Về trang chính để đăng nhập
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- UNAUTHORIZED -->
+        <div id="unauthorizedPage" class="page hidden">
+            <div class="container" style="max-width:520px;">
+                <div class="logo-section">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
+                    <h1>LOHA Admin</h1>
+                    <p>Quản trị hệ thống</p>
+                </div>
+                <div class="unauthorized-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <h2>Không có quyền truy cập</h2>
+                    <p>Chỉ tài khoản <strong>Admin</strong> mới được vào trang này.<br>
+                    Nếu bạn là người tạo tài khoản đầu tiên, hệ thống sẽ tự nâng cấp bạn thành Admin.</p>
+                    <a href="https://hmtuan002.github.io/hoang/main" class="btn" style="text-decoration:none;">
+                        <i class="fas fa-home"></i> Về trang chính
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN DASHBOARD -->
+        <div id="adminDashboard" class="page hidden">
+            <div class="container">
+                <div class="logo-section">
+                    <h1 style="font-size:1.65rem;">LOHA – Admin Panel</h1>
+                    <p id="adminWelcome">Xin chào Admin!</p>
+                </div>
+
+                <!-- STATS -->
+                <div class="stats-row" id="statsRow">
+                    <div class="stat-card">
+                        <div class="stat-number" id="statUsers">–</div>
+                        <div class="stat-label">Tài khoản</div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-number" id="statTeachers">–</div>
+                        <div class="stat-label">Giáo viên</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-number" id="statStudents">–</div>
+                        <div class="stat-label">Học sinh</div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-number" id="statAdmins">–</div>
+                        <div class="stat-label">Admin</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-number" id="statBlocked">–</div>
+                        <div class="stat-label">Bị chặn</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-number" id="statExams">–</div>
+                        <div class="stat-label">Đề thi</div>
+                    </div>
+                    <div class="stat-card teal">
+                        <div class="stat-number" id="statBanks">–</div>
+                        <div class="stat-label">Ngân hàng đề</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color:#673ab7;">
+                        <div class="stat-number" id="statSubs">–</div>
+                        <div class="stat-label">Bài làm HS</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color:#009688;">
+                        <div class="stat-number" id="statSummaries">–</div>
+                        <div class="stat-label">Hội thoại tóm tắt</div>
+                    </div>
+                </div>
+
+                <!-- TABS -->
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="users"><i class="fas fa-users"></i> Tài khoản</div>
+                    <div class="admin-tab" data-tab="exams"><i class="fas fa-file-alt"></i> Đề thi</div>
+                    <div class="admin-tab" data-tab="banks"><i class="fas fa-database"></i> Ngân hàng đề</div>
+                    <div class="admin-tab" data-tab="submissions"><i class="fas fa-clipboard-list"></i> Bài làm HS</div>
+                    <div class="admin-tab" data-tab="summaries"><i class="fas fa-comments"></i> Tóm tắt bài học</div>
+                </div>
+
+                <!-- TAB USERS -->
+                <div id="tab-users" class="tab-content active">
+                    <div class="search-bar">
+                        <input type="text" id="userSearch" placeholder="Tìm theo tên hoặc email...">
+                        <select id="userRoleFilter" style="width:auto;min-width:130px;">
+                            <option value="">Tất cả vai trò</option>
+                            <option value="admin">Admin</option>
+                            <option value="teacher">Giáo viên</option>
+                            <option value="student">Học sinh</option>
+                        </select>
+                        <select id="userStatusFilter" style="width:auto;min-width:130px;">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="active">Đang hoạt động</option>
+                            <option value="blocked">Đã bị chặn</option>
+                        </select>
+                        <button class="btn btn-sm btn-secondary" id="btnRefreshUsers" style="width:auto;"><i class="fas fa-sync-alt"></i> Làm mới</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Tên</th>
+                                    <th>Email</th>
+                                    <th>Vai trò</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr><td colspan="6" style="text-align:center;padding:30px;">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB EXAMS -->
+                <div id="tab-exams" class="tab-content">
+                    <div class="search-bar">
+                        <input type="text" id="examSearch" placeholder="Tìm theo tên đề, mã đề hoặc giáo viên...">
+                        <button class="btn btn-sm btn-secondary" id="btnRefreshExams" style="width:auto;"><i class="fas fa-sync-alt"></i> Làm mới</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Tên đề</th>
+                                    <th>Mã đề</th>
+                                    <th>Giáo viên</th>
+                                    <th>Môn / Khối</th>
+                                    <th>Số câu</th>
+                                    <th>Thời gian</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="examsTableBody">
+                                <tr><td colspan="8" style="text-align:center;padding:30px;">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB BANKS -->
+                <div id="tab-banks" class="tab-content">
+                    <div class="search-bar">
+                        <input type="text" id="bankSearch" placeholder="Tìm theo tên ngân hàng đề hoặc giáo viên...">
+                        <button class="btn btn-sm btn-secondary" id="btnRefreshBanks" style="width:auto;"><i class="fas fa-sync-alt"></i> Làm mới</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Tên đề</th>
+                                    <th>Giáo viên</th>
+                                    <th>Số nội dung</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="banksTableBody">
+                                <tr><td colspan="5" style="text-align:center;padding:30px;">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB SUBMISSIONS -->
+                <div id="tab-submissions" class="tab-content">
+                    <div class="search-bar">
+                        <input type="text" id="subSearch" placeholder="Tìm theo tên học sinh hoặc tên đề...">
+                        <select id="subStatusFilter" style="width:auto;min-width:140px;">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="pending">Chờ chấm</option>
+                            <option value="graded">Đã chấm</option>
+                            <option value="ai_graded">AI đã chấm</option>
+                        </select>
+                        <button class="btn btn-sm btn-secondary" id="btnRefreshSubs" style="width:auto;"><i class="fas fa-sync-alt"></i> Làm mới</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Học sinh</th>
+                                    <th>Tên đề</th>
+                                    <th>Mã đề</th>
+                                    <th>Điểm</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày nộp</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subsTableBody">
+                                <tr><td colspan="7" style="text-align:center;padding:30px;">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB SUMMARIES -->
+                <div id="tab-summaries" class="tab-content">
+                    <div class="search-bar">
+                        <input type="text" id="summarySearch" placeholder="Tìm theo tiêu đề hoặc môn học...">
+                        <button class="btn btn-sm btn-secondary" id="btnRefreshSummaries" style="width:auto;"><i class="fas fa-sync-alt"></i> Làm mới</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Tiêu đề</th>
+                                    <th>Người dùng</th>
+                                    <th>Môn / Khối</th>
+                                    <th>Số tin nhắn</th>
+                                    <th>Cập nhật lần cuối</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="summariesTableBody">
+                                <tr><td colspan="6" style="text-align:center;padding:30px;">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW EXAM MODAL -->
+        <div id="viewExamModal" class="modal">
+            <div class="modal-content wide">
+                <span class="material-symbols-outlined close" id="closeViewExamModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-file-alt"></i> Chi tiết đề: <span id="viewExamTitle"></span></h3></div>
+                <div class="modal-body">
+                    <div id="viewExamMeta" style="color:#666;font-size:0.9rem;margin-bottom:16px;"></div>
+                    <div id="viewExamQuestionsList" style="max-height:60vh;overflow-y:auto;"></div>
+                </div>
+                <div class="modal-footer"><button class="modal-btn secondary" id="btnCloseViewExam">Đóng</button></div>
+            </div>
+        </div>
+
+        <!-- VIEW BANK MODAL -->
+        <div id="viewBankModal" class="modal">
+            <div class="modal-content wide">
+                <span class="material-symbols-outlined close" id="closeViewBankModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-database"></i> Ngân hàng đề: <span id="viewBankTitle"></span></h3></div>
+                <div class="modal-body">
+                    <div id="viewBankMeta" style="color:#666;font-size:0.9rem;margin-bottom:16px;"></div>
+                    <div id="viewBankContentList" style="max-height:60vh;overflow-y:auto;"></div>
+                </div>
+                <div class="modal-footer"><button class="modal-btn secondary" id="btnCloseViewBank">Đóng</button></div>
+            </div>
+        </div>
+
+        <!-- VIEW SUBMISSION MODAL -->
+        <div id="viewSubModal" class="modal">
+            <div class="modal-content wide">
+                <span class="material-symbols-outlined close" id="closeViewSubModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-clipboard-check"></i> Chi tiết bài làm</h3></div>
+                <div class="modal-body">
+                    <div id="viewSubMeta" style="color:#666;font-size:0.9rem;margin-bottom:16px;"></div>
+                    <div id="viewSubContent" style="max-height:60vh;overflow-y:auto;"></div>
+                </div>
+                <div class="modal-footer"><button class="modal-btn secondary" id="btnCloseViewSub">Đóng</button></div>
+            </div>
+        </div>
+
+        <!-- VIEW SUMMARY MODAL -->
+        <div id="viewSummaryModal" class="modal">
+            <div class="modal-content wide">
+                <span class="material-symbols-outlined close" id="closeViewSummaryModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-comments"></i> Hội thoại tóm tắt</h3></div>
+                <div class="modal-body">
+                    <div id="viewSummaryMeta" style="color:#666;font-size:0.9rem;margin-bottom:16px;"></div>
+                    <div id="viewSummaryContent" style="max-height:60vh;overflow-y:auto;"></div>
+                </div>
+                <div class="modal-footer"><button class="modal-btn secondary" id="btnCloseViewSummary">Đóng</button></div>
+            </div>
+        </div>
+
+        <!-- CHANGE ROLE MODAL -->
+        <div id="changeRoleModal" class="modal">
+            <div class="modal-content" style="max-width:420px;">
+                <span class="material-symbols-outlined close" id="closeChangeRoleModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-user-cog"></i> Đổi vai trò</h3></div>
+                <div class="modal-body">
+                    <p style="margin-bottom:12px;">Người dùng: <strong id="changeRoleUserName"></strong></p>
+                    <div class="form-group">
+                        <label>Vai trò mới</label>
+                        <select id="newRoleSelect">
+                            <option value="student">Học sinh</option>
+                            <option value="teacher">Giáo viên</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary" id="cancelChangeRole">Hủy</button>
+                    <button class="modal-btn" id="btnConfirmChangeRole">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <div id="loading-overlay">
+        <div style="width:56px;height:56px;border:4px solid rgba(255,215,0,0.3);border-radius:50%;border-top-color:#FFD700;animation:spin 0.8s linear infinite;"></div>
+        <div style="color:white;font-size:17px;" id="loading-text">Đang xử lý...</div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // ============================================================
+        // FIREBASE
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
+            authDomain: "bee2-8be5c.firebaseapp.com",
+            databaseURL: "https://bee2-8be5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bee2-8be5c",
+            storageBucket: "bee2-8be5c.firebasestorage.app",
+            messagingSenderId: "955848369197",
+            appId: "1:955848369197:web:ccda9b046000ac4cfa04a4",
+            measurementId: "G-1G0N144BN3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ============================================================
+        // HELPERS
+        // ============================================================
+        function showLoading(msg) {
+            document.getElementById('loading-text').textContent = msg || 'Đang xử lý...';
+            document.getElementById('loading-overlay').classList.add('show');
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.remove('show');
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+        function showNotification(msg, type) {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.className = `notification ${type}`;
+            setTimeout(() => n.classList.add('show'), 10);
+            setTimeout(() => n.classList.remove('show'), 4000);
+        }
+        function escapeHtml(str) {
+            if (str == null) return '';
+            return String(str).replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[m]);
+        }
+        function hideAllPages() {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+        }
+        function subjName(s) {
+            return { toan: 'Toán', van: 'Ngữ văn', khtn: 'KHTN', anh: 'Tiếng Anh' }[s] || s;
+        }
+        function formatDate(ts) {
+            if (!ts) return 'N/A';
+            try {
+                const d = ts.toDate ? ts.toDate() : new Date(ts);
+                return d.toLocaleString('vi-VN');
+            } catch (e) { return 'N/A'; }
+        }
+        function roleBadge(role) {
+            if (role === 'admin') return '<span class="badge badge-admin">Admin</span>';
+            if (role === 'teacher') return '<span class="badge badge-teacher">Giáo viên</span>';
+            return '<span class="badge badge-student">Học sinh</span>';
+        }
+        function statusBadge(blocked) {
+            return blocked
+                ? '<span class="badge badge-blocked">Đã chặn</span>'
+                : '<span class="badge badge-active">Hoạt động</span>';
+        }
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentUser = null;
+        let currentUserProfile = null;
+        let allUsers = [];
+        let allExams = [];
+        let allBanks = [];
+        let allSubs = [];
+        let allSummaries = [];
+        let changeRoleUid = null;
+        let userNameCache = {}; // uid -> name
+
+        // ============================================================
+        // AUTH + FIRST ADMIN
+        // ============================================================
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                currentUser = null;
+                currentUserProfile = null;
+                showNeedLoginPage();
+                return;
+            }
+
+            currentUser = user;
+            try {
+                const doc = await db.collection('users').doc(user.uid).get();
+                if (doc.exists) {
+                    currentUserProfile = { id: doc.id, ...doc.data() };
+                } else {
+                    currentUserProfile = {
+                        id: user.uid,
+                        name: user.email ? user.email.split('@')[0] : 'Người dùng',
+                        email: user.email || '',
+                        role: 'student',
+                        blocked: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    await db.collection('users').doc(user.uid).set(currentUserProfile);
+                }
+            } catch (err) {
+                console.error(err);
+                currentUserProfile = {
+                    id: user.uid,
+                    name: user.email ? user.email.split('@')[0] : 'Người dùng',
+                    email: user.email || '',
+                    role: 'student',
+                    blocked: false
+                };
+            }
+
+            // Nếu chưa có admin nào → người đầu tiên trở thành admin
+            const adminSnap = await db.collection('users').where('role', '==', 'admin').limit(1).get();
+            if (adminSnap.empty) {
+                await db.collection('users').doc(user.uid).update({
+                    role: 'admin',
+                    promotedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                currentUserProfile.role = 'admin';
+                showNotification('Bạn là người dùng đầu tiên → đã được nâng cấp thành Admin!', 'success');
+            }
+
+            if (currentUserProfile.role === 'admin') {
+                showAdminDashboard();
+            } else {
+                showUnauthorizedPage();
+            }
+        });
+
+        function showNeedLoginPage() {
+            hideAllPages();
+            document.getElementById('needLoginPage').classList.remove('hidden');
+        }
+        function showUnauthorizedPage() {
+            hideAllPages();
+            document.getElementById('unauthorizedPage').classList.remove('hidden');
+        }
+        function showAdminDashboard() {
+            hideAllPages();
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            document.getElementById('adminWelcome').textContent = `Xin chào ${currentUserProfile?.name || 'Admin'}!`;
+            loadAllStats();
+            loadUsers();
+        }
+
+        // ============================================================
+        // TABS
+        // ============================================================
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                const id = tab.dataset.tab;
+                document.getElementById('tab-' + id).classList.add('active');
+
+                if (id === 'users') loadUsers();
+                else if (id === 'exams') loadExams();
+                else if (id === 'banks') loadBanks();
+                else if (id === 'submissions') loadSubmissions();
+                else if (id === 'summaries') loadSummaries();
+            });
+        });
+
+        // ============================================================
+        // STATS
+        // ============================================================
+        async function loadAllStats() {
+            try {
+                const [usersSnap, examsSnap, banksSnap, subsSnap, sumSnap] = await Promise.all([
+                    db.collection('users').get(),
+                    db.collection('exams').get(),
+                    db.collection('questionBanks').get(),
+                    db.collection('exam_submissions').get(),
+                    db.collection('summary_histories').get()
+                ]);
+
+                let total = 0, teachers = 0, students = 0, admins = 0, blocked = 0;
+                usersSnap.forEach(doc => {
+                    const d = doc.data();
+                    total++;
+                    if (d.role === 'admin') admins++;
+                    else if (d.role === 'teacher') teachers++;
+                    else students++;
+                    if (d.blocked) blocked++;
+                    userNameCache[doc.id] = d.name || d.email || doc.id;
+                });
+
+                document.getElementById('statUsers').textContent = total;
+                document.getElementById('statTeachers').textContent = teachers;
+                document.getElementById('statStudents').textContent = students;
+                document.getElementById('statAdmins').textContent = admins;
+                document.getElementById('statBlocked').textContent = blocked;
+                document.getElementById('statExams').textContent = examsSnap.size;
+                document.getElementById('statBanks').textContent = banksSnap.size;
+                document.getElementById('statSubs').textContent = subsSnap.size;
+                document.getElementById('statSummaries').textContent = sumSnap.size;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // ============================================================
+        // USERS
+        // ============================================================
+        document.getElementById('btnRefreshUsers').addEventListener('click', loadUsers);
+        document.getElementById('userSearch').addEventListener('input', renderUsersTable);
+        document.getElementById('userRoleFilter').addEventListener('change', renderUsersTable);
+        document.getElementById('userStatusFilter').addEventListener('change', renderUsersTable);
+
+        async function loadUsers() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;">Đang tải...</td></tr>';
+            try {
+                const snap = await db.collection('users').get();
+                allUsers = [];
+                snap.forEach(doc => {
+                    allUsers.push({ id: doc.id, ...doc.data() });
+                    userNameCache[doc.id] = doc.data().name || doc.data().email || doc.id;
+                });
+                allUsers.sort((a, b) => {
+                    const order = { admin: 0, teacher: 1, student: 2 };
+                    return (order[a.role] || 3) - (order[b.role] || 3);
+                });
+                renderUsersTable();
+                loadAllStats();
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:red;padding:20px;">Lỗi: ${err.message}</td></tr>`;
+            }
+        }
+
+        function renderUsersTable() {
+            const search = (document.getElementById('userSearch').value || '').toLowerCase().trim();
+            const roleFilter = document.getElementById('userRoleFilter').value;
+            const statusFilter = document.getElementById('userStatusFilter').value;
+
+            let filtered = allUsers.filter(u => {
+                if (roleFilter && u.role !== roleFilter) return false;
+                if (statusFilter === 'blocked' && !u.blocked) return false;
+                if (statusFilter === 'active' && u.blocked) return false;
+                if (search) {
+                    const name = (u.name || '').toLowerCase();
+                    const email = (u.email || '').toLowerCase();
+                    if (!name.includes(search) && !email.includes(search)) return false;
+                }
+                return true;
+            });
+
+            const tbody = document.getElementById('usersTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-users"></i>Không tìm thấy tài khoản nào</div></td></tr>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(u => {
+                const isSelf = u.id === currentUser.uid;
+                html += `
+                    <tr>
+                        <td><strong>${escapeHtml(u.name || 'Không tên')}</strong>${isSelf ? ' <span style="color:#FFA500;">(Bạn)</span>' : ''}</td>
+                        <td>${escapeHtml(u.email || '—')}</td>
+                        <td>${roleBadge(u.role || 'student')}</td>
+                        <td>${statusBadge(!!u.blocked)}</td>
+                        <td>${formatDate(u.createdAt)}</td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-secondary" onclick="openChangeRole('${u.id}')"><i class="fas fa-user-cog"></i> Đổi vai trò</button>
+                            ${u.blocked
+                                ? `<button class="btn btn-sm btn-success" onclick="toggleBlock('${u.id}', false)"><i class="fas fa-unlock"></i> Mở chặn</button>`
+                                : `<button class="btn btn-sm btn-danger" onclick="toggleBlock('${u.id}', true)" ${isSelf ? 'disabled title="Không thể tự chặn mình"' : ''}><i class="fas fa-ban"></i> Chặn</button>`
+                            }
+                        </td>
+                    </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        window.openChangeRole = function(uid) {
+            const u = allUsers.find(x => x.id === uid);
+            if (!u) return;
+            changeRoleUid = uid;
+            document.getElementById('changeRoleUserName').textContent = u.name || u.email || uid;
+            document.getElementById('newRoleSelect').value = u.role || 'student';
+            document.getElementById('changeRoleModal').classList.add('active');
+        };
+
+        document.getElementById('closeChangeRoleModal').addEventListener('click', () => document.getElementById('changeRoleModal').classList.remove('active'));
+        document.getElementById('cancelChangeRole').addEventListener('click', () => document.getElementById('changeRoleModal').classList.remove('active'));
+        document.getElementById('btnConfirmChangeRole').addEventListener('click', async () => {
+            if (!changeRoleUid) return;
+            const newRole = document.getElementById('newRoleSelect').value;
+            showLoading('Đang cập nhật vai trò...');
+            try {
+                await db.collection('users').doc(changeRoleUid).update({
+                    role: newRole,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showNotification('Đã đổi vai trò thành công!', 'success');
+                document.getElementById('changeRoleModal').classList.remove('active');
+                loadUsers();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        window.toggleBlock = async function(uid, block) {
+            if (uid === currentUser.uid) {
+                showNotification('Bạn không thể tự chặn chính mình!', 'warning');
+                return;
+            }
+            const action = block ? 'chặn' : 'mở chặn';
+            if (!confirm(`Bạn chắc chắn muốn ${action} tài khoản này?`)) return;
+            showLoading(`Đang ${action}...`);
+            try {
+                await db.collection('users').doc(uid).update({
+                    blocked: block,
+                    blockedAt: block ? firebase.firestore.FieldValue.serverTimestamp() : null,
+                    blockedBy: block ? currentUser.uid : null
+                });
+                showNotification(`Đã ${action} tài khoản thành công!`, 'success');
+                loadUsers();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // ============================================================
+        // EXAMS
+        // ============================================================
+        document.getElementById('btnRefreshExams').addEventListener('click', loadExams);
+        document.getElementById('examSearch').addEventListener('input', renderExamsTable);
+
+        async function loadExams() {
+            const tbody = document.getElementById('examsTableBody');
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;">Đang tải...</td></tr>';
+            try {
+                const snap = await db.collection('exams').get();
+                allExams = [];
+                snap.forEach(doc => allExams.push({ id: doc.id, ...doc.data() }));
+                allExams.sort((a, b) => {
+                    const ta = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate().getTime() : 0;
+                    const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
+                    return tb - ta;
+                });
+                renderExamsTable();
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:red;padding:20px;">Lỗi: ${err.message}</td></tr>`;
+            }
+        }
+
+        function renderExamsTable() {
+            const search = (document.getElementById('examSearch').value || '').toLowerCase().trim();
+            let filtered = allExams;
+            if (search) {
+                filtered = allExams.filter(e => {
+                    const title = (e.title || '').toLowerCase();
+                    const code = (e.code || '').toLowerCase();
+                    const teacher = (e.teacherName || '').toLowerCase();
+                    return title.includes(search) || code.includes(search) || teacher.includes(search);
+                });
+            }
+
+            const tbody = document.getElementById('examsTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-file-alt"></i>Chưa có đề thi nào</div></td></tr>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(e => {
+                const qCount = e.questions ? e.questions.length : 0;
+                html += `
+                    <tr>
+                        <td><strong>${escapeHtml(e.title || '—')}</strong></td>
+                        <td><span class="badge" style="background:#FFA500;color:white;">${escapeHtml(e.code || '—')}</span></td>
+                        <td>${escapeHtml(e.teacherName || '—')}</td>
+                        <td>${subjName(e.subject)} – Lớp ${e.grade || '?'}</td>
+                        <td>${qCount}</td>
+                        <td>${e.duration || 45} phút</td>
+                        <td>${formatDate(e.createdAt)}</td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-secondary" onclick="viewExamDetail('${e.id}')"><i class="fas fa-eye"></i> Xem</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteExam('${e.id}')"><i class="fas fa-trash"></i> Xóa</button>
+                        </td>
+                    </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        window.viewExamDetail = function(examId) {
+            const exam = allExams.find(e => e.id === examId);
+            if (!exam) { showNotification('Không tìm thấy đề', 'error'); return; }
+            document.getElementById('viewExamTitle').textContent = exam.title || 'Đề thi';
+            document.getElementById('viewExamMeta').textContent =
+                `Mã: ${exam.code} • ${subjName(exam.subject)} – Lớp ${exam.grade} • ${exam.questions?.length || 0} câu • ${exam.duration || 45} phút • GV: ${exam.teacherName || '—'}`;
+
+            const list = document.getElementById('viewExamQuestionsList');
+            const questions = exam.questions || [];
+            if (questions.length === 0) {
+                list.innerHTML = '<div class="empty-state">Đề này chưa có câu hỏi</div>';
+            } else {
+                let html = '';
+                questions.forEach((q, idx) => {
+                    const diffText = q.difficulty === 'easy' ? 'Dễ' : (q.difficulty === 'hard' ? 'Khó' : 'Trung bình');
+                    if (q.type === 'essay') {
+                        html += `
+                            <div class="detail-box essay">
+                                <div style="font-weight:700;margin-bottom:6px;">Câu ${idx + 1} – Tự luận (${q.points || 1} điểm) • ${diffText}</div>
+                                <div style="margin-bottom:8px;">${escapeHtml(q.question)}</div>
+                                <div style="background:#e8f5e9;color:#2e7d32;padding:8px 12px;border-radius:8px;font-size:0.9rem;">
+                                    <strong>Đáp án đúng:</strong> ${(q.correctAnswers || []).join(' / ') || 'Chưa có'}
+                                </div>
+                            </div>`;
+                    } else {
+                        let optsHtml = '';
+                        (q.options || []).forEach((o, oi) => {
+                            optsHtml += `<div style="padding:5px 10px;margin-bottom:3px;border-radius:6px;${o.correct ? 'background:#e8f5e9;color:#2e7d32;font-weight:600;' : ''}">
+                                ${String.fromCharCode(65 + oi)}. ${escapeHtml(o.text)} ${o.correct ? '<i class="fas fa-check"></i>' : ''}
+                            </div>`;
+                        });
+                        html += `
+                            <div class="detail-box mcq">
+                                <div style="font-weight:700;margin-bottom:6px;">Câu ${idx + 1} – Trắc nghiệm (${q.points || 1} điểm) • ${diffText}</div>
+                                <div style="margin-bottom:8px;">${escapeHtml(q.question)}</div>
+                                <div>${optsHtml}</div>
+                            </div>`;
+                    }
+                });
+                list.innerHTML = html;
+            }
+            document.getElementById('viewExamModal').classList.add('active');
+        };
+
+        document.getElementById('closeViewExamModal').addEventListener('click', () => document.getElementById('viewExamModal').classList.remove('active'));
+        document.getElementById('btnCloseViewExam').addEventListener('click', () => document.getElementById('viewExamModal').classList.remove('active'));
+
+        window.deleteExam = async function(examId) {
+            if (!confirm('Xóa đề này? Tất cả bài làm liên quan sẽ bị ảnh hưởng. Không thể hoàn tác!')) return;
+            showLoading('Đang xóa đề...');
+            try {
+                await db.collection('exams').doc(examId).delete();
+                showNotification('Đã xóa đề thành công!', 'success');
+                loadExams();
+                loadAllStats();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi xóa: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // ============================================================
+        // QUESTION BANKS
+        // ============================================================
+        document.getElementById('btnRefreshBanks').addEventListener('click', loadBanks);
+        document.getElementById('bankSearch').addEventListener('input', renderBanksTable);
+
+        async function loadBanks() {
+            const tbody = document.getElementById('banksTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;">Đang tải...</td></tr>';
+            try {
+                const snap = await db.collection('questionBanks').get();
+                allBanks = [];
+                snap.forEach(doc => allBanks.push({ id: doc.id, ...doc.data() }));
+                allBanks.sort((a, b) => {
+                    const ta = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate().getTime() : 0;
+                    const tb = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().getTime() : 0;
+                    return tb - ta;
+                });
+                renderBanksTable();
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:red;padding:20px;">Lỗi: ${err.message}</td></tr>`;
+            }
+        }
+
+        function renderBanksTable() {
+            const search = (document.getElementById('bankSearch').value || '').toLowerCase().trim();
+            let filtered = allBanks;
+            if (search) {
+                filtered = allBanks.filter(b => {
+                    const name = (b.name || '').toLowerCase();
+                    const teacher = (b.teacherName || '').toLowerCase();
+                    return name.includes(search) || teacher.includes(search);
+                });
+            }
+
+            const tbody = document.getElementById('banksTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="fas fa-database"></i>Chưa có ngân hàng đề nào</div></td></tr>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(b => {
+                const cnt = b.contents ? b.contents.length : 0;
+                html += `
+                    <tr>
+                        <td><strong>${escapeHtml(b.name || '—')}</strong></td>
+                        <td>${escapeHtml(b.teacherName || '—')}</td>
+                        <td>${cnt} nội dung</td>
+                        <td>${formatDate(b.createdAt)}</td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-secondary" onclick="viewBankDetail('${b.id}')"><i class="fas fa-eye"></i> Xem</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteBank('${b.id}')"><i class="fas fa-trash"></i> Xóa</button>
+                        </td>
+                    </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        window.viewBankDetail = function(bankId) {
+            const bank = allBanks.find(b => b.id === bankId);
+            if (!bank) { showNotification('Không tìm thấy ngân hàng đề', 'error'); return; }
+            document.getElementById('viewBankTitle').textContent = bank.name || 'Ngân hàng đề';
+            document.getElementById('viewBankMeta').textContent =
+                `GV: ${bank.teacherName || '—'} • ${(bank.contents || []).length} nội dung • Tạo: ${formatDate(bank.createdAt)}`;
+
+            const list = document.getElementById('viewBankContentList');
+            const contents = bank.contents || [];
+            if (contents.length === 0) {
+                list.innerHTML = '<div class="empty-state">Ngân hàng đề trống</div>';
+            } else {
+                let html = '';
+                contents.forEach((c, idx) => {
+                    if (c.type === 'essay') {
+                        html += `
+                            <div class="detail-box essay">
+                                <div style="font-weight:700;margin-bottom:6px;">${idx + 1}. Tự luận (${c.points || 1} điểm)</div>
+                                <div style="margin-bottom:6px;">${escapeHtml(c.question)}</div>
+                                <div style="background:#e8f5e9;color:#2e7d32;padding:6px 10px;border-radius:6px;font-size:0.88rem;">
+                                    <strong>Đáp án:</strong> ${(c.correctAnswers || []).join(' / ')}
+                                </div>
+                            </div>`;
+                    } else {
+                        const opts = (c.options || []).map((o, i) =>
+                            `${String.fromCharCode(65 + i)}. ${escapeHtml(o.text)}${o.correct ? ' ✓' : ''}`
+                        ).join(' | ');
+                        html += `
+                            <div class="detail-box mcq">
+                                <div style="font-weight:700;margin-bottom:6px;">${idx + 1}. Trắc nghiệm (${c.points || 1} điểm)</div>
+                                <div style="margin-bottom:6px;">${escapeHtml(c.question)}</div>
+                                <div style="font-size:0.88rem;color:#555;">${opts}</div>
+                            </div>`;
+                    }
+                });
+                list.innerHTML = html;
+            }
+            document.getElementById('viewBankModal').classList.add('active');
+        };
+
+        document.getElementById('closeViewBankModal').addEventListener('click', () => document.getElementById('viewBankModal').classList.remove('active'));
+        document.getElementById('btnCloseViewBank').addEventListener('click', () => document.getElementById('viewBankModal').classList.remove('active'));
+
+        window.deleteBank = async function(bankId) {
+            if (!confirm('Xóa ngân hàng đề này? Không thể hoàn tác!')) return;
+            showLoading('Đang xóa...');
+            try {
+                await db.collection('questionBanks').doc(bankId).delete();
+                showNotification('Đã xóa ngân hàng đề!', 'success');
+                loadBanks();
+                loadAllStats();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // ============================================================
+        // SUBMISSIONS
+        // ============================================================
+        document.getElementById('btnRefreshSubs').addEventListener('click', loadSubmissions);
+        document.getElementById('subSearch').addEventListener('input', renderSubsTable);
+        document.getElementById('subStatusFilter').addEventListener('change', renderSubsTable);
+
+        async function loadSubmissions() {
+            const tbody = document.getElementById('subsTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;">Đang tải...</td></tr>';
+            try {
+                const snap = await db.collection('exam_submissions').get();
+                allSubs = [];
+                snap.forEach(doc => allSubs.push({ id: doc.id, ...doc.data() }));
+                allSubs.sort((a, b) => {
+                    const ta = a.submittedAt && a.submittedAt.toDate ? a.submittedAt.toDate().getTime() : 0;
+                    const tb = b.submittedAt && b.submittedAt.toDate ? b.submittedAt.toDate().getTime() : 0;
+                    return tb - ta;
+                });
+                renderSubsTable();
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:20px;">Lỗi: ${err.message}</td></tr>`;
+            }
+        }
+
+        function renderSubsTable() {
+            const search = (document.getElementById('subSearch').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('subStatusFilter').value;
+
+            let filtered = allSubs.filter(s => {
+                if (statusFilter && s.status !== statusFilter) return false;
+                if (search) {
+                    const name = (s.studentName || '').toLowerCase();
+                    const title = (s.examTitle || '').toLowerCase();
+                    const code = (s.examCode || '').toLowerCase();
+                    if (!name.includes(search) && !title.includes(search) && !code.includes(search)) return false;
+                }
+                return true;
+            });
+
+            const tbody = document.getElementById('subsTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fas fa-clipboard-list"></i>Chưa có bài làm nào</div></td></tr>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(s => {
+                let statusHtml = '';
+                if (s.status === 'graded') statusHtml = '<span class="badge badge-graded">Đã chấm</span>';
+                else if (s.status === 'ai_graded') statusHtml = '<span class="badge badge-ai">AI đã chấm</span>';
+                else statusHtml = '<span class="badge badge-pending">Chờ chấm</span>';
+
+                const scoreText = s.totalScore != null ? `${s.totalScore}/${s.maxScore || '?'}` : '—';
+
+                html += `
+                    <tr>
+                        <td><strong>${escapeHtml(s.studentName || '—')}</strong></td>
+                        <td>${escapeHtml(s.examTitle || '—')}</td>
+                        <td><span class="badge" style="background:#FFA500;color:white;">${escapeHtml(s.examCode || '—')}</span></td>
+                        <td><strong>${scoreText}</strong></td>
+                        <td>${statusHtml}</td>
+                        <td>${formatDate(s.submittedAt)}</td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-secondary" onclick="viewSubDetail('${s.id}')"><i class="fas fa-eye"></i> Xem</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSubmission('${s.id}')"><i class="fas fa-trash"></i> Xóa</button>
+                        </td>
+                    </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        window.viewSubDetail = async function(subId) {
+            const sub = allSubs.find(s => s.id === subId);
+            if (!sub) { showNotification('Không tìm thấy bài làm', 'error'); return; }
+
+            showLoading('Đang tải chi tiết...');
+            try {
+                let exam = null;
+                if (sub.examId) {
+                    const examDoc = await db.collection('exams').doc(sub.examId).get();
+                    if (examDoc.exists) exam = { id: examDoc.id, ...examDoc.data() };
+                }
+
+                document.getElementById('viewSubMeta').innerHTML = `
+                    <strong>Học sinh:</strong> ${escapeHtml(sub.studentName || '—')}<br>
+                    <strong>Đề:</strong> ${escapeHtml(sub.examTitle || '—')} (${escapeHtml(sub.examCode || '')})<br>
+                    <strong>Điểm:</strong> ${sub.totalScore != null ? sub.totalScore : '—'}/${sub.maxScore || '?'} •
+                    <strong>Trạng thái:</strong> ${sub.status || 'pending'} •
+                    <strong>Nộp lúc:</strong> ${formatDate(sub.submittedAt)}
+                `;
+
+                const container = document.getElementById('viewSubContent');
+                const answers = sub.answers || {};
+                const scores = sub.questionScores || {};
+                const feedbacks = sub.feedbacks || {};
+
+                if (exam && exam.questions) {
+                    let html = '';
+                    exam.questions.forEach((q, idx) => {
+                        const ans = answers[q.id] || answers[idx] || '';
+                        const sc = scores[q.id] != null ? scores[q.id] : (scores[idx] != null ? scores[idx] : '—');
+                        const fb = feedbacks[q.id] || feedbacks[idx] || '';
+                        html += `
+                            <div class="detail-box ${q.type === 'essay' ? 'essay' : 'mcq'}">
+                                <div style="font-weight:700;margin-bottom:6px;">Câu ${idx + 1} (${q.points || 1} điểm) – Điểm đạt: ${sc}</div>
+                                <div style="margin-bottom:6px;">${escapeHtml(q.question)}</div>
+                                <div style="color:#555;margin-bottom:4px;"><strong>Học sinh trả lời:</strong> ${escapeHtml(String(ans)) || '<em>Không trả lời</em>'}</div>
+                                ${fb ? `<div style="color:#9C27B0;"><strong>Nhận xét:</strong> ${escapeHtml(fb)}</div>` : ''}
+                            </div>`;
+                    });
+                    container.innerHTML = html;
+                } else {
+                    let html = '<p style="color:#666;margin-bottom:12px;">Không tải được đề gốc. Hiển thị câu trả lời thô:</p>';
+                    Object.keys(answers).forEach((qid, idx) => {
+                        html += `
+                            <div class="detail-box">
+                                <div style="font-weight:700;">Câu ${idx + 1} (ID: ${qid})</div>
+                                <div>${escapeHtml(String(answers[qid]))}</div>
+                            </div>`;
+                    });
+                    container.innerHTML = html || '<div class="empty-state">Không có dữ liệu trả lời</div>';
+                }
+
+                document.getElementById('viewSubModal').classList.add('active');
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi tải chi tiết: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        };
+
+        document.getElementById('closeViewSubModal').addEventListener('click', () => document.getElementById('viewSubModal').classList.remove('active'));
+        document.getElementById('btnCloseViewSub').addEventListener('click', () => document.getElementById('viewSubModal').classList.remove('active'));
+
+        window.deleteSubmission = async function(subId) {
+            if (!confirm('Xóa bài làm này? Không thể hoàn tác!')) return;
+            showLoading('Đang xóa...');
+            try {
+                await db.collection('exam_submissions').doc(subId).delete();
+                showNotification('Đã xóa bài làm!', 'success');
+                loadSubmissions();
+                loadAllStats();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        };
+
+        // ============================================================
+        // SUMMARY HISTORIES (Tóm tắt bài học)
+        // ============================================================
+        document.getElementById('btnRefreshSummaries').addEventListener('click', loadSummaries);
+        document.getElementById('summarySearch').addEventListener('input', renderSummariesTable);
+
+        async function loadSummaries() {
+            const tbody = document.getElementById('summariesTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;">Đang tải...</td></tr>';
+            try {
+                const snap = await db.collection('summary_histories').get();
+                allSummaries = [];
+                snap.forEach(doc => allSummaries.push({ id: doc.id, ...doc.data() }));
+                allSummaries.sort((a, b) => {
+                    const ta = a.updatedAt && a.updatedAt.toDate ? a.updatedAt.toDate().getTime() : 0;
+                    const tb = b.updatedAt && b.updatedAt.toDate ? b.updatedAt.toDate().getTime() : 0;
+                    return tb - ta;
+                });
+                renderSummariesTable();
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:red;padding:20px;">Lỗi: ${err.message}</td></tr>`;
+            }
+        }
+
+        function renderSummariesTable() {
+            const search = (document.getElementById('summarySearch').value || '').toLowerCase().trim();
+            let filtered = allSummaries;
+            if (search) {
+                filtered = allSummaries.filter(s => {
+                    const title = (s.title || '').toLowerCase();
+                    const subj = subjName(s.subject || '').toLowerCase();
+                    const userName = (userNameCache[s.userId] || '').toLowerCase();
+                    return title.includes(search) || subj.includes(search) || userName.includes(search);
+                });
+            }
+
+            const tbody = document.getElementById('summariesTableBody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-comments"></i>Chưa có hội thoại tóm tắt nào</div></td></tr>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(s => {
+                const msgCount = s.messages ? s.messages.length : 0;
+                const userName = userNameCache[s.userId] || s.userId || '—';
+                html += `
+                    <tr>
+                        <td><strong>${escapeHtml(s.title || 'Không tiêu đề')}</strong></td>
+                        <td>${escapeHtml(userName)}</td>
+                        <td>${subjName(s.subject)} – Lớp ${s.grade || '?'}</td>
+                        <td>${msgCount}</td>
+                        <td>${formatDate(s.updatedAt)}</td>
+                        <td class="actions">
+                            <button class="btn btn-sm btn-secondary" onclick="viewSummaryDetail('${s.id}')"><i class="fas fa-eye"></i> Xem</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSummary('${s.id}')"><i class="fas fa-trash"></i> Xóa</button>
+                        </td>
+                    </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        window.viewSummaryDetail = function(sumId) {
+            const s = allSummaries.find(x => x.id === sumId);
+            if (!s) { showNotification('Không tìm thấy hội thoại', 'error'); return; }
+
+            const userName = userNameCache[s.userId] || s.userId || '—';
+            document.getElementById('viewSummaryMeta').innerHTML = `
+                <strong>Tiêu đề:</strong> ${escapeHtml(s.title || 'Không tiêu đề')}<br>
+                <strong>Người dùng:</strong> ${escapeHtml(userName)}<br>
+                <strong>Môn / Khối:</strong> ${subjName(s.subject)} – Lớp ${s.grade || '?'}<br>
+                <strong>Cập nhật:</strong> ${formatDate(s.updatedAt)}
+            `;
+
+            const container = document.getElementById('viewSummaryContent');
+            const messages = s.messages || [];
+            if (messages.length === 0) {
+                container.innerHTML = '<div class="empty-state">Hội thoại trống</div>';
+            } else {
+                let html = '';
+                messages.forEach(msg => {
+                    const role = msg.role === 'user' ? 'user' : 'ai';
+                    const label = role === 'user' ? 'Học sinh' : 'AI';
+                    html += `
+                        <div style="margin-bottom:14px;">
+                            <div style="font-size:0.78rem;color:#888;margin-bottom:3px;">${label}</div>
+                            <div class="chat-bubble ${role}">${escapeHtml(msg.content)}</div>
+                        </div>`;
+                });
+                container.innerHTML = html;
+            }
+            document.getElementById('viewSummaryModal').classList.add('active');
+        };
+
+        document.getElementById('closeViewSummaryModal').addEventListener('click', () => document.getElementById('viewSummaryModal').classList.remove('active'));
+        document.getElementById('btnCloseViewSummary').addEventListener('click', () => document.getElementById('viewSummaryModal').classList.remove('active'));
+
+        window.deleteSummary = async function(sumId) {
+            if (!confirm('Xóa hội thoại tóm tắt này? Không thể hoàn tác!')) return;
+            showLoading('Đang xóa...');
+            try {
+                await db.collection('summary_histories').doc(sumId).delete();
+                showNotification('Đã xóa hội thoại!', 'success');
+                loadSummaries();
+                loadAllStats();
+            } catch (err) {
+                console.error(err);
+                showNotification('Lỗi: ' + err.message, 'error');
+            } finally {
+                hideLoading();
+            }
+        };
+    </script>
+</body>
+</html>
