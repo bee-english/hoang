@@ -281,7 +281,7 @@
         .start-exam-btn:hover { background: linear-gradient(135deg, #45a049 0%, #1b5e20 100%); transform: scale(1.02); }
         .btn-exit { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; }
         
-        /* ===== AGORA MIC BUTTON ===== */
+        /* ===== WEBRTC MIC BUTTON ===== */
         .mic-btn {
             padding: 11px 22px; border: none; border-radius: 12px; font-size: 0.98rem; font-weight: 700;
             cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
@@ -855,8 +855,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-    <!-- Agora Web SDK -->
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+    <!-- WebRTC thuần + Firebase signaling (không cần Agora) -->
 
     <script>
         // ============================================================
@@ -877,14 +876,24 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // AGORA CONFIG
+        // WEBRTC CONFIG + STATE (thay thế hoàn toàn Agora)
         // ============================================================
-        const AGORA_APP_ID = "1f318a90f36a4a3bb68a1099555cf3de";
-        let agoraClient = null;
-        let localAudioTrack = null;
+        const ICE_SERVERS = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' }
+            ]
+        };
+
+        let localStream = null;
+        let peerConnections = {};          // remoteUid -> RTCPeerConnection
         let isMicMuted = true;
-        let isAgoraJoined = false;
-        let agoraUid = null;
+        let isWebRTCJoined = false;
+        let signalListener = null;
+        let makingOffer = {};               // remoteUid -> boolean
+        let ignoreOffer = {};
+        let polite = {};
 
         // ============================================================
         // API KEY + AI HELPERS
@@ -1103,8 +1112,8 @@
                     startExamBtn.style.display = (isTeacher && isExamMode && !examStarted) ? 'flex' : 'none';
                     showNotification(`Đã tham gia phòng "${roomData.name}"`, 'success');
 
-                    // ===== JOIN AGORA CHANNEL =====
-                    joinAgoraChannel(roomId);
+                    // ===== JOIN WEBRTC CHANNEL =====
+                    joinWebRTC(roomId);
                 });
             }).catch(err => {
                 console.error(err);
@@ -1130,8 +1139,8 @@
             isExamMode = false;
             examStarted = false;
 
-            // Leave Agora
-            leaveAgoraChannel();
+            // Leave WebRTC
+            leaveWebRTC();
         }
 
         function startRoomTimer() {
@@ -1171,105 +1180,260 @@
         }
 
         // ============================================================
-        // AGORA VOICE CHAT
+        // WEBRTC VOICE CHAT (MESH + FIRESTORE SIGNALING)
         // ============================================================
-        async function joinAgoraChannel(channelName) {
+        async function joinWebRTC(channelName) {
             try {
-                // Tạo client
-                agoraClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+                // 1. Lấy local audio stream
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    },
+                    video: false
+                });
 
-                // Xử lý user remote join
-                agoraClient.on("user-published", async (user, mediaType) => {
-                    await agoraClient.subscribe(user, mediaType);
-                    if (mediaType === "audio") {
-                        const remoteAudioTrack = user.audioTrack;
-                        remoteAudioTrack.play();
-                        console.log("Đã nhận audio từ user:", user.uid);
+                // Mặc định tắt mic khi vào phòng
+                localStream.getAudioTracks().forEach(track => {
+                    track.enabled = false;
+                });
+                isMicMuted = true;
+
+                isWebRTCJoined = true;
+                updateMicUI();
+                updateVoiceStatus(true);
+                document.getElementById('toggleMicBtn').disabled = false;
+                showNotification("Đã kết nối mic thành công! Nhấn nút để bật mic nói chuyện", "success");
+
+                // 2. Lắng nghe tín hiệu từ các peer khác
+                startSignalListener(channelName);
+
+                // 3. Kết nối với tất cả người đang có trong phòng
+                const participantsSnap = await db.collection('rooms').doc(channelName).collection('participants').get();
+                participantsSnap.forEach(doc => {
+                    const remoteUid = doc.id;
+                    if (remoteUid !== currentUser.uid) {
+                        createPeerConnection(remoteUid, true);
                     }
                 });
 
-                agoraClient.on("user-unpublished", (user) => {
-                    console.log("User unpublished:", user.uid);
-                });
-
-                agoraClient.on("user-joined", (user) => {
-                    console.log("User joined Agora:", user.uid);
-                });
-
-                agoraClient.on("user-left", (user) => {
-                    console.log("User left Agora:", user.uid);
-                });
-
-                // Join channel (token = null vì đang dùng App ID không certificate)
-                agoraUid = await agoraClient.join(AGORA_APP_ID, channelName, null, null);
-                isAgoraJoined = true;
-
-                // Tạo local audio track
-                localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-                    encoderConfig: "music_standard"
-                });
-
-                // Mặc định tắt mic khi vào
-                await localAudioTrack.setEnabled(false);
-                isMicMuted = true;
-
-                // Publish
-                await agoraClient.publish([localAudioTrack]);
-
-                updateMicUI();
-                updateVoiceStatus(true);
-                showNotification("Đã kết nối mic thành công! Nhấn nút để bật mic nói chuyện", "success");
-
-                // Bật nút mic
-                document.getElementById('toggleMicBtn').disabled = false;
-
             } catch (err) {
-                console.error("Agora join error:", err);
-                showNotification("Không thể kết nối mic: " + (err.message || "Lỗi không xác định"), "error");
+                console.error("WebRTC join error:", err);
+                let msg = "Không thể kết nối mic: ";
+                if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                    msg += "Bạn đã từ chối quyền truy cập microphone. Hãy cho phép mic trong trình duyệt.";
+                } else if (err.name === 'NotFoundError') {
+                    msg += "Không tìm thấy microphone.";
+                } else {
+                    msg += (err.message || "Lỗi không xác định");
+                }
+                showNotification(msg, "error");
                 updateVoiceStatus(false);
             }
         }
 
-        async function leaveAgoraChannel() {
+        function startSignalListener(roomId) {
+            if (signalListener) signalListener();
+
+            signalListener = db.collection('rooms').doc(roomId).collection('webrtcSignals')
+                .where('to', '==', currentUser.uid)
+                .onSnapshot(async (snapshot) => {
+                    for (const change of snapshot.docChanges()) {
+                        if (change.type !== 'added') continue;
+                        const data = change.doc.data();
+                        const fromUid = data.from;
+                        const type = data.type;
+
+                        // Xóa signal sau khi đọc để tránh xử lý lại
+                        try { await change.doc.ref.delete(); } catch(e) {}
+
+                        if (!peerConnections[fromUid]) {
+                            createPeerConnection(fromUid, false);
+                        }
+
+                        const pc = peerConnections[fromUid];
+                        if (!pc) continue;
+
+                        try {
+                            if (type === 'offer') {
+                                const offerCollision = (makingOffer[fromUid] || pc.signalingState !== 'stable');
+                                ignoreOffer[fromUid] = !polite[fromUid] && offerCollision;
+                                if (ignoreOffer[fromUid]) {
+                                    console.log('Ignoring colliding offer from', fromUid);
+                                    continue;
+                                }
+                                await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
+                                const answer = await pc.createAnswer();
+                                await pc.setLocalDescription(answer);
+                                await sendSignal(roomId, fromUid, 'answer', pc.localDescription);
+                            }
+                            else if (type === 'answer') {
+                                await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
+                            }
+                            else if (type === 'ice') {
+                                if (data.candidate) {
+                                    try {
+                                        await pc.addIceCandidate(new RTCIceCandidate(data.candidate));
+                                    } catch (e) {
+                                        if (!ignoreOffer[fromUid]) {
+                                            console.warn('Error adding ICE candidate', e);
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (err) {
+                            console.error('Signal handling error:', err);
+                        }
+                    }
+                });
+        }
+
+        function createPeerConnection(remoteUid, isInitiator) {
+            if (peerConnections[remoteUid]) return peerConnections[remoteUid];
+
+            // Polite peer = uid lớn hơn (tránh glare)
+            polite[remoteUid] = currentUser.uid > remoteUid;
+            makingOffer[remoteUid] = false;
+            ignoreOffer[remoteUid] = false;
+
+            const pc = new RTCPeerConnection(ICE_SERVERS);
+            peerConnections[remoteUid] = pc;
+
+            // Thêm local tracks
+            if (localStream) {
+                localStream.getTracks().forEach(track => {
+                    pc.addTrack(track, localStream);
+                });
+            }
+
+            // Nhận remote audio
+            pc.ontrack = (event) => {
+                console.log('Nhận audio từ', remoteUid);
+                const remoteAudio = new Audio();
+                remoteAudio.srcObject = event.streams[0];
+                remoteAudio.autoplay = true;
+                remoteAudio.play().catch(e => console.warn('Autoplay blocked', e));
+                pc._remoteAudio = remoteAudio;
+            };
+
+            // ICE candidate
+            pc.onicecandidate = (event) => {
+                if (event.candidate && currentRoomId) {
+                    sendSignal(currentRoomId, remoteUid, 'ice', null, event.candidate.toJSON());
+                }
+            };
+
+            pc.onconnectionstatechange = () => {
+                console.log('Connection state with', remoteUid, ':', pc.connectionState);
+            };
+
+            // Nếu là initiator → tạo offer
+            if (isInitiator) {
+                pc.onnegotiationneeded = async () => {
+                    try {
+                        makingOffer[remoteUid] = true;
+                        const offer = await pc.createOffer();
+                        await pc.setLocalDescription(offer);
+                        await sendSignal(currentRoomId, remoteUid, 'offer', pc.localDescription);
+                    } catch (err) {
+                        console.error('Negotiation error', err);
+                    } finally {
+                        makingOffer[remoteUid] = false;
+                    }
+                };
+            }
+
+            return pc;
+        }
+
+        async function sendSignal(roomId, toUid, type, sdp = null, candidate = null) {
             try {
-                if (localAudioTrack) {
-                    localAudioTrack.close();
-                    localAudioTrack = null;
+                const payload = {
+                    from: currentUser.uid,
+                    to: toUid,
+                    type: type,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                if (sdp) payload.sdp = { type: sdp.type, sdp: sdp.sdp };
+                if (candidate) payload.candidate = candidate;
+
+                await db.collection('rooms').doc(roomId).collection('webrtcSignals').add(payload);
+            } catch (err) {
+                console.error('Send signal error', err);
+            }
+        }
+
+        async function leaveWebRTC() {
+            try {
+                // Đóng tất cả peer connections
+                Object.keys(peerConnections).forEach(uid => {
+                    const pc = peerConnections[uid];
+                    if (pc) {
+                        if (pc._remoteAudio) {
+                            pc._remoteAudio.pause();
+                            pc._remoteAudio.srcObject = null;
+                        }
+                        pc.close();
+                    }
+                });
+                peerConnections = {};
+                makingOffer = {};
+                ignoreOffer = {};
+                polite = {};
+
+                // Dừng local stream
+                if (localStream) {
+                    localStream.getTracks().forEach(track => track.stop());
+                    localStream = null;
                 }
-                if (agoraClient) {
-                    await agoraClient.leave();
-                    agoraClient = null;
+
+                // Hủy listener
+                if (signalListener) {
+                    signalListener();
+                    signalListener = null;
                 }
-                isAgoraJoined = false;
+
+                // Xóa signals cũ của mình (cleanup)
+                if (currentRoomId && currentUser) {
+                    try {
+                        const signals = await db.collection('rooms').doc(currentRoomId)
+                            .collection('webrtcSignals')
+                            .where('from', '==', currentUser.uid)
+                            .get();
+                        const batch = db.batch();
+                        signals.forEach(doc => batch.delete(doc.ref));
+                        await batch.commit();
+                    } catch (e) {}
+                }
+
+                isWebRTCJoined = false;
                 isMicMuted = true;
-                agoraUid = null;
                 updateMicUI();
                 updateVoiceStatus(false);
                 document.getElementById('toggleMicBtn').disabled = true;
             } catch (err) {
-                console.error("Leave Agora error:", err);
+                console.error("Leave WebRTC error:", err);
             }
         }
 
         async function toggleMicrophone() {
-            if (!localAudioTrack || !isAgoraJoined) {
+            if (!localStream || !isWebRTCJoined) {
                 showNotification("Chưa kết nối mic", "warning");
                 return;
             }
 
             try {
-                if (isMicMuted) {
-                    // Bật mic
-                    await localAudioTrack.setEnabled(true);
-                    isMicMuted = false;
-                    showNotification("Đã bật mic", "success");
-                } else {
-                    // Tắt mic
-                    await localAudioTrack.setEnabled(false);
-                    isMicMuted = true;
-                    showNotification("Đã tắt mic", "info");
-                }
+                isMicMuted = !isMicMuted;
+                localStream.getAudioTracks().forEach(track => {
+                    track.enabled = !isMicMuted;
+                });
                 updateMicUI();
+                if (isMicMuted) {
+                    showNotification("Đã tắt mic", "info");
+                } else {
+                    showNotification("Đã bật mic", "success");
+                }
             } catch (err) {
                 console.error("Toggle mic error:", err);
                 showNotification("Lỗi bật/tắt mic", "error");
@@ -1321,10 +1485,19 @@
                     }
                     let html = '<div class="participants-grid">';
                     let count = 0;
+                    const currentRemoteUids = new Set();
+
                     snapshot.forEach(doc => {
                         const p = doc.data();
                         const pid = doc.id;
                         count++;
+                        currentRemoteUids.add(pid);
+
+                        // Tạo peer connection nếu là người mới (và không phải mình)
+                        if (pid !== currentUser.uid && isWebRTCJoined && !peerConnections[pid]) {
+                            createPeerConnection(pid, true);
+                        }
+
                         html += `
                             <div class="participant-card ${pid === currentUser.uid ? 'participant-current' : ''}">
                                 <div class="participant-avatar" id="avatar-${pid}">
@@ -1342,6 +1515,25 @@
                     html += '</div>';
                     listEl.innerHTML = html;
                     document.getElementById('participantCount').textContent = count;
+
+                    // Xóa peer connection của những người đã rời phòng
+                    Object.keys(peerConnections).forEach(uid => {
+                        if (!currentRemoteUids.has(uid)) {
+                            console.log('Peer left, closing connection:', uid);
+                            const pc = peerConnections[uid];
+                            if (pc) {
+                                if (pc._remoteAudio) {
+                                    pc._remoteAudio.pause();
+                                    pc._remoteAudio.srcObject = null;
+                                }
+                                pc.close();
+                            }
+                            delete peerConnections[uid];
+                            delete makingOffer[uid];
+                            delete ignoreOffer[uid];
+                            delete polite[uid];
+                        }
+                    });
                 });
 
             if (roomListener) roomListener();
@@ -2731,7 +2923,7 @@ Chỉ trả về JSON, không thêm text.`;
             if (currentRoomId && currentUser) {
                 db.collection('rooms').doc(currentRoomId).collection('participants').doc(currentUser.uid).delete().catch(() => {});
             }
-            leaveAgoraChannel();
+            leaveWebRTC();
         });
     </script>
 </body>
