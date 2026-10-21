@@ -121,10 +121,20 @@
         .participant-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); border-color: #FFA500; }
         .participant-current { border-color: #FFA500; background: linear-gradient(135deg, #FFF9E6 0%, #FFFAF0 100%); }
         .participant-avatar {
-            width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold;
+            width: 110px; height: 110px; border-radius: 12px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: bold;
             margin: 0 auto 10px; box-shadow: 0 4px 10px rgba(255,165,0,0.2); border: 3px solid white;
-            position: relative;
+            position: relative; overflow: hidden;
+        }
+        .participant-avatar video {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+            border-radius: 10px; background: #000;
+        }
+        .participant-avatar .avatar-letter {
+            z-index: 1;
+        }
+        .participant-avatar.video-on .avatar-letter {
+            display: none;
         }
         .participant-avatar.speaking {
             box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6);
@@ -135,12 +145,16 @@
             70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
-        .mic-status {
-            position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px;
-            border-radius: 50%; background: #4CAF50; color: white; font-size: 10px;
+        .mic-status, .cam-status {
+            position: absolute; bottom: 4px; width: 22px; height: 22px;
+            border-radius: 50%; color: white; font-size: 11px;
             display: flex; align-items: center; justify-content: center; border: 2px solid white;
+            z-index: 5;
         }
+        .mic-status { right: 4px; background: #4CAF50; }
         .mic-status.muted { background: #f44336; }
+        .cam-status { left: 4px; background: #2196F3; }
+        .cam-status.off { background: #9e9e9e; }
         .participant-name { font-weight: 700; color: #333; margin-bottom: 5px; font-size: 0.95rem; }
         .participant-score {
             background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%); color: white; padding: 4px 11px;
@@ -149,7 +163,7 @@
         .teacher-badge {
             position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border: 2px solid white;
+            font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border: 2px solid white; z-index: 6;
         }
         .role-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.68rem; font-weight: 600; margin-left: 4px; }
         .role-badge.student { background: #2196F3; color: white; }
@@ -281,8 +295,8 @@
         .start-exam-btn:hover { background: linear-gradient(135deg, #45a049 0%, #1b5e20 100%); transform: scale(1.02); }
         .btn-exit { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; }
         
-        /* ===== WEBRTC MIC BUTTON ===== */
-        .mic-btn {
+        /* ===== WEBRTC MIC + CAM BUTTON ===== */
+        .mic-btn, .cam-btn {
             padding: 11px 22px; border: none; border-radius: 12px; font-size: 0.98rem; font-weight: 700;
             cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.12);
@@ -295,8 +309,16 @@
             background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
             color: white;
         }
-        .mic-btn:hover { transform: translateY(-2px); }
-        .mic-btn:disabled {
+        .cam-btn.on {
+            background: linear-gradient(135deg, #2196F3 0%, #1565C0 100%);
+            color: white;
+        }
+        .cam-btn.off {
+            background: linear-gradient(135deg, #9e9e9e 0%, #616161 100%);
+            color: white;
+        }
+        .mic-btn:hover, .cam-btn:hover { transform: translateY(-2px); }
+        .mic-btn:disabled, .cam-btn:disabled {
             background: #ccc !important;
             cursor: not-allowed;
             transform: none;
@@ -418,9 +440,10 @@
             .participants-section, .content-section { padding: 14px; min-height: auto; height: auto; }
             .participants-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .room-controls, .bank-controls { padding: 12px; flex-direction: column; gap: 10px; }
-            .btn-room, .bank-btn, .mic-btn { width: 100%; justify-content: center; }
+            .btn-room, .bank-btn, .mic-btn, .cam-btn { width: 100%; justify-content: center; }
             .home-container, .need-login-container { padding: 20px; margin: 12px; }
             .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
+            .participant-avatar { width: 90px; height: 90px; font-size: 1.8rem; }
         }
         @media (max-width: 480px) {
             .room-header { padding-left: 60px; }
@@ -610,7 +633,7 @@
                     </div>
                     <div class="voice-status disconnected" id="voiceStatus">
                         <i class="fas fa-microphone-slash"></i>
-                        <span>Chưa kết nối mic</span>
+                        <span>Chưa kết nối mic/cam</span>
                     </div>
                 </div>
 
@@ -618,6 +641,10 @@
                     <button class="mic-btn muted" id="toggleMicBtn" disabled>
                         <i class="fas fa-microphone-slash"></i>
                         <span>Bật Mic</span>
+                    </button>
+                    <button class="cam-btn off" id="toggleCamBtn" disabled>
+                        <i class="fas fa-video-slash"></i>
+                        <span>Bật Cam</span>
                     </button>
                     <button class="btn-room start-exam-btn" id="startExamBtn" style="display:none;">
                         <i class="fas fa-play"></i> Bắt đầu thi
@@ -630,7 +657,6 @@
         </div>
 
         <!-- ==================== MODALS ==================== -->
-        <!-- (Giữ nguyên tất cả modal cũ) -->
         <div id="createEssayModal" class="modal">
             <div class="modal-content">
                 <span class="material-symbols-outlined close" id="closeCreateEssayModal">close</span>
@@ -889,11 +915,13 @@
         let localStream = null;
         let peerConnections = {};          // remoteUid -> RTCPeerConnection
         let isMicMuted = true;
+        let isCamOff = true;
         let isWebRTCJoined = false;
         let signalListener = null;
         let makingOffer = {};               // remoteUid -> boolean
         let ignoreOffer = {};
         let polite = {};
+        let remoteStreams = {};             // remoteUid -> MediaStream
 
         // ============================================================
         // API KEY + AI HELPERS
@@ -1180,31 +1208,44 @@
         }
 
         // ============================================================
-        // WEBRTC VOICE CHAT (MESH + FIRESTORE SIGNALING)
+        // WEBRTC VOICE + VIDEO CHAT (MESH + FIRESTORE SIGNALING)
         // ============================================================
         async function joinWebRTC(channelName) {
             try {
-                // 1. Lấy local audio stream
+                // 1. Lấy local audio + video stream
                 localStream = await navigator.mediaDevices.getUserMedia({
                     audio: {
                         echoCancellation: true,
                         noiseSuppression: true,
                         autoGainControl: true
                     },
-                    video: false
+                    video: {
+                        width: { ideal: 320 },
+                        height: { ideal: 240 },
+                        facingMode: 'user'
+                    }
                 });
 
-                // Mặc định tắt mic khi vào phòng
+                // Mặc định tắt mic và cam khi vào phòng
                 localStream.getAudioTracks().forEach(track => {
                     track.enabled = false;
                 });
+                localStream.getVideoTracks().forEach(track => {
+                    track.enabled = false;
+                });
                 isMicMuted = true;
+                isCamOff = true;
 
                 isWebRTCJoined = true;
                 updateMicUI();
+                updateCamUI();
                 updateVoiceStatus(true);
                 document.getElementById('toggleMicBtn').disabled = false;
-                showNotification("Đã kết nối mic thành công! Nhấn nút để bật mic nói chuyện", "success");
+                document.getElementById('toggleCamBtn').disabled = false;
+                showNotification("Đã kết nối mic & cam thành công! Nhấn nút để bật", "success");
+
+                // Hiển thị local video ngay (nếu bật sau này)
+                updateLocalVideoPreview();
 
                 // 2. Lắng nghe tín hiệu từ các peer khác
                 startSignalListener(channelName);
@@ -1220,17 +1261,22 @@
 
             } catch (err) {
                 console.error("WebRTC join error:", err);
-                let msg = "Không thể kết nối mic: ";
+                let msg = "Không thể kết nối mic/cam: ";
                 if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-                    msg += "Bạn đã từ chối quyền truy cập microphone. Hãy cho phép mic trong trình duyệt.";
+                    msg += "Bạn đã từ chối quyền truy cập microphone hoặc camera. Hãy cho phép trong trình duyệt.";
                 } else if (err.name === 'NotFoundError') {
-                    msg += "Không tìm thấy microphone.";
+                    msg += "Không tìm thấy microphone hoặc camera.";
                 } else {
                     msg += (err.message || "Lỗi không xác định");
                 }
                 showNotification(msg, "error");
                 updateVoiceStatus(false);
             }
+        }
+
+        function updateLocalVideoPreview() {
+            // Local video được hiển thị trong thẻ participant của chính mình
+            // (sẽ được cập nhật trong loadParticipants)
         }
 
         function startSignalListener(roomId) {
@@ -1300,21 +1346,30 @@
             const pc = new RTCPeerConnection(ICE_SERVERS);
             peerConnections[remoteUid] = pc;
 
-            // Thêm local tracks
+            // Thêm local tracks (cả audio + video)
             if (localStream) {
                 localStream.getTracks().forEach(track => {
                     pc.addTrack(track, localStream);
                 });
             }
 
-            // Nhận remote audio
+            // Nhận remote audio + video
             pc.ontrack = (event) => {
-                console.log('Nhận audio từ', remoteUid);
-                const remoteAudio = new Audio();
-                remoteAudio.srcObject = event.streams[0];
-                remoteAudio.autoplay = true;
-                remoteAudio.play().catch(e => console.warn('Autoplay blocked', e));
-                pc._remoteAudio = remoteAudio;
+                console.log('Nhận track từ', remoteUid, event.track.kind);
+                const stream = event.streams[0];
+                if (!stream) return;
+
+                remoteStreams[remoteUid] = stream;
+
+                // Gắn stream vào video element của participant
+                const videoEl = document.getElementById(`video-${remoteUid}`);
+                if (videoEl) {
+                    videoEl.srcObject = stream;
+                    videoEl.play().catch(e => console.warn('Autoplay blocked', e));
+                }
+
+                // Cập nhật trạng thái hiển thị video
+                updateParticipantVideoUI(remoteUid);
             };
 
             // ICE candidate
@@ -1370,10 +1425,6 @@
                 Object.keys(peerConnections).forEach(uid => {
                     const pc = peerConnections[uid];
                     if (pc) {
-                        if (pc._remoteAudio) {
-                            pc._remoteAudio.pause();
-                            pc._remoteAudio.srcObject = null;
-                        }
                         pc.close();
                     }
                 });
@@ -1381,6 +1432,7 @@
                 makingOffer = {};
                 ignoreOffer = {};
                 polite = {};
+                remoteStreams = {};
 
                 // Dừng local stream
                 if (localStream) {
@@ -1409,9 +1461,12 @@
 
                 isWebRTCJoined = false;
                 isMicMuted = true;
+                isCamOff = true;
                 updateMicUI();
+                updateCamUI();
                 updateVoiceStatus(false);
                 document.getElementById('toggleMicBtn').disabled = true;
+                document.getElementById('toggleCamBtn').disabled = true;
             } catch (err) {
                 console.error("Leave WebRTC error:", err);
             }
@@ -1440,6 +1495,30 @@
             }
         }
 
+        async function toggleCamera() {
+            if (!localStream || !isWebRTCJoined) {
+                showNotification("Chưa kết nối camera", "warning");
+                return;
+            }
+
+            try {
+                isCamOff = !isCamOff;
+                localStream.getVideoTracks().forEach(track => {
+                    track.enabled = !isCamOff;
+                });
+                updateCamUI();
+                updateLocalParticipantVideo();
+                if (isCamOff) {
+                    showNotification("Đã tắt camera", "info");
+                } else {
+                    showNotification("Đã bật camera", "success");
+                }
+            } catch (err) {
+                console.error("Toggle cam error:", err);
+                showNotification("Lỗi bật/tắt camera", "error");
+            }
+        }
+
         function updateMicUI() {
             const btn = document.getElementById('toggleMicBtn');
             if (!btn) return;
@@ -1453,20 +1532,68 @@
             }
         }
 
+        function updateCamUI() {
+            const btn = document.getElementById('toggleCamBtn');
+            if (!btn) return;
+
+            if (isCamOff) {
+                btn.className = "cam-btn off";
+                btn.innerHTML = `<i class="fas fa-video-slash"></i> <span>Bật Cam</span>`;
+            } else {
+                btn.className = "cam-btn on";
+                btn.innerHTML = `<i class="fas fa-video"></i> <span>Tắt Cam</span>`;
+            }
+        }
+
         function updateVoiceStatus(connected) {
             const el = document.getElementById('voiceStatus');
             if (!el) return;
             if (connected) {
                 el.className = "voice-status connected";
-                el.innerHTML = `<i class="fas fa-microphone"></i> <span>Đã kết nối mic</span>`;
+                el.innerHTML = `<i class="fas fa-video"></i> <span>Đã kết nối mic/cam</span>`;
             } else {
                 el.className = "voice-status disconnected";
-                el.innerHTML = `<i class="fas fa-microphone-slash"></i> <span>Chưa kết nối mic</span>`;
+                el.innerHTML = `<i class="fas fa-video-slash"></i> <span>Chưa kết nối mic/cam</span>`;
             }
         }
 
-        // Gắn sự kiện nút mic
+        function updateLocalParticipantVideo() {
+            const videoEl = document.getElementById(`video-${currentUser.uid}`);
+            const avatarEl = document.getElementById(`avatar-${currentUser.uid}`);
+            if (!videoEl || !avatarEl) return;
+
+            if (!isCamOff && localStream) {
+                videoEl.srcObject = localStream;
+                videoEl.muted = true;
+                videoEl.play().catch(() => {});
+                avatarEl.classList.add('video-on');
+            } else {
+                videoEl.srcObject = null;
+                avatarEl.classList.remove('video-on');
+            }
+        }
+
+        function updateParticipantVideoUI(uid) {
+            const videoEl = document.getElementById(`video-${uid}`);
+            const avatarEl = document.getElementById(`avatar-${uid}`);
+            if (!videoEl || !avatarEl) return;
+
+            const stream = remoteStreams[uid];
+            if (stream) {
+                const hasVideo = stream.getVideoTracks().some(t => t.enabled && t.readyState === 'live');
+                if (hasVideo) {
+                    videoEl.srcObject = stream;
+                    videoEl.play().catch(() => {});
+                    avatarEl.classList.add('video-on');
+                } else {
+                    avatarEl.classList.remove('video-on');
+                }
+            }
+        }
+
+        // Gắn sự kiện nút mic và cam
         document.getElementById('toggleMicBtn').addEventListener('click', toggleMicrophone);
+        document.getElementById('toggleCamBtn').addEventListener('click', toggleCamera);
 
         // ============================================================
         // PARTICIPANTS + ROOM LISTENER
@@ -1498,10 +1625,18 @@
                             createPeerConnection(pid, true);
                         }
 
+                        const isMe = pid === currentUser.uid;
                         html += `
-                            <div class="participant-card ${pid === currentUser.uid ? 'participant-current' : ''}">
+                            <div class="participant-card ${isMe ? 'participant-current' : ''}">
                                 <div class="participant-avatar" id="avatar-${pid}">
-                                    ${(p.name||'?').charAt(0).toUpperCase()}
+                                    <video id="video-${pid}" autoplay playsinline ${isMe ? 'muted' : ''}></video>
+                                    <span class="avatar-letter">${(p.name||'?').charAt(0).toUpperCase()}</span>
+                                    <div class="mic-status ${isMe && isMicMuted ? 'muted' : ''}" title="Mic">
+                                        <i class="fas fa-microphone${isMe && isMicMuted ? '-slash' : ''}"></i>
+                                    </div>
+                                    <div class="cam-status ${isMe && isCamOff ? 'off' : ''}" title="Cam">
+                                        <i class="fas fa-video${isMe && isCamOff ? '-slash' : ''}"></i>
+                                    </div>
                                 </div>
                                 ${p.isTeacher ? '<div class="teacher-badge"><i class="fas fa-crown"></i></div>' : ''}
                                 <div class="participant-name">
@@ -1509,12 +1644,20 @@
                                     ${p.isTeacher ? '<span class="role-badge teacher">GV</span>' : '<span class="role-badge student">HS</span>'}
                                 </div>
                                 <div class="participant-score">${p.score || 0} điểm</div>
-                                ${pid === currentUser.uid ? '<div style="color:#FFA500;font-size:0.78rem;margin-top:4px;"><i class="fas fa-user-circle"></i> Bạn</div>' : ''}
+                                ${isMe ? '<div style="color:#FFA500;font-size:0.78rem;margin-top:4px;"><i class="fas fa-user-circle"></i> Bạn</div>' : ''}
                             </div>`;
                     });
                     html += '</div>';
                     listEl.innerHTML = html;
                     document.getElementById('participantCount').textContent = count;
+
+                    // Gắn lại stream local và remote sau khi render
+                    if (isWebRTCJoined) {
+                        updateLocalParticipantVideo();
+                        Object.keys(remoteStreams).forEach(uid => {
+                            updateParticipantVideoUI(uid);
+                        });
+                    }
 
                     // Xóa peer connection của những người đã rời phòng
                     Object.keys(peerConnections).forEach(uid => {
@@ -1522,16 +1665,13 @@
                             console.log('Peer left, closing connection:', uid);
                             const pc = peerConnections[uid];
                             if (pc) {
-                                if (pc._remoteAudio) {
-                                    pc._remoteAudio.pause();
-                                    pc._remoteAudio.srcObject = null;
-                                }
                                 pc.close();
                             }
                             delete peerConnections[uid];
                             delete makingOffer[uid];
                             delete ignoreOffer[uid];
                             delete polite[uid];
+                            delete remoteStreams[uid];
                         }
                     });
                 });
