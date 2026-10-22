@@ -113,59 +113,60 @@
             padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; flex-shrink: 0;
         }
         .participants-container { flex: 1; overflow-y: auto; padding-right: 4px; }
-        .participants-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+        .participants-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
         .participant-card {
-            background: white; border-radius: 12px; padding: 14px; text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; border: 2px solid transparent; position: relative;
+            background: white; border-radius: 14px; padding: 16px; text-align: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06); transition: all 0.2s; border: 2px solid transparent; position: relative;
         }
-        .participant-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); border-color: #FFA500; }
+        .participant-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.12); border-color: #FFA500; }
         .participant-current { border-color: #FFA500; background: linear-gradient(135deg, #FFF9E6 0%, #FFFAF0 100%); }
         .participant-avatar {
-            width: 110px; height: 110px; border-radius: 12px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: bold;
-            margin: 0 auto 10px; box-shadow: 0 4px 10px rgba(255,165,0,0.2); border: 3px solid white;
+            width: 180px; height: 180px; border-radius: 16px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; display: flex; align-items: center; justify-content: center; font-size: 3.2rem; font-weight: bold;
+            margin: 0 auto 12px; box-shadow: 0 6px 16px rgba(255,165,0,0.25); border: 4px solid white;
             position: relative; overflow: hidden;
         }
         .participant-avatar video {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
-            border-radius: 10px; background: #000;
+            border-radius: 12px; background: #111;
         }
         .participant-avatar .avatar-letter {
             z-index: 1;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
         .participant-avatar.video-on .avatar-letter {
             display: none;
         }
         .participant-avatar.speaking {
-            box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6);
+            box-shadow: 0 0 0 5px rgba(76, 175, 80, 0.6);
             animation: speakingPulse 1.2s infinite;
         }
         @keyframes speakingPulse {
             0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            70% { box-shadow: 0 0 0 12px rgba(76, 175, 80, 0); }
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
         .mic-status, .cam-status {
-            position: absolute; bottom: 4px; width: 22px; height: 22px;
-            border-radius: 50%; color: white; font-size: 11px;
+            position: absolute; bottom: 8px; width: 28px; height: 28px;
+            border-radius: 50%; color: white; font-size: 13px;
             display: flex; align-items: center; justify-content: center; border: 2px solid white;
-            z-index: 5;
+            z-index: 5; box-shadow: 0 2px 6px rgba(0,0,0,0.25);
         }
-        .mic-status { right: 4px; background: #4CAF50; }
+        .mic-status { right: 8px; background: #4CAF50; }
         .mic-status.muted { background: #f44336; }
-        .cam-status { left: 4px; background: #2196F3; }
+        .cam-status { left: 8px; background: #2196F3; }
         .cam-status.off { background: #9e9e9e; }
-        .participant-name { font-weight: 700; color: #333; margin-bottom: 5px; font-size: 0.95rem; }
+        .participant-name { font-weight: 700; color: #333; margin-bottom: 6px; font-size: 1rem; }
         .participant-score {
-            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%); color: white; padding: 4px 11px;
-            border-radius: 20px; font-size: 0.82rem; font-weight: 700; display: inline-block;
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%); color: white; padding: 5px 14px;
+            border-radius: 20px; font-size: 0.88rem; font-weight: 700; display: inline-block;
         }
         .teacher-badge {
-            position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); border: 2px solid white; z-index: 6;
+            position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border: 2px solid white; z-index: 6;
         }
-        .role-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.68rem; font-weight: 600; margin-left: 4px; }
+        .role-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; margin-left: 4px; }
         .role-badge.student { background: #2196F3; color: white; }
         .role-badge.teacher { background: #FFA500; color: white; }
         .waiting-overlay {
@@ -438,16 +439,17 @@
             .room-header { padding: 12px 14px; flex-direction: column; gap: 10px; align-items: flex-start; padding-left: 70px; }
             .room-title { font-size: 1.25rem; }
             .participants-section, .content-section { padding: 14px; min-height: auto; height: auto; }
-            .participants-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .participants-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .participant-avatar { width: 140px; height: 140px; font-size: 2.4rem; }
             .room-controls, .bank-controls { padding: 12px; flex-direction: column; gap: 10px; }
             .btn-room, .bank-btn, .mic-btn, .cam-btn { width: 100%; justify-content: center; }
             .home-container, .need-login-container { padding: 20px; margin: 12px; }
             .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
-            .participant-avatar { width: 90px; height: 90px; font-size: 1.8rem; }
         }
         @media (max-width: 480px) {
             .room-header { padding-left: 60px; }
             .participants-grid { grid-template-columns: 1fr; }
+            .participant-avatar { width: 160px; height: 160px; }
             .modal-content { padding: 18px; margin: 8px; }
         }
     </style>
@@ -881,8 +883,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-    <!-- WebRTC thuần + Firebase signaling (không cần Agora) -->
-
     <script>
         // ============================================================
         // FIREBASE CONFIG
@@ -902,7 +902,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // WEBRTC CONFIG + STATE (thay thế hoàn toàn Agora)
+        // WEBRTC CONFIG + STATE
         // ============================================================
         const ICE_SERVERS = {
             iceServers: [
@@ -913,15 +913,15 @@
         };
 
         let localStream = null;
-        let peerConnections = {};          // remoteUid -> RTCPeerConnection
+        let peerConnections = {};
         let isMicMuted = true;
         let isCamOff = true;
         let isWebRTCJoined = false;
         let signalListener = null;
-        let makingOffer = {};               // remoteUid -> boolean
+        let makingOffer = {};
         let ignoreOffer = {};
         let polite = {};
-        let remoteStreams = {};             // remoteUid -> MediaStream
+        let remoteStreams = {};
 
         // ============================================================
         // API KEY + AI HELPERS
@@ -1140,7 +1140,6 @@
                     startExamBtn.style.display = (isTeacher && isExamMode && !examStarted) ? 'flex' : 'none';
                     showNotification(`Đã tham gia phòng "${roomData.name}"`, 'success');
 
-                    // ===== JOIN WEBRTC CHANNEL =====
                     joinWebRTC(roomId);
                 });
             }).catch(err => {
@@ -1166,8 +1165,6 @@
             hasAnsweredCurrentContent = false;
             isExamMode = false;
             examStarted = false;
-
-            // Leave WebRTC
             leaveWebRTC();
         }
 
@@ -1208,11 +1205,10 @@
         }
 
         // ============================================================
-        // WEBRTC VOICE + VIDEO CHAT (MESH + FIRESTORE SIGNALING)
+        // WEBRTC VOICE + VIDEO
         // ============================================================
         async function joinWebRTC(channelName) {
             try {
-                // 1. Lấy local audio + video stream
                 localStream = await navigator.mediaDevices.getUserMedia({
                     audio: {
                         echoCancellation: true,
@@ -1220,19 +1216,14 @@
                         autoGainControl: true
                     },
                     video: {
-                        width: { ideal: 320 },
-                        height: { ideal: 240 },
+                        width: { ideal: 480 },
+                        height: { ideal: 360 },
                         facingMode: 'user'
                     }
                 });
 
-                // Mặc định tắt mic và cam khi vào phòng
-                localStream.getAudioTracks().forEach(track => {
-                    track.enabled = false;
-                });
-                localStream.getVideoTracks().forEach(track => {
-                    track.enabled = false;
-                });
+                localStream.getAudioTracks().forEach(track => { track.enabled = false; });
+                localStream.getVideoTracks().forEach(track => { track.enabled = false; });
                 isMicMuted = true;
                 isCamOff = true;
 
@@ -1244,13 +1235,8 @@
                 document.getElementById('toggleCamBtn').disabled = false;
                 showNotification("Đã kết nối mic & cam thành công! Nhấn nút để bật", "success");
 
-                // Hiển thị local video ngay (nếu bật sau này)
-                updateLocalVideoPreview();
-
-                // 2. Lắng nghe tín hiệu từ các peer khác
                 startSignalListener(channelName);
 
-                // 3. Kết nối với tất cả người đang có trong phòng
                 const participantsSnap = await db.collection('rooms').doc(channelName).collection('participants').get();
                 participantsSnap.forEach(doc => {
                     const remoteUid = doc.id;
@@ -1274,11 +1260,6 @@
             }
         }
 
-        function updateLocalVideoPreview() {
-            // Local video được hiển thị trong thẻ participant của chính mình
-            // (sẽ được cập nhật trong loadParticipants)
-        }
-
         function startSignalListener(roomId) {
             if (signalListener) signalListener();
 
@@ -1291,7 +1272,6 @@
                         const fromUid = data.from;
                         const type = data.type;
 
-                        // Xóa signal sau khi đọc để tránh xử lý lại
                         try { await change.doc.ref.delete(); } catch(e) {}
 
                         if (!peerConnections[fromUid]) {
@@ -1338,7 +1318,6 @@
         function createPeerConnection(remoteUid, isInitiator) {
             if (peerConnections[remoteUid]) return peerConnections[remoteUid];
 
-            // Polite peer = uid lớn hơn (tránh glare)
             polite[remoteUid] = currentUser.uid > remoteUid;
             makingOffer[remoteUid] = false;
             ignoreOffer[remoteUid] = false;
@@ -1346,14 +1325,12 @@
             const pc = new RTCPeerConnection(ICE_SERVERS);
             peerConnections[remoteUid] = pc;
 
-            // Thêm local tracks (cả audio + video)
             if (localStream) {
                 localStream.getTracks().forEach(track => {
                     pc.addTrack(track, localStream);
                 });
             }
 
-            // Nhận remote audio + video
             pc.ontrack = (event) => {
                 console.log('Nhận track từ', remoteUid, event.track.kind);
                 const stream = event.streams[0];
@@ -1361,18 +1338,23 @@
 
                 remoteStreams[remoteUid] = stream;
 
-                // Gắn stream vào video element của participant
                 const videoEl = document.getElementById(`video-${remoteUid}`);
                 if (videoEl) {
                     videoEl.srcObject = stream;
                     videoEl.play().catch(e => console.warn('Autoplay blocked', e));
                 }
 
-                // Cập nhật trạng thái hiển thị video
-                updateParticipantVideoUI(remoteUid);
+                // Lắng nghe mute/unmute để cập nhật icon chính xác
+                event.track.onmute = () => {
+                    updateParticipantMediaIndicators(remoteUid);
+                };
+                event.track.onunmute = () => {
+                    updateParticipantMediaIndicators(remoteUid);
+                };
+
+                updateParticipantMediaIndicators(remoteUid);
             };
 
-            // ICE candidate
             pc.onicecandidate = (event) => {
                 if (event.candidate && currentRoomId) {
                     sendSignal(currentRoomId, remoteUid, 'ice', null, event.candidate.toJSON());
@@ -1383,7 +1365,6 @@
                 console.log('Connection state with', remoteUid, ':', pc.connectionState);
             };
 
-            // Nếu là initiator → tạo offer
             if (isInitiator) {
                 pc.onnegotiationneeded = async () => {
                     try {
@@ -1421,12 +1402,9 @@
 
         async function leaveWebRTC() {
             try {
-                // Đóng tất cả peer connections
                 Object.keys(peerConnections).forEach(uid => {
                     const pc = peerConnections[uid];
-                    if (pc) {
-                        pc.close();
-                    }
+                    if (pc) pc.close();
                 });
                 peerConnections = {};
                 makingOffer = {};
@@ -1434,19 +1412,16 @@
                 polite = {};
                 remoteStreams = {};
 
-                // Dừng local stream
                 if (localStream) {
                     localStream.getTracks().forEach(track => track.stop());
                     localStream = null;
                 }
 
-                // Hủy listener
                 if (signalListener) {
                     signalListener();
                     signalListener = null;
                 }
 
-                // Xóa signals cũ của mình (cleanup)
                 if (currentRoomId && currentUser) {
                     try {
                         const signals = await db.collection('rooms').doc(currentRoomId)
@@ -1484,6 +1459,7 @@
                     track.enabled = !isMicMuted;
                 });
                 updateMicUI();
+                updateParticipantMediaIndicators(currentUser.uid);
                 if (isMicMuted) {
                     showNotification("Đã tắt mic", "info");
                 } else {
@@ -1507,7 +1483,7 @@
                     track.enabled = !isCamOff;
                 });
                 updateCamUI();
-                updateLocalParticipantVideo();
+                updateParticipantMediaIndicators(currentUser.uid);
                 if (isCamOff) {
                     showNotification("Đã tắt camera", "info");
                 } else {
@@ -1557,41 +1533,80 @@
             }
         }
 
-        function updateLocalParticipantVideo() {
-            const videoEl = document.getElementById(`video-${currentUser.uid}`);
-            const avatarEl = document.getElementById(`avatar-${currentUser.uid}`);
-            if (!videoEl || !avatarEl) return;
+        // Hàm quan trọng: cập nhật icon mic/cam trên thẻ participant một cách chính xác
+        function updateParticipantMediaIndicators(uid) {
+            const avatar = document.getElementById(`avatar-${uid}`);
+            if (!avatar) return;
 
-            if (!isCamOff && localStream) {
-                videoEl.srcObject = localStream;
-                videoEl.muted = true;
-                videoEl.play().catch(() => {});
-                avatarEl.classList.add('video-on');
-            } else {
-                videoEl.srcObject = null;
-                avatarEl.classList.remove('video-on');
-            }
-        }
-
-        function updateParticipantVideoUI(uid) {
+            const micStatus = avatar.querySelector('.mic-status');
+            const camStatus = avatar.querySelector('.cam-status');
             const videoEl = document.getElementById(`video-${uid}`);
-            const avatarEl = document.getElementById(`avatar-${uid}`);
-            if (!videoEl || !avatarEl) return;
+            if (!micStatus || !camStatus) return;
 
-            const stream = remoteStreams[uid];
-            if (stream) {
-                const hasVideo = stream.getVideoTracks().some(t => t.enabled && t.readyState === 'live');
-                if (hasVideo) {
-                    videoEl.srcObject = stream;
-                    videoEl.play().catch(() => {});
-                    avatarEl.classList.add('video-on');
-                } else {
-                    avatarEl.classList.remove('video-on');
+            let micMuted = true;
+            let camOff = true;
+
+            if (uid === currentUser.uid) {
+                // Local user: dùng biến trạng thái
+                micMuted = isMicMuted;
+                camOff = isCamOff;
+
+                // Gắn localStream vào video element nếu cần
+                if (videoEl) {
+                    if (!camOff && localStream) {
+                        if (videoEl.srcObject !== localStream) {
+                            videoEl.srcObject = localStream;
+                            videoEl.muted = true;
+                        }
+                        videoEl.play().catch(() => {});
+                    } else {
+                        // Giữ srcObject nhưng track đã disabled → sẽ đen
+                    }
+                }
+            } else {
+                // Remote user: kiểm tra track thực tế
+                const stream = remoteStreams[uid];
+                if (stream) {
+                    const audioTracks = stream.getAudioTracks();
+                    const videoTracks = stream.getVideoTracks();
+
+                    if (audioTracks.length > 0) {
+                        const t = audioTracks[0];
+                        micMuted = !t.enabled || t.muted;
+                    }
+                    if (videoTracks.length > 0) {
+                        const t = videoTracks[0];
+                        camOff = !t.enabled || t.muted;
+                    }
+
+                    if (videoEl && videoEl.srcObject !== stream) {
+                        videoEl.srcObject = stream;
+                        videoEl.play().catch(() => {});
+                    }
                 }
             }
+
+            // Cập nhật icon Mic
+            if (micMuted) {
+                micStatus.classList.add('muted');
+                micStatus.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+            } else {
+                micStatus.classList.remove('muted');
+                micStatus.innerHTML = '<i class="fas fa-microphone"></i>';
+            }
+
+            // Cập nhật icon Cam
+            if (camOff) {
+                camStatus.classList.add('off');
+                camStatus.innerHTML = '<i class="fas fa-video-slash"></i>';
+                avatar.classList.remove('video-on');
+            } else {
+                camStatus.classList.remove('off');
+                camStatus.innerHTML = '<i class="fas fa-video"></i>';
+                avatar.classList.add('video-on');
+            }
         }
 
-        // Gắn sự kiện nút mic và cam
         document.getElementById('toggleMicBtn').addEventListener('click', toggleMicrophone);
         document.getElementById('toggleCamBtn').addEventListener('click', toggleCamera);
 
@@ -1620,7 +1635,6 @@
                         count++;
                         currentRemoteUids.add(pid);
 
-                        // Tạo peer connection nếu là người mới (và không phải mình)
                         if (pid !== currentUser.uid && isWebRTCJoined && !peerConnections[pid]) {
                             createPeerConnection(pid, true);
                         }
@@ -1631,11 +1645,11 @@
                                 <div class="participant-avatar" id="avatar-${pid}">
                                     <video id="video-${pid}" autoplay playsinline ${isMe ? 'muted' : ''}></video>
                                     <span class="avatar-letter">${(p.name||'?').charAt(0).toUpperCase()}</span>
-                                    <div class="mic-status ${isMe && isMicMuted ? 'muted' : ''}" title="Mic">
-                                        <i class="fas fa-microphone${isMe && isMicMuted ? '-slash' : ''}"></i>
+                                    <div class="mic-status muted" title="Mic">
+                                        <i class="fas fa-microphone-slash"></i>
                                     </div>
-                                    <div class="cam-status ${isMe && isCamOff ? 'off' : ''}" title="Cam">
-                                        <i class="fas fa-video${isMe && isCamOff ? '-slash' : ''}"></i>
+                                    <div class="cam-status off" title="Cam">
+                                        <i class="fas fa-video-slash"></i>
                                     </div>
                                 </div>
                                 ${p.isTeacher ? '<div class="teacher-badge"><i class="fas fa-crown"></i></div>' : ''}
@@ -1651,22 +1665,20 @@
                     listEl.innerHTML = html;
                     document.getElementById('participantCount').textContent = count;
 
-                    // Gắn lại stream local và remote sau khi render
+                    // Sau khi render xong, cập nhật đúng trạng thái mic/cam cho tất cả
                     if (isWebRTCJoined) {
-                        updateLocalParticipantVideo();
+                        updateParticipantMediaIndicators(currentUser.uid);
                         Object.keys(remoteStreams).forEach(uid => {
-                            updateParticipantVideoUI(uid);
+                            updateParticipantMediaIndicators(uid);
                         });
                     }
 
-                    // Xóa peer connection của những người đã rời phòng
+                    // Dọn peer đã rời
                     Object.keys(peerConnections).forEach(uid => {
                         if (!currentRemoteUids.has(uid)) {
                             console.log('Peer left, closing connection:', uid);
                             const pc = peerConnections[uid];
-                            if (pc) {
-                                pc.close();
-                            }
+                            if (pc) pc.close();
                             delete peerConnections[uid];
                             delete makingOffer[uid];
                             delete ignoreOffer[uid];
@@ -1723,7 +1735,7 @@
         }
 
         // ============================================================
-        // CONTENTS + SUBMISSIONS (giữ nguyên toàn bộ phần còn lại)
+        // CONTENTS + SUBMISSIONS
         // ============================================================
         function loadContents() {
             if (!currentRoomId) return;
@@ -1889,7 +1901,7 @@
         }
 
         // ============================================================
-        // CREATE QUESTIONS + AI + BANK (giữ nguyên toàn bộ)
+        // CREATE QUESTIONS + AI + BANK
         // ============================================================
         document.getElementById('createEssayBtn').addEventListener('click', openCreateEssayModal);
         document.getElementById('saveEssayBtn').addEventListener('click', saveEssay);
@@ -2190,7 +2202,7 @@
         }
 
         // ============================================================
-        // AI GENERATE (giữ nguyên)
+        // AI GENERATE
         // ============================================================
         async function generateContentWithAI() {
             const topic = document.getElementById('aiTopic').value.trim();
@@ -2486,7 +2498,7 @@ Chỉ trả về JSON, không thêm text.`;
         }
 
         // ============================================================
-        // QUESTION BANKS (giữ nguyên)
+        // QUESTION BANKS
         // ============================================================
         document.getElementById('manageBankBtn').addEventListener('click', openBankManagerModal);
         document.getElementById('homeManageBankBtn').addEventListener('click', openBankManagerModal);
