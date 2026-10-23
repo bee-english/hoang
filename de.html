@@ -5,303 +5,855 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOHA - Tạo & Làm đề</title>
     <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-            line-height: 1.5;
-            font-weight: 400;
-            color-scheme: light;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --primary: #FFA500;
-            --primary-light: #FFD700;
-            --secondary: #2196F3;
-            --success: #4CAF50;
-            --danger: #f44336;
-            --purple: #9C27B0;
+            --primary: #F59E0B;
+            --primary-dark: #D97706;
+            --primary-light: #FBBF24;
+            --primary-soft: rgba(245, 158, 11, 0.12);
+            --secondary: #3B82F6;
+            --secondary-dark: #2563EB;
+            --success: #10B981;
+            --success-dark: #059669;
+            --danger: #EF4444;
+            --danger-dark: #DC2626;
+            --purple: #8B5CF6;
+            --purple-dark: #7C3AED;
+            --orange: #F97316;
+            --text: #1E293B;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --bg: #F1F5F9;
+            --bg-card: #FFFFFF;
+            --border: #E2E8F0;
+            --border-focus: #F59E0B;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+            --shadow-glow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-full: 9999px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { margin: 0; min-height: 100vh; overflow-x: hidden; font-family: 'Inter', system-ui, sans-serif; }
-        #app { width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
 
-        .home-button {
-            position: fixed; top: 18px; left: 18px; z-index: 1000;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white; border: none; border-radius: 50px; padding: 10px 18px;
-            font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3); transition: all 0.3s; text-decoration: none;
+        body {
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(160deg, #F8FAFC 0%, #EEF2FF 40%, #FEF3C7 100%);
+            background-attachment: fixed;
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
-        .home-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4); }
 
+        #app {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== HOME BUTTON ========== */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 50%, #D97706 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 11px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: var(--transition);
+            text-decoration: none;
+            font-family: inherit;
+        }
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .home-button:active { transform: translateY(0); }
+
+        /* ========== PAGES ========== */
         .page {
-            width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
-            padding: 70px 20px 40px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 20px 50px;
         }
         .page.hidden { display: none !important; }
 
         .container {
-            width: 100%; max-width: 560px; background: rgba(255,255,255,0.97);
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); padding: 28px;
+            width: 100%;
+            max-width: 560px;
+            background: var(--bg-card);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            padding: 32px;
+            border: 1px solid rgba(255,255,255,0.8);
+            position: relative;
+            overflow: hidden;
         }
-        .container.wide { max-width: 960px; }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #F59E0B, #FBBF24, #F97316);
+        }
+        .container.wide { max-width: 980px; }
 
-        .logo-section { text-align: center; margin-bottom: 22px; }
-        .logo-section img { width: 64px; height: 64px; margin-bottom: 8px; }
+        /* ========== LOGO ========== */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .logo-section img {
+            width: 72px;
+            height: 72px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 8px rgba(245, 158, 11, 0.25));
+        }
         .logo-section h1 {
-            font-size: 1.85rem; font-weight: 700;
-            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #D97706 0%, #F59E0B 40%, #FBBF24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
         }
-        .logo-section p { color: #666; margin-top: 6px; font-size: 0.92rem; }
+        .logo-section p {
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
 
-        .form-title { color: #FFA500; margin-bottom: 16px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
-        .form-group { margin-bottom: 14px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 0.9rem; }
+        /* ========== FORMS ========== */
+        .form-title {
+            color: var(--primary-dark);
+            margin-bottom: 18px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .form-title i { font-size: 1.1rem; opacity: 0.9; }
+
+        .form-group { margin-bottom: 16px; }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            letter-spacing: 0.01em;
+        }
+
         input, select, textarea {
-            width: 100%; padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px;
-            font-size: 0.95rem; transition: all 0.2s; background: white; font-family: inherit;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: #FAFBFC;
+            font-family: inherit;
+            color: var(--text);
         }
-        textarea { min-height: 100px; resize: vertical; }
+        textarea { min-height: 100px; resize: vertical; line-height: 1.5; }
+        input:hover, select:hover, textarea:hover { border-color: #CBD5E1; }
         input:focus, select:focus, textarea:focus {
-            border-color: #FFA500; outline: none; box-shadow: 0 0 0 3px rgba(255,165,0,0.12);
+            border-color: var(--border-focus);
+            outline: none;
+            box-shadow: var(--shadow-glow);
+            background: white;
         }
+        input::placeholder, textarea::placeholder { color: var(--text-muted); }
 
+        /* ========== BUTTONS ========== */
         .btn {
-            width: 100%; padding: 12px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 600;
-            transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;
+            width: 100%;
+            padding: 13px 18px;
+            background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 50%, #D97706 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+            position: relative;
+            overflow: hidden;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,215,0,0.3); }
-        .btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
-        .btn-secondary { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
-        .btn-success { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
-        .btn-danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
-        .btn-purple { background: linear-gradient(135deg, #9C27B0, #673AB7); }
-        .btn-outline { background: transparent; border: 2px solid #FFA500; color: #FFA500; }
-        .btn-sm { width: auto; padding: 8px 14px; font-size: 0.85rem; }
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
+        }
+        .btn:hover::after { opacity: 1; }
+        .btn:active { transform: translateY(0); }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-        .divider { display: flex; align-items: center; margin: 18px 0; color: #777; }
-        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e0e0e0; }
-        .divider-text { padding: 0 12px; font-size: 0.85rem; }
+        .btn-secondary {
+            background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #2563EB 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+        .btn-secondary:hover { box-shadow: 0 6px 18px rgba(59, 130, 246, 0.35); }
 
-        /* Exam list */
+        .btn-success {
+            background: linear-gradient(135deg, #34D399 0%, #10B981 50%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        .btn-success:hover { box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35); }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #DC2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        }
+        .btn-danger:hover { box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35); }
+
+        .btn-purple {
+            background: linear-gradient(135deg, #A78BFA 0%, #8B5CF6 50%, #7C3AED 100%);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+        }
+        .btn-purple:hover { box-shadow: 0 6px 18px rgba(139, 92, 246, 0.35); }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary-dark);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: var(--primary-soft);
+            box-shadow: none;
+            color: var(--primary-dark);
+        }
+        .btn-outline::after { display: none; }
+
+        .btn-sm {
+            width: auto;
+            padding: 9px 16px;
+            font-size: 0.875rem;
+            border-radius: 8px;
+        }
+
+        /* ========== DIVIDER ========== */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: var(--text-muted);
+        }
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+        .divider-text {
+            padding: 0 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ========== EXAM CARDS ========== */
         .exam-card {
-            background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 12px;
-            border-left: 5px solid #FFA500; transition: all 0.2s; cursor: pointer;
+            background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
         }
-        .exam-card:hover { transform: translateX(4px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
-        .exam-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-        .exam-card-title { font-weight: 700; color: #333; font-size: 1.05rem; }
-        .exam-card-meta { font-size: 0.8rem; color: #888; margin-top: 4px; }
+        .exam-card:hover {
+            transform: translateX(4px) translateY(-1px);
+            box-shadow: var(--shadow-md);
+            border-color: #FDE68A;
+        }
+        .exam-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .exam-card-title {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 1.05rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .exam-card-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            font-weight: 500;
+        }
         .exam-code-badge {
-            background: linear-gradient(135deg, #FFA500, #FFD700); color: white;
-            padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;
-            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            color: white;
+            padding: 5px 14px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.6px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            white-space: nowrap;
         }
-        .exam-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .exam-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
 
-        /* Question builder */
+        /* ========== QUESTION BUILDER ========== */
         .question-item {
-            background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 14px;
-            border-left: 5px solid #2196F3; position: relative;
+            background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--secondary);
+            position: relative;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
-        .question-item.essay { border-left-color: #FF9800; }
+        .question-item:hover { box-shadow: var(--shadow); }
+        .question-item.essay { border-left-color: var(--orange); }
         .question-item-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
-            font-weight: 700; color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .option-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+        .option-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
         .option-row input[type="text"] { flex: 1; }
-        .option-row input[type="checkbox"] { width: 18px; height: 18px; }
+        .option-row input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--secondary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
         .remove-btn {
-            background: #f44336; color: white; border: none; border-radius: 6px;
-            padding: 5px 10px; cursor: pointer; font-size: 0.8rem;
+            background: linear-gradient(135deg, #F87171, #EF4444);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+        }
+        .remove-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(239, 68, 68, 0.3);
         }
         .add-option-btn {
-            background: #4CAF50; color: white; border: none; border-radius: 6px;
-            padding: 6px 12px; cursor: pointer; font-size: 0.85rem; margin-top: 4px;
+            background: linear-gradient(135deg, #34D399, #10B981);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+        }
+        .add-option-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
         }
 
-        /* Take exam */
+        /* ========== TAKE EXAM ========== */
         .exam-header-bar {
-            background: linear-gradient(to right, #FFA500, #FFD700); color: white;
-            padding: 16px 22px; border-radius: 14px; margin-bottom: 18px;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+            background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #F97316 100%);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 16px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
         }
         .question-box {
-            background: white; border-radius: 14px; padding: 18px; margin-bottom: 16px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.06); border-left: 5px solid #FFA500;
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
         }
-        .question-box.mcq { border-left-color: #2196F3; }
-        .question-text { font-size: 1.08rem; font-weight: 600; margin-bottom: 12px; line-height: 1.5; }
+        .question-box:hover { box-shadow: var(--shadow-md); }
+        .question-box.mcq { border-left-color: var(--secondary); }
+        .question-text {
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.5;
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
         .mcq-option-item {
-            display: flex; align-items: center; padding: 12px; border: 2px solid #e0e0e0;
-            border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #FAFBFC;
         }
-        .mcq-option-item:hover { border-color: #FFA500; background: rgba(255,165,0,0.05); }
-        .mcq-option-item.selected { border-color: #2196F3; background: rgba(33,150,243,0.1); }
-        .mcq-option-item input { margin-right: 12px; width: 18px; height: 18px; }
+        .mcq-option-item:hover {
+            border-color: #FDE68A;
+            background: #FFFBEB;
+        }
+        .mcq-option-item.selected {
+            border-color: var(--secondary);
+            background: rgba(59, 130, 246, 0.08);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+        .mcq-option-item input {
+            margin-right: 14px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--secondary);
+        }
 
-        /* Submissions / Grading */
+        /* ========== SUBMISSIONS / GRADING ========== */
         .submission-card {
-            background: #f9f9f9; border-radius: 12px; padding: 14px; margin-bottom: 12px;
-            border-left: 4px solid #9C27B0;
+            background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--purple);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
-        .submission-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+        .submission-card:hover { box-shadow: var(--shadow); }
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
         .status-badge {
-            padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
-        .status-pending { background: #fff3e0; color: #ef6c00; }
-        .status-graded { background: #e8f5e9; color: #2e7d32; }
-        .status-ai { background: #f3e5f5; color: #7b1fa2; }
+        .status-pending {
+            background: #FEF3C7;
+            color: #B45309;
+        }
+        .status-graded {
+            background: #D1FAE5;
+            color: #047857;
+        }
+        .status-ai {
+            background: #EDE9FE;
+            color: #6D28D9;
+        }
 
         .grade-item {
-            background: white; border: 1px solid #e0e0e0; border-radius: 10px;
-            padding: 12px; margin-bottom: 10px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
         }
-        .grade-item .q-text { font-weight: 600; margin-bottom: 6px; }
-        .grade-item .student-ans { color: #555; font-size: 0.9rem; margin-bottom: 6px; }
-        .grade-item .correct-ans { color: #2e7d32; font-size: 0.85rem; }
-        .grade-score-input { width: 80px; display: inline-block; }
+        .grade-item:hover { box-shadow: var(--shadow); }
+        .grade-item .q-text {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text);
+        }
+        .grade-item .student-ans {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            background: #F8FAFC;
+            border-radius: 8px;
+            border-left: 3px solid #CBD5E1;
+        }
+        .grade-item .correct-ans {
+            color: #047857;
+            font-size: 0.88rem;
+            padding: 8px 12px;
+            background: #ECFDF5;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+        .grade-score-input {
+            width: 80px;
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
 
-        /* Modal */
+        /* ========== MODALS ========== */
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center;
-            padding: 15px; backdrop-filter: blur(3px);
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
-        .modal.active { display: flex; }
+        .modal.active { display: flex; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         .modal-content {
-            background: white; padding: 26px; border-radius: 18px; width: 100%; max-width: 640px;
-            max-height: 88vh; overflow-y: auto; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            background: white;
+            padding: 28px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 640px;
+            max-height: 88vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255,255,255,0.8);
         }
-        .modal-content.wide { max-width: 900px; }
-        .modal-header { margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #FFD700; }
-        .modal-header h3 { color: #FFA500; display: flex; align-items: center; gap: 8px; font-size: 1.3rem; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 2px solid #e0e0e0; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-content.wide { max-width: 920px; }
+        .modal-header {
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #FEF3C7;
+        }
+        .modal-header h3 {
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
         .modal-btn {
-            padding: 10px 18px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem;
+            padding: 11px 20px;
+            background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            font-family: inherit;
+            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.25);
         }
-        .modal-btn.secondary { background: linear-gradient(135deg, #666, #555); }
+        .modal-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(245, 158, 11, 0.35);
+        }
+        .modal-btn.secondary {
+            background: linear-gradient(135deg, #64748B, #475569);
+            box-shadow: 0 3px 10px rgba(71, 85, 105, 0.2);
+        }
         .close {
-            position: absolute; top: 12px; right: 12px; cursor: pointer; color: #666;
-            width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.05);
-            display: flex; align-items: center; justify-content: center;
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            cursor: pointer;
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 20px;
         }
-        .close:hover { background: rgba(0,0,0,0.1); }
+        .close:hover {
+            background: #E2E8F0;
+            color: var(--text);
+        }
 
+        /* ========== NOTIFICATION ========== */
         .notification {
-            position: fixed; top: 20px; right: 20px; padding: 13px 20px; border-radius: 12px; color: white;
-            font-weight: 700; z-index: 3000; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            transform: translateX(150%); transition: transform 0.4s; max-width: 340px;
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 14px 22px;
+            border-radius: 14px;
+            color: white;
+            font-weight: 600;
+            z-index: 3000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 360px;
+            font-size: 0.92rem;
         }
         .notification.show { transform: translateX(0); }
-        .notification.success { background: linear-gradient(135deg, #00b09b, #96c93d); }
-        .notification.info { background: linear-gradient(135deg, #36d1dc, #5b86e5); }
-        .notification.warning { background: linear-gradient(135deg, #f46b45, #eea849); }
-        .notification.error { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .notification.success { background: linear-gradient(135deg, #10B981, #059669); }
+        .notification.info { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+        .notification.warning { background: linear-gradient(135deg, #F59E0B, #D97706); }
+        .notification.error { background: linear-gradient(135deg, #EF4444, #DC2626); }
 
+        /* ========== LOADING ========== */
         #loading-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
-            flex-direction: column; gap: 16px;
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 18px;
+            backdrop-filter: blur(4px);
         }
         #loading-overlay.show { display: flex; }
         .loading {
-            display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite;
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border: 2.5px solid rgba(255,255,255,0.25);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .score-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-        .score-table th, .score-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; }
-        .score-table th { background: #f5f5f5; font-weight: 700; color: #555; }
-        .score-table tr:hover { background: #fafafa; }
+        /* ========== TABLES & BADGES ========== */
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+        }
+        .score-table th, .score-table td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .score-table th {
+            background: #F8FAFC;
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .score-table tr:hover { background: #F8FAFC; }
 
         .difficulty-badge {
-            display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 700;
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
-        .diff-easy { background: #e8f5e9; color: #2e7d32; }
-        .diff-medium { background: #fff3e0; color: #ef6c00; }
-        .diff-hard { background: #ffebee; color: #c62828; }
+        .diff-easy { background: #D1FAE5; color: #047857; }
+        .diff-medium { background: #FEF3C7; color: #B45309; }
+        .diff-hard { background: #FEE2E2; color: #B91C1C; }
 
         .hidden { display: none !important; }
 
+        /* ========== NEED LOGIN ========== */
         .need-login-box {
             text-align: center;
-            padding: 40px 24px;
+            padding: 48px 28px;
         }
         .need-login-box i {
-            font-size: 3rem;
-            color: #FFA500;
-            margin-bottom: 16px;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
         }
         .need-login-box h2 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
         }
         .need-login-box p {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
 
-        /* View Exam Questions */
+        /* ========== VIEW EXAM QUESTIONS ========== */
         .view-q-item {
-            background: #f9f9f9;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 14px;
-            border-left: 5px solid #FFA500;
+            background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            box-shadow: var(--shadow-sm);
         }
-        .view-q-item.mcq { border-left-color: #2196F3; }
+        .view-q-item.mcq { border-left-color: var(--secondary); }
         .view-q-header {
             font-weight: 700;
-            color: #333;
-            margin-bottom: 8px;
+            color: var(--text);
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
         .view-q-text {
             font-size: 1.05rem;
-            margin-bottom: 10px;
-            line-height: 1.5;
+            margin-bottom: 12px;
+            line-height: 1.55;
+            color: var(--text);
         }
         .view-q-answer {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 8px 12px;
-            border-radius: 8px;
+            background: #ECFDF5;
+            color: #047857;
+            padding: 10px 14px;
+            border-radius: 10px;
             font-size: 0.9rem;
-            margin-top: 8px;
+            margin-top: 10px;
+            border: 1px solid #A7F3D0;
         }
-        .view-q-options {
-            margin-top: 8px;
-        }
+        .view-q-options { margin-top: 10px; }
         .view-q-option {
-            padding: 6px 10px;
-            margin-bottom: 4px;
-            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 8px;
             font-size: 0.92rem;
+            background: #F8FAFC;
+            border: 1px solid transparent;
         }
         .view-q-option.correct {
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: #ECFDF5;
+            color: #047857;
             font-weight: 600;
+            border-color: #A7F3D0;
         }
 
-        @media (max-width: 640px) {
-            .container { padding: 20px; margin: 0 8px; }
-            .home-button { top: 12px; left: 12px; padding: 8px 14px; font-size: 13px; }
-            .page { padding: 60px 10px 30px; }
+        /* ========== EMPTY STATES ========== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
         }
+        .empty-state i {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 640px) {
+            .container { padding: 22px 18px; margin: 0 6px; border-radius: 20px; }
+            .home-button { top: 14px; left: 14px; padding: 9px 15px; font-size: 13px; }
+            .page { padding: 70px 12px 36px; }
+            .logo-section h1 { font-size: 1.7rem; }
+            .exam-header-bar { padding: 16px 18px; }
+            .modal-content { padding: 22px 18px; border-radius: 16px; }
+            .btn-sm { padding: 8px 12px; font-size: 0.82rem; }
+        }
+
+        /* Smooth scrollbar for modals */
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: #F1F5F9; border-radius: 3px; }
+        .modal-content::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+        .modal-content::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
     </style>
 </head>
 <body>
@@ -333,11 +885,11 @@
         <div id="teacherDashboard" class="page hidden">
             <div class="container wide">
                 <div class="logo-section">
-                    <h1 style="font-size:1.6rem;">LOHA – Quản lý đề thi</h1>
+                    <h1 style="font-size:1.7rem;">LOHA – Quản lý đề thi</h1>
                     <p id="teacherWelcome">Xin chào giáo viên!</p>
                 </div>
 
-                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
                     <button class="btn btn-success" id="btnCreateExam" style="width:auto;flex:1;min-width:180px;">
                         <i class="fas fa-plus-circle"></i> Tạo đề mới
                     </button>
@@ -345,7 +897,7 @@
 
                 <h2 class="form-title"><i class="fas fa-folder-open"></i> Các đề đã tạo</h2>
                 <div id="teacherExamList">
-                    <div style="text-align:center;padding:30px;color:#999;">Đang tải...</div>
+                    <div class="empty-state">Đang tải...</div>
                 </div>
             </div>
         </div>
@@ -354,14 +906,14 @@
         <div id="createExamPage" class="page hidden">
             <div class="container wide">
                 <div class="logo-section">
-                    <h1 style="font-size:1.5rem;">Tạo đề thi mới</h1>
+                    <h1 style="font-size:1.6rem;">Tạo đề thi mới</h1>
                 </div>
 
                 <div class="form-group">
                     <label>Tên đề thi</label>
                     <input type="text" id="examTitle" placeholder="Ví dụ: Kiểm tra 15 phút - Phương trình bậc nhất">
                 </div>
-                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <div style="display:flex;gap:14px;flex-wrap:wrap;">
                     <div class="form-group" style="flex:1;min-width:140px;">
                         <label>Môn học</label>
                         <select id="examSubject">
@@ -386,11 +938,11 @@
                     </div>
                 </div>
 
-                <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;">
-                    <button class="btn btn-sm" id="btnAddEssay" style="background:linear-gradient(135deg,#FF9800,#F57C00);">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0;">
+                    <button class="btn btn-sm" id="btnAddEssay" style="background:linear-gradient(135deg,#FB923C,#F97316);box-shadow:0 4px 12px rgba(249,115,22,0.25);">
                         <i class="fas fa-pen"></i> Thêm tự luận
                     </button>
-                    <button class="btn btn-sm" id="btnAddMcq" style="background:linear-gradient(135deg,#2196F3,#1976D2);">
+                    <button class="btn btn-sm" id="btnAddMcq" style="background:linear-gradient(135deg,#60A5FA,#3B82F6);box-shadow:0 4px 12px rgba(59,130,246,0.25);">
                         <i class="fas fa-list-check"></i> Thêm trắc nghiệm
                     </button>
                     <button class="btn btn-sm btn-purple" id="btnAiGenerate">
@@ -398,10 +950,10 @@
                     </button>
                 </div>
 
-                <h3 style="margin:14px 0 10px;color:#555;">Danh sách câu hỏi (<span id="questionCount">0</span>)</h3>
+                <h3 style="margin:16px 0 12px;color:var(--text-secondary);font-weight:600;font-size:0.95rem;">Danh sách câu hỏi (<span id="questionCount">0</span>)</h3>
                 <div id="questionList"></div>
 
-                <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+                <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
                     <button class="btn btn-success" id="btnSaveExam" style="flex:1;">
                         <i class="fas fa-save"></i> Lưu đề & tạo mã
                     </button>
@@ -424,7 +976,7 @@
                 <h2 class="form-title"><i class="fas fa-key"></i> Nhập mã đề để làm bài</h2>
                 <div class="form-group">
                     <label>Mã đề thi</label>
-                    <input type="text" id="inputExamCode" placeholder="Ví dụ: DE_A1B2C3" style="text-transform:uppercase;letter-spacing:1px;font-weight:700;">
+                    <input type="text" id="inputExamCode" placeholder="Ví dụ: DE_A1B2C3" style="text-transform:uppercase;letter-spacing:1.5px;font-weight:700;font-size:1.05rem;">
                 </div>
                 <button class="btn btn-secondary" id="btnJoinExam">
                     <i class="fas fa-door-open"></i> Vào làm đề
@@ -433,7 +985,7 @@
                 <div class="divider"><span class="divider-text">hoặc</span></div>
                 <h2 class="form-title"><i class="fas fa-history"></i> Bài đã làm</h2>
                 <div id="studentHistoryList">
-                    <div style="text-align:center;padding:20px;color:#999;">Đang tải...</div>
+                    <div class="empty-state">Đang tải...</div>
                 </div>
             </div>
         </div>
@@ -443,16 +995,16 @@
             <div class="container wide">
                 <div class="exam-header-bar">
                     <div>
-                        <div style="font-size:1.25rem;font-weight:700;" id="takeExamTitle">Đề thi</div>
-                        <div style="font-size:0.85rem;opacity:0.9;" id="takeExamMeta"></div>
+                        <div style="font-size:1.3rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;" id="takeExamTitle">Đề thi</div>
+                        <div style="font-size:0.88rem;opacity:0.92;margin-top:4px;" id="takeExamMeta"></div>
                     </div>
                     <div style="text-align:right;">
-                        <div style="font-size:0.85rem;">Thời gian còn lại</div>
-                        <div style="font-size:1.4rem;font-weight:700;" id="takeExamTimer">--:--</div>
+                        <div style="font-size:0.85rem;opacity:0.9;">Thời gian còn lại</div>
+                        <div style="font-size:1.55rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:1px;" id="takeExamTimer">--:--</div>
                     </div>
                 </div>
                 <div id="takeExamQuestions"></div>
-                <button class="btn btn-success" id="btnSubmitExam" style="margin-top:16px;">
+                <button class="btn btn-success" id="btnSubmitExam" style="margin-top:20px;">
                     <i class="fas fa-paper-plane"></i> Nộp bài
                 </button>
             </div>
@@ -462,10 +1014,10 @@
         <div id="resultPage" class="page hidden">
             <div class="container">
                 <div class="logo-section">
-                    <h1 style="font-size:1.5rem;">Kết quả bài làm</h1>
+                    <h1 style="font-size:1.55rem;">Kết quả bài làm</h1>
                 </div>
                 <div id="resultContent"></div>
-                <button class="btn btn-outline" id="btnBackFromResult" style="margin-top:16px;">
+                <button class="btn btn-outline" id="btnBackFromResult" style="margin-top:20px;">
                     <i class="fas fa-arrow-left"></i> Quay lại
                 </button>
             </div>
@@ -474,26 +1026,26 @@
         <!-- ========== EXAM DETAIL (Teacher) ========== -->
         <div id="examDetailPage" class="page hidden">
             <div class="container wide">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
                     <div>
-                        <h1 style="font-size:1.4rem;color:#FFA500;" id="detailExamTitle">Chi tiết đề</h1>
-                        <div id="detailExamMeta" style="color:#666;font-size:0.9rem;"></div>
+                        <h1 style="font-size:1.45rem;color:var(--primary-dark);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;" id="detailExamTitle">Chi tiết đề</h1>
+                        <div id="detailExamMeta" style="color:var(--text-secondary);font-size:0.9rem;margin-top:4px;"></div>
                     </div>
                     <button class="btn btn-outline btn-sm" id="btnBackToDashboard">
                         <i class="fas fa-arrow-left"></i> Quay lại
                     </button>
                 </div>
 
-                <div style="background:#f0f8ff;padding:12px 16px;border-radius:10px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <div style="background:linear-gradient(135deg,#EFF6FF,#FEF3C7);padding:16px 20px;border-radius:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border:1px solid #FDE68A;">
                     <div>
-                        <strong>Mã đề:</strong>
-                        <span class="exam-code-badge" id="detailExamCode">DE_XXXX</span>
+                        <strong style="color:var(--text-secondary);font-size:0.9rem;">Mã đề:</strong>
+                        <span class="exam-code-badge" id="detailExamCode" style="margin-left:8px;">DE_XXXX</span>
                     </div>
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
                         <button class="btn btn-sm btn-secondary" id="btnCopyCode">
                             <i class="fas fa-copy"></i> Sao chép mã
                         </button>
-                        <button class="btn btn-sm" id="btnViewExamQuestions" style="background:linear-gradient(135deg,#FF9800,#F57C00);">
+                        <button class="btn btn-sm" id="btnViewExamQuestions" style="background:linear-gradient(135deg,#FB923C,#F97316);box-shadow:0 4px 12px rgba(249,115,22,0.25);">
                             <i class="fas fa-eye"></i> Xem đề
                         </button>
                     </div>
@@ -501,7 +1053,7 @@
 
                 <h2 class="form-title"><i class="fas fa-users"></i> Danh sách bài làm của học sinh</h2>
                 <div id="submissionList">
-                    <div style="text-align:center;padding:20px;color:#999;">Đang tải...</div>
+                    <div class="empty-state">Đang tải...</div>
                 </div>
             </div>
         </div>
@@ -509,17 +1061,17 @@
         <!-- ========== GRADE SUBMISSION PAGE ========== -->
         <div id="gradePage" class="page hidden">
             <div class="container wide">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
                     <div>
-                        <h1 style="font-size:1.35rem;color:#FFA500;" id="gradeStudentName">Chấm bài</h1>
-                        <div id="gradeExamInfo" style="color:#666;font-size:0.9rem;"></div>
+                        <h1 style="font-size:1.4rem;color:var(--primary-dark);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;" id="gradeStudentName">Chấm bài</h1>
+                        <div id="gradeExamInfo" style="color:var(--text-secondary);font-size:0.9rem;margin-top:4px;"></div>
                     </div>
                     <button class="btn btn-outline btn-sm" id="btnBackFromGrade">
                         <i class="fas fa-arrow-left"></i> Quay lại
                     </button>
                 </div>
 
-                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
                     <button class="btn btn-purple btn-sm" id="btnAiGrade">
                         <i class="fas fa-robot"></i> Nhờ AI chấm
                     </button>
@@ -561,14 +1113,14 @@
                             <option value="hard">Khó</option>
                         </select>
                     </div>
-                    <div id="aiLoading" style="display:none;text-align:center;padding:16px;">
-                        <div class="loading" style="margin:0 auto;border-color:#9C27B0 rgba(156,39,176,0.3) rgba(156,39,176,0.3);border-top-color:#9C27B0;"></div>
-                        <p style="margin-top:8px;color:#666;">AI đang tạo câu hỏi...</p>
+                    <div id="aiLoading" style="display:none;text-align:center;padding:20px;">
+                        <div class="loading" style="margin:0 auto;border-color:rgba(139,92,246,0.3);border-top-color:#8B5CF6;"></div>
+                        <p style="margin-top:12px;color:var(--text-secondary);font-weight:500;">AI đang tạo câu hỏi...</p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="modal-btn secondary" id="cancelAiModal">Hủy</button>
-                    <button class="modal-btn" id="btnDoAiGenerate" style="background:linear-gradient(135deg,#9C27B0,#673AB7);">
+                    <button class="modal-btn" id="btnDoAiGenerate" style="background:linear-gradient(135deg,#A78BFA,#8B5CF6);box-shadow:0 3px 10px rgba(139,92,246,0.3);">
                         <i class="fas fa-robot"></i> Tạo ngay
                     </button>
                 </div>
@@ -581,14 +1133,14 @@
                 <span class="material-symbols-outlined close" id="closeAiReview">close</span>
                 <div class="modal-header"><h3><i class="fas fa-edit"></i> Xem & Sửa đề AI tạo</h3></div>
                 <div class="modal-body">
-                    <p style="color:#666;font-size:0.9rem;margin-bottom:12px;">
+                    <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px;line-height:1.5;">
                         Giáo viên hãy kiểm tra câu hỏi và đáp án. Có thể sửa hoặc xóa trước khi thêm vào đề.
                     </p>
                     <div id="aiReviewList" style="max-height:55vh;overflow-y:auto;"></div>
                 </div>
                 <div class="modal-footer">
                     <button class="modal-btn secondary" id="cancelAiReview">Hủy bỏ</button>
-                    <button class="modal-btn" id="btnConfirmAiQuestions" style="background:linear-gradient(135deg,#4CAF50,#2E7D32);">
+                    <button class="modal-btn" id="btnConfirmAiQuestions" style="background:linear-gradient(135deg,#34D399,#10B981);box-shadow:0 3px 10px rgba(16,185,129,0.3);">
                         <i class="fas fa-check"></i> Thêm vào đề
                     </button>
                 </div>
@@ -603,7 +1155,7 @@
                     <h3><i class="fas fa-file-alt"></i> Xem đề: <span id="viewExamTitle"></span></h3>
                 </div>
                 <div class="modal-body">
-                    <div id="viewExamMeta" style="color:#666;font-size:0.9rem;margin-bottom:16px;"></div>
+                    <div id="viewExamMeta" style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:18px;"></div>
                     <div id="viewExamQuestionsList" style="max-height:60vh;overflow-y:auto;"></div>
                 </div>
                 <div class="modal-footer">
@@ -616,8 +1168,8 @@
     </div>
 
     <div id="loading-overlay">
-        <div style="width:56px;height:56px;border:4px solid rgba(255,215,0,0.3);border-radius:50%;border-top-color:#FFD700;animation:spin 0.8s linear infinite;"></div>
-        <div style="color:white;font-size:17px;" id="loading-text">Đang xử lý...</div>
+        <div style="width:56px;height:56px;border:4px solid rgba(251,191,36,0.25);border-radius:50%;border-top-color:#FBBF24;animation:spin 0.75s linear infinite;"></div>
+        <div style="color:white;font-size:17px;font-weight:500;" id="loading-text">Đang xử lý...</div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -771,12 +1323,12 @@
         // ============================================================
         function loadTeacherExams() {
             const list = document.getElementById('teacherExamList');
-            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            list.innerHTML = '<div class="empty-state">Đang tải...</div>';
             db.collection('exams').where('teacherId', '==', currentUser.uid)
                 .get()
                 .then(snap => {
                     if (snap.empty) {
-                        list.innerHTML = '<div style="text-align:center;padding:40px;color:#999;"><i class="fas fa-folder-open" style="font-size:2.5rem;margin-bottom:8px;"></i><p>Chưa có đề nào. Hãy tạo đề mới!</p></div>';
+                        list.innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i><p>Chưa có đề nào. Hãy tạo đề mới!</p></div>';
                         return;
                     }
                     const exams = [];
@@ -817,7 +1369,7 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải dữ liệu: ' + (err.message || err) + '</div>';
+                    list.innerHTML = '<div class="empty-state" style="color:#EF4444;">Lỗi tải dữ liệu: ' + (err.message || err) + '</div>';
                 });
         }
 
@@ -868,7 +1420,7 @@
             const list = document.getElementById('questionList');
             document.getElementById('questionCount').textContent = draftQuestions.length;
             if (draftQuestions.length === 0) {
-                list.innerHTML = '<div style="text-align:center;padding:24px;color:#999;">Chưa có câu hỏi. Hãy thêm câu hỏi hoặc dùng AI.</div>';
+                list.innerHTML = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>Chưa có câu hỏi. Hãy thêm câu hỏi hoặc dùng AI.</p></div>';
                 return;
             }
             let html = '';
@@ -888,7 +1440,7 @@
                                 <label>Đáp án đúng (mỗi dòng 1 đáp án chấp nhận)</label>
                                 <textarea class="dq-answers" rows="2" onchange="updateDraftAnswers('${q.id}',this.value)">${(q.correctAnswers || []).join('\n')}</textarea>
                             </div>
-                            <div style="display:flex;gap:12px;">
+                            <div style="display:flex;gap:14px;">
                                 <div class="form-group" style="flex:1;">
                                     <label>Độ khó</label>
                                     <select onchange="updateDraftQuestion('${q.id}','difficulty',this.value)">
@@ -927,7 +1479,7 @@
                             <label>Các lựa chọn (đánh dấu đáp án đúng)</label>
                             ${optsHtml}
                             <button class="add-option-btn" onclick="addMcqOptionToDraft('${q.id}')"><i class="fas fa-plus"></i> Thêm lựa chọn</button>
-                            <div style="display:flex;gap:12px;margin-top:10px;">
+                            <div style="display:flex;gap:14px;margin-top:12px;">
                                 <div class="form-group" style="flex:1;">
                                     <label>Độ khó</label>
                                     <select onchange="updateDraftQuestion('${q.id}','difficulty',this.value)">
@@ -1155,7 +1707,7 @@ Chỉ trả về JSON, không thêm text.`;
                         <textarea class="ai-q" rows="2">${escapeHtml(item.question || '')}</textarea>
                         <label>Đáp án đúng (mỗi dòng 1)</label>
                         <textarea class="ai-ans" rows="2">${(item.correctAnswers || []).join('\n')}</textarea>
-                        <div style="display:flex;gap:12px;margin-top:8px;">
+                        <div style="display:flex;gap:14px;margin-top:10px;">
                             <div style="flex:1;">
                                 <label>Độ khó</label>
                                 <select class="ai-diff">
@@ -1189,7 +1741,7 @@ Chỉ trả về JSON, không thêm text.`;
                         <textarea class="ai-q" rows="2">${escapeHtml(item.question || '')}</textarea>
                         <label>Lựa chọn (đánh dấu đúng)</label>
                         ${opts}
-                        <div style="display:flex;gap:12px;margin-top:8px;">
+                        <div style="display:flex;gap:14px;margin-top:10px;">
                             <div style="flex:1;">
                                 <label>Độ khó</label>
                                 <select class="ai-diff">
@@ -1311,7 +1863,7 @@ Chỉ trả về JSON, không thêm text.`;
             const list = document.getElementById('viewExamQuestionsList');
             const questions = exam.questions || [];
             if (questions.length === 0) {
-                list.innerHTML = '<div style="text-align:center;padding:30px;color:#999;">Đề này chưa có câu hỏi</div>';
+                list.innerHTML = '<div class="empty-state">Đề này chưa có câu hỏi</div>';
             } else {
                 let html = '';
                 questions.forEach((q, idx) => {
@@ -1364,12 +1916,12 @@ Chỉ trả về JSON, không thêm text.`;
 
         function loadSubmissions(examId) {
             const list = document.getElementById('submissionList');
-            list.innerHTML = '<div style="text-align:center;padding:20px;">Đang tải...</div>';
+            list.innerHTML = '<div class="empty-state">Đang tải...</div>';
             db.collection('exam_submissions').where('examId', '==', examId)
                 .get()
                 .then(snap => {
                     if (snap.empty) {
-                        list.innerHTML = '<div style="text-align:center;padding:30px;color:#999;">Chưa có học sinh nào nộp bài</div>';
+                        list.innerHTML = '<div class="empty-state"><i class="fas fa-user-graduate"></i><p>Chưa có học sinh nào nộp bài</p></div>';
                         return;
                     }
                     const subs = [];
@@ -1391,13 +1943,13 @@ Chỉ trả về JSON, không thêm text.`;
                             <div class="submission-card">
                                 <div class="submission-header">
                                     <div>
-                                        <strong>${escapeHtml(s.studentName || 'Học sinh')}</strong>
-                                        <div style="font-size:0.8rem;color:#888;">${time}</div>
+                                        <strong style="font-family:'Plus Jakarta Sans',sans-serif;">${escapeHtml(s.studentName || 'Học sinh')}</strong>
+                                        <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">${time}</div>
                                     </div>
                                     <span class="status-badge ${statusClass}">${statusText}</span>
                                 </div>
-                                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                                    <span>Điểm: <strong>${scoreText}</strong></span>
+                                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                                    <span>Điểm: <strong style="font-size:1.05rem;">${scoreText}</strong></span>
                                     <button class="btn btn-sm btn-purple" onclick="openGradePage('${s.id}')">
                                         <i class="fas fa-pen"></i> ${s.status === 'graded' || s.status === 'ai_graded' ? 'Xem / Sửa điểm' : 'Chấm bài'}
                                     </button>
@@ -1408,7 +1960,7 @@ Chỉ trả về JSON, không thêm text.`;
                 })
                 .catch(err => {
                     console.error(err);
-                    list.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Lỗi tải danh sách bài làm: ' + (err.message || err) + '</div>';
+                    list.innerHTML = '<div class="empty-state" style="color:#EF4444;">Lỗi tải danh sách bài làm: ' + (err.message || err) + '</div>';
                 });
         }
 
@@ -1473,16 +2025,16 @@ Chỉ trả về JSON, không thêm text.`;
                 html += `
                     <div class="grade-item" data-qid="${q.id}">
                         <div class="q-text">Câu ${idx + 1} (${q.points} điểm) – ${q.type === 'essay' ? 'Tự luận' : 'Trắc nghiệm'}</div>
-                        <div style="margin-bottom:6px;color:#333;">${escapeHtml(q.question)}</div>
+                        <div style="margin-bottom:8px;color:var(--text);">${escapeHtml(q.question)}</div>
                         <div class="student-ans"><strong>Học sinh trả lời:</strong> ${escapeHtml(String(ans)) || '<em>Không trả lời</em>'}</div>
                         ${correctHtml}
-                        <div style="display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap;">
-                            <label style="margin:0;">Điểm:</label>
+                        <div style="display:flex;gap:14px;align-items:center;margin-top:12px;flex-wrap:wrap;">
+                            <label style="margin:0;font-weight:600;">Điểm:</label>
                             <input type="number" class="grade-score-input grade-score" data-qid="${q.id}"
                                 value="${score}" min="0" max="${q.points}" step="0.25" style="width:80px;">
-                            <span>/ ${q.points}</span>
+                            <span style="color:var(--text-muted);">/ ${q.points}</span>
                         </div>
-                        <div class="form-group" style="margin-top:8px;margin-bottom:0;">
+                        <div class="form-group" style="margin-top:12px;margin-bottom:0;">
                             <label>Nhận xét (tùy chọn)</label>
                             <input type="text" class="grade-feedback" data-qid="${q.id}" value="${escapeHtml(fb)}" placeholder="Nhận xét cho học sinh...">
                         </div>
@@ -1660,7 +2212,7 @@ Chỉ trả về JSON, không thêm text.`;
                     html += `
                         <div class="question-box" data-qid="${q.id}">
                             <div class="question-text">Câu ${idx + 1} (${q.points} điểm) – Tự luận</div>
-                            <div style="margin-bottom:10px;">${escapeHtml(q.question)}</div>
+                            <div style="margin-bottom:12px;line-height:1.55;">${escapeHtml(q.question)}</div>
                             <textarea class="student-answer" data-qid="${q.id}" rows="4" placeholder="Nhập câu trả lời..."></textarea>
                         </div>`;
                 } else {
@@ -1676,7 +2228,7 @@ Chỉ trả về JSON, không thêm text.`;
                     html += `
                         <div class="question-box mcq" data-qid="${q.id}">
                             <div class="question-text">Câu ${idx + 1} (${q.points} điểm) – Trắc nghiệm</div>
-                            <div style="margin-bottom:10px;">${escapeHtml(q.question)}</div>
+                            <div style="margin-bottom:12px;line-height:1.55;">${escapeHtml(q.question)}</div>
                             ${opts}
                         </div>`;
                 }
@@ -1752,12 +2304,12 @@ Chỉ trả về JSON, không thêm text.`;
         // ============================================================
         function loadStudentHistory() {
             const list = document.getElementById('studentHistoryList');
-            list.innerHTML = '<div style="text-align:center;padding:16px;">Đang tải...</div>';
+            list.innerHTML = '<div class="empty-state">Đang tải...</div>';
             db.collection('exam_submissions').where('studentId', '==', currentUser.uid)
                 .get()
                 .then(snap => {
                     if (snap.empty) {
-                        list.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">Chưa làm đề nào</div>';
+                        list.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>Chưa làm đề nào</p></div>';
                         return;
                     }
                     const subs = [];
@@ -1785,8 +2337,8 @@ Chỉ trả về JSON, không thêm text.`;
                                     </div>
                                     <span class="status-badge ${statusClass}">${statusText}</span>
                                 </div>
-                                <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
-                                    <strong>Điểm: ${scoreText}</strong>
+                                <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+                                    <strong style="font-size:1.05rem;">Điểm: ${scoreText}</strong>
                                     ${s.status === 'graded' || s.status === 'ai_graded' ? `
                                         <button class="btn btn-sm btn-secondary" onclick="viewStudentResult('${s.id}')">
                                             <i class="fas fa-eye"></i> Xem chi tiết
@@ -1798,7 +2350,7 @@ Chỉ trả về JSON, không thêm text.`;
                 })
                 .catch(err => {
                     console.error(err);
-                    list.innerHTML = '<div style="text-align:center;padding:16px;color:red;">Lỗi tải lịch sử: ' + (err.message || err) + '</div>';
+                    list.innerHTML = '<div class="empty-state" style="color:#EF4444;">Lỗi tải lịch sử: ' + (err.message || err) + '</div>';
                 });
         }
 
@@ -1825,9 +2377,9 @@ Chỉ trả về JSON, không thêm text.`;
             hideAllPages();
             document.getElementById('resultPage').classList.remove('hidden');
             let html = `
-                <div style="text-align:center;margin-bottom:18px;">
-                    <div style="font-size:2.2rem;font-weight:700;color:#FFA500;">${sub.totalScore != null ? sub.totalScore : '—'}/${sub.maxScore || '?'}</div>
-                    <div style="color:#666;">${escapeHtml(sub.examTitle || '')}</div>
+                <div style="text-align:center;margin-bottom:24px;padding:20px;background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border-radius:16px;border:1px solid #FDE68A;">
+                    <div style="font-size:2.6rem;font-weight:800;color:#D97706;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-1px;">${sub.totalScore != null ? sub.totalScore : '—'}/${sub.maxScore || '?'}</div>
+                    <div style="color:var(--text-secondary);font-weight:500;margin-top:4px;">${escapeHtml(sub.examTitle || '')}</div>
                 </div>`;
 
             if (exam && exam.questions) {
@@ -1839,11 +2391,11 @@ Chỉ trả về JSON, không thêm text.`;
                     const sc = scores[q.id] != null ? scores[q.id] : '—';
                     const fb = feedbacks[q.id] || '';
                     html += `
-                        <div class="question-box" style="margin-bottom:12px;">
+                        <div class="question-box" style="margin-bottom:14px;">
                             <div class="question-text">Câu ${idx + 1} – Điểm: ${sc}/${q.points}</div>
-                            <div style="margin-bottom:6px;">${escapeHtml(q.question)}</div>
-                            <div style="color:#555;"><strong>Bạn trả lời:</strong> ${escapeHtml(String(ans)) || '<em>Không trả lời</em>'}</div>
-                            ${fb ? `<div style="color:#9C27B0;margin-top:4px;"><strong>Nhận xét:</strong> ${escapeHtml(fb)}</div>` : ''}
+                            <div style="margin-bottom:8px;line-height:1.5;">${escapeHtml(q.question)}</div>
+                            <div style="color:var(--text-secondary);padding:10px 12px;background:#F8FAFC;border-radius:8px;"><strong>Bạn trả lời:</strong> ${escapeHtml(String(ans)) || '<em>Không trả lời</em>'}</div>
+                            ${fb ? `<div style="color:#7C3AED;margin-top:8px;padding:8px 12px;background:#F5F3FF;border-radius:8px;font-size:0.9rem;"><strong>Nhận xét:</strong> ${escapeHtml(fb)}</div>` : ''}
                         </div>`;
                 });
             }
