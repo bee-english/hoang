@@ -775,30 +775,6 @@
             </div>
         </div>
 
-        <!-- CHANGE PASSWORD MODAL -->
-        <div id="changePasswordModal" class="modal">
-            <div class="modal-content" style="max-width:440px;">
-                <span class="material-symbols-outlined close" id="closeChangePasswordModal">close</span>
-                <div class="modal-header"><h3><i class="fas fa-key"></i> Đổi mật khẩu</h3></div>
-                <div class="modal-body">
-                    <p style="margin-bottom:16px;">Người dùng: <strong id="changePasswordUserName"></strong></p>
-                    <div class="form-group">
-                        <label>Mật khẩu mới</label>
-                        <input type="password" id="newPasswordInput" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)">
-                    </div>
-                    <div class="form-group">
-                        <label>Xác nhận mật khẩu</label>
-                        <input type="password" id="confirmPasswordInput" placeholder="Nhập lại mật khẩu mới">
-                    </div>
-                    <p style="font-size:0.82rem;color:#64748b;margin-top:4px;">Lưu ý: Với tài khoản thật, thao tác này cần quyền Admin SDK. Với tài khoản demo sẽ cập nhật ngay trên giao diện.</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-btn secondary" id="cancelChangePassword">Hủy</button>
-                    <button class="modal-btn" id="btnConfirmChangePassword">Đổi mật khẩu</button>
-                </div>
-            </div>
-        </div>
-
         <div class="notification" id="notification"></div>
     </div>
 
@@ -826,262 +802,115 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // ===================== FAKE DATA GENERATOR (CẤP 2) =====================
-        // Tên giáo viên đa dạng
-        const FAKE_TEACHER_NAMES = [
-            "Nguyễn Thị Minh Hạnh",
-            "trần văn đức",
-            "Lê Thu Hà",
-            "Pham Hoang Nam",
-            "võ kim chi"
+        // ============================================================
+        // FAKE DATA – Tên 3-4 chữ, email đa dạng, tạo tháng 9-10
+        // ============================================================
+        function randomDateSepOct() {
+            const month = Math.random() < 0.55 ? 8 : 9; // 8 = September, 9 = October (0-based)
+            const day = Math.floor(Math.random() * 28) + 1;
+            const hour = Math.floor(Math.random() * 14) + 7;
+            const min = Math.floor(Math.random() * 60);
+            return new Date(2025, month, day, hour, min, 0);
+        }
+        function ts(d) {
+            return { toDate: () => d, seconds: Math.floor(d.getTime() / 1000) };
+        }
+
+        const FAKE_USERS = [
+            // ===== GIÁO VIÊN (12) =====
+            { id: 'fake_t01', name: 'Nguyễn Thị Minh Châu', email: 'minhchau.nguyen82@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 3, 9, 12)) },
+            { id: 'fake_t02', name: 'Trần Văn Quốc Bảo', email: 'quocbao.tran.gv@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 5, 14, 30)) },
+            { id: 'fake_t03', name: 'Lê Thị Hồng Nhung', email: 'hongnhung.le1990@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 8, 10, 5)) },
+            { id: 'fake_t04', name: 'Phạm Minh Tuấn Anh', email: 'tuananh.pham.math@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 12, 16, 40)) },
+            { id: 'fake_t05', name: 'Hoàng Thị Thu Hà', email: 'thuha.hoang.gv@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 15, 8, 55)) },
+            { id: 'fake_t06', name: 'Vũ Đức Thành Đạt', email: 'thanhdat.vu.teacher@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 18, 11, 20)) },
+            { id: 'fake_t07', name: 'Đặng Thị Mai Linh', email: 'mailinh.dang.english@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 22, 13, 45)) },
+            { id: 'fake_t08', name: 'Bùi Văn Hữu Phước', email: 'huuphuoc.bui.khtn@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 25, 9, 30)) },
+            { id: 'fake_t09', name: 'Ngô Thị Thanh Trúc', email: 'thanhtruc.ngo88@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 2, 15, 10)) },
+            { id: 'fake_t10', name: 'Đỗ Quang Minh Hiếu', email: 'minhhieu.do.van@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 6, 10, 25)) },
+            { id: 'fake_t11', name: 'Lý Thị Kim Ngân', email: 'kimngan.ly.gv@gmail.com', role: 'teacher', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 10, 14, 50)) },
+            { id: 'fake_t12', name: 'Trịnh Văn Đức Thịnh', email: 'ducthinh.trinh.math@gmail.com', role: 'teacher', blocked: true, isFake: true, createdAt: ts(new Date(2025, 9, 14, 8, 15)) },
+
+            // ===== HỌC SINH (28) – tên 3-4 chữ, email đa dạng =====
+            { id: 'fake_s01', name: 'Nguyễn Hoàng Bảo An', email: 'baoan.nguyen.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 4, 17, 20)) },
+            { id: 'fake_s02', name: 'Trần Thị Khánh Linh', email: 'khanhlinh.tran1509@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 6, 19, 5)) },
+            { id: 'fake_s03', name: 'Lê Minh Nhật Nam', email: 'nhatnam.le.2009@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 7, 12, 40)) },
+            { id: 'fake_s04', name: 'Phạm Thị Ánh Ngọc', email: 'anhngoc.pham.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 9, 20, 15)) },
+            { id: 'fake_s05', name: 'Hoàng Đức Gia Bảo', email: 'giabao.hoang.student@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 11, 15, 55)) },
+            { id: 'fake_s06', name: 'Vũ Thị Thu Trang', email: 'thutrang.vu.2008@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 13, 18, 30)) },
+            { id: 'fake_s07', name: 'Đặng Quang Huy Hoàng', email: 'huyhoang.dang.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 16, 21, 10)) },
+            { id: 'fake_s08', name: 'Bùi Thị Mỹ Duyên', email: 'myduyen.bui.school@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 17, 14, 25)) },
+            { id: 'fake_s09', name: 'Ngô Văn Thành Long', email: 'thanhlong.ngo.2009@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 19, 16, 45)) },
+            { id: 'fake_s10', name: 'Đỗ Thị Hồng Phúc', email: 'hongphuc.do.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 21, 19, 0)) },
+            { id: 'fake_s11', name: 'Lý Minh Khôi Nguyên', email: 'khoinguyen.ly.student@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 23, 11, 35)) },
+            { id: 'fake_s12', name: 'Trịnh Thị Lan Anh', email: 'lananh.trinh.2008@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 24, 13, 50)) },
+            { id: 'fake_s13', name: 'Phan Văn Đức Minh', email: 'ducminh.phan.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 26, 20, 20)) },
+            { id: 'fake_s14', name: 'Mai Thị Thanh Thảo', email: 'thanhthao.mai.school@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 28, 15, 10)) },
+            { id: 'fake_s15', name: 'Hồ Quang Nhật Tiến', email: 'nhattien.ho.2009@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 30, 18, 40)) },
+            { id: 'fake_s16', name: 'Tạ Thị Kim Oanh', email: 'kimoanh.ta.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 1, 12, 5)) },
+            { id: 'fake_s17', name: 'Đinh Văn Bảo Khang', email: 'baokhang.dinh.student@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 3, 17, 30)) },
+            { id: 'fake_s18', name: 'Lương Thị Ngọc Hà', email: 'ngocha.luong.2008@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 5, 14, 15)) },
+            { id: 'fake_s19', name: 'Cao Minh Đức Anh', email: 'ducanh.cao.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 7, 19, 55)) },
+            { id: 'fake_s20', name: 'Tô Thị Phương Thảo', email: 'phuongthao.to.school@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 8, 10, 40)) },
+            { id: 'fake_s21', name: 'Hà Văn Quốc Huy', email: 'quochuy.ha.2009@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 9, 16, 20)) },
+            { id: 'fake_s22', name: 'Võ Thị Diễm My', email: 'diemmy.vo.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 11, 21, 5)) },
+            { id: 'fake_s23', name: 'Châu Minh Tuấn Kiệt', email: 'tuankiet.chau.student@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 12, 13, 25)) },
+            { id: 'fake_s24', name: 'Đoàn Thị Bảo Trâm', email: 'baotram.doan.2008@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 13, 18, 50)) },
+            { id: 'fake_s25', name: 'Lâm Văn Hữu Nghĩa', email: 'huunghia.lam.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 15, 11, 15)) },
+            { id: 'fake_s26', name: 'Phùng Thị Thuý An', email: 'thuyan.phung.school@gmail.com', role: 'student', blocked: true, isFake: true, createdAt: ts(new Date(2025, 9, 16, 15, 45)) },
+            { id: 'fake_s27', name: 'Kiểm Minh Nhật Quang', email: 'nhatquang.kiem.2009@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 17, 20, 30)) },
+            { id: 'fake_s28', name: 'Dương Thị Khánh Vy', email: 'khanhvy.duong.hs@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 18, 9, 10)) },
+
+            // Thêm một số email “không theo tên” cho đa dạng hơn
+            { id: 'fake_s29', name: 'Nguyễn Văn Thanh Sơn', email: 'superman123xyz@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 14, 22, 0)) },
+            { id: 'fake_s30', name: 'Trần Hoàng Minh Khang', email: 'hungdeptrai69@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 8, 20, 16, 35)) },
+            { id: 'fake_s31', name: 'Lê Thị Bảo Châu', email: 'nguyenvanlinh15042015@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 4, 19, 20)) },
+            { id: 'fake_s32', name: 'Phạm Đức Anh Tuấn', email: 'dragonwarrior88@gmail.com', role: 'student', blocked: false, isFake: true, createdAt: ts(new Date(2025, 9, 19, 14, 5)) }
         ];
 
-        // Tên học sinh đa dạng về độ dài + viết hoa/thường
-        const FAKE_STUDENT_NAMES = [
-            "An", "Bình", "Chi", "Dũng", "Em", "Giang", "Hà", "Hùng", "Khoa", "Lan",
-            "Mai", "Nam", "Oanh", "Phúc", "Quân", "Sơn", "Trang", "Uyên", "Vân", "Yến",
-            "Ánh", "Bảo", "Cường", "Đạt", "Hải", "Hương", "Khang", "Linh", "Minh", "Ngọc",
-            "Phương", "Quỳnh", "Thảo", "Tuấn", "Vy", "Xuân", "Đức", "Hạnh", "Khánh", "Lợi",
-            "nguyễn an", "trần bình", "lê chi", "phạm dũng", "hoàng em",
-            "Huỳnh Giang", "phan hà", "Vũ Hùng", "võ khoa", "Đặng Lan",
-            "Bùi Mai", "đỗ nam", "Hồ Oanh", "ngô phúc", "Dương Quân",
-            "Lý Sơn", "nguyen trang", "tran uyen", "le van", "pham yen",
-            "hoang anh", "huynh bao", "phan cuong", "vu dat", "vo hai",
-            "dang huong", "bui khang", "do linh", "ho minh", "ngo ngoc",
-            "duong phuong", "ly quynh", "an bình", "chi dũng", "em giang",
-            "hà hùng", "khoa lan", "mai nam", "oanh phúc", "quân sơn",
-            "trang uyên", "vân yến", "ánh bảo", "cường đạt", "hải hương",
-            "khang linh", "minh ngọc", "phương quỳnh", "thảo tuấn", "vy xuân",
-            "đức hạnh", "khánh lợi", "nguyễn thị an", "trần văn bình",
-            "lê thị chi", "phạm hoàng dũng", "võ thị em"
+        const FAKE_TEACHERS = FAKE_USERS.filter(u => u.role === 'teacher');
+        const FAKE_STUDENTS = FAKE_USERS.filter(u => u.role === 'student');
+
+        // Fake exams, banks, submissions (giữ cấu trúc đơn giản nhưng đầy đủ)
+        const FAKE_EXAMS = [
+            { id: 'fake_ex01', title: 'Kiểm tra 15 phút – Phương trình bậc nhất', code: 'DE_A1B2C3', teacherId: 'fake_t01', teacherName: 'Nguyễn Thị Minh Châu', subject: 'toan', grade: '8', duration: 15, questions: [{ id: 'q1', type: 'mcq', question: 'Nghiệm của phương trình 2x + 4 = 0 là?', options: [{ text: 'x = -2', correct: true }, { text: 'x = 2', correct: false }, { text: 'x = 0', correct: false }, { text: 'x = 4', correct: false }], points: 1, difficulty: 'easy' }], createdAt: ts(new Date(2025, 8, 10, 10, 0)), isFake: true },
+            { id: 'fake_ex02', title: 'Đề kiểm tra học kỳ I – Ngữ văn 7', code: 'DE_V7H1', teacherId: 'fake_t03', teacherName: 'Lê Thị Hồng Nhung', subject: 'van', grade: '7', duration: 45, questions: [{ id: 'q1', type: 'essay', question: 'Phân tích hình ảnh người lính trong bài thơ?', correctAnswers: ['Người lính dũng cảm'], points: 2, difficulty: 'medium' }], createdAt: ts(new Date(2025, 8, 20, 14, 30)), isFake: true },
+            { id: 'fake_ex03', title: 'Trắc nghiệm Tiếng Anh Unit 3 – Lớp 9', code: 'DE_EN9U3', teacherId: 'fake_t07', teacherName: 'Đặng Thị Mai Linh', subject: 'anh', grade: '9', duration: 30, questions: [{ id: 'q1', type: 'mcq', question: 'Choose the correct answer: She _____ to school every day.', options: [{ text: 'go', correct: false }, { text: 'goes', correct: true }, { text: 'going', correct: false }, { text: 'went', correct: false }], points: 1, difficulty: 'easy' }], createdAt: ts(new Date(2025, 9, 5, 9, 15)), isFake: true },
+            { id: 'fake_ex04', title: 'KHTN 8 – Bài: Áp suất', code: 'DE_KHTN8', teacherId: 'fake_t08', teacherName: 'Bùi Văn Hữu Phước', subject: 'khtn', grade: '8', duration: 40, questions: [{ id: 'q1', type: 'essay', question: 'Phát biểu định luật Pascal?', correctAnswers: ['Áp suất truyền đi nguyên vẹn'], points: 2, difficulty: 'medium' }], createdAt: ts(new Date(2025, 9, 12, 11, 40)), isFake: true }
         ];
 
-        const SUBJECTS = ["toan", "van", "khtn", "anh"];
-        const GRADES = [6, 7, 8, 9]; // Chỉ cấp 2
-        const EXAM_TITLES = [
-            "Kiểm tra 15 phút chương 1",
-            "Đề giữa kỳ I",
-            "Đề ôn tập học kỳ II",
-            "Bài kiểm tra định kỳ",
-            "Kiểm tra nhanh",
-            "Đề luyện tập",
-            "Bài tập lớn cuối chương",
-            "Đề ôn tập cuối năm",
-            "Kiểm tra kỹ năng viết",
-            "Đề đọc hiểu văn bản",
-            "Bài kiểm tra định kỳ lần 2",
-            "Đề ôn tập giữa kỳ",
-            "Kiểm tra từ vựng unit 5",
-            "Đề luyện thi vào 10",
-            "Bài kiểm tra 1 tiết"
-        ];
-        const BANK_NAMES = [
-            "Ngân hàng câu hỏi Toán 9",
-            "Bộ đề Văn 8",
-            "Câu hỏi KHTN lớp 7",
-            "Ngân hàng Tiếng Anh 6",
-            "Đề ôn thi vào 10",
-            "Câu hỏi trắc nghiệm",
-            "Bộ đề tự luận Văn",
-            "Ngân hàng Reading",
-            "Câu hỏi Hóa học 8",
-            "Đề luyện tập Vật lý 9"
+        const FAKE_BANKS = [
+            { id: 'fake_bk01', name: 'Ngân hàng đề Toán 8 – Phương trình', teacherId: 'fake_t01', teacherName: 'Nguyễn Thị Minh Châu', contents: [{ type: 'mcq', question: 'Phương trình nào có nghiệm x = 3?', options: [{ text: 'x + 1 = 4', correct: true }, { text: 'x - 1 = 1', correct: false }], points: 1, difficulty: 'easy' }], createdAt: ts(new Date(2025, 8, 12, 16, 0)), isFake: true },
+            { id: 'fake_bk02', name: 'Ngân hàng Ngữ văn 7 – Truyện ngắn', teacherId: 'fake_t03', teacherName: 'Lê Thị Hồng Nhung', contents: [{ type: 'essay', question: 'Nêu nội dung chính của truyện?', correctAnswers: ['Tình cảm gia đình'], points: 2, difficulty: 'medium' }], createdAt: ts(new Date(2025, 8, 25, 10, 20)), isFake: true },
+            { id: 'fake_bk03', name: 'Bank English 9 – Grammar', teacherId: 'fake_t07', teacherName: 'Đặng Thị Mai Linh', contents: [{ type: 'mcq', question: 'Past simple of “go” is?', options: [{ text: 'goed', correct: false }, { text: 'went', correct: true }], points: 1, difficulty: 'easy' }], createdAt: ts(new Date(2025, 9, 8, 14, 50)), isFake: true }
         ];
 
-        function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-        function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-        function randomDate(daysBack = 90) {
-            const d = new Date();
-            d.setDate(d.getDate() - randomInt(1, daysBack));
-            d.setHours(randomInt(7, 22), randomInt(0, 59), 0, 0);
-            return d;
-        }
-        function makeFakeTimestamp(date) {
-            return { toDate: () => date, seconds: Math.floor(date.getTime() / 1000) };
-        }
+        const FAKE_SUBS = [
+            { id: 'fake_sub01', examId: 'fake_ex01', examCode: 'DE_A1B2C3', examTitle: 'Kiểm tra 15 phút – Phương trình bậc nhất', studentId: 'fake_s01', studentName: 'Nguyễn Hoàng Bảo An', status: 'graded', totalScore: 1, maxScore: 1, submittedAt: ts(new Date(2025, 8, 11, 10, 20)), isFake: true, answers: { q1: 'x = -2' }, questionScores: { q1: 1 } },
+            { id: 'fake_sub02', examId: 'fake_ex01', examCode: 'DE_A1B2C3', examTitle: 'Kiểm tra 15 phút – Phương trình bậc nhất', studentId: 'fake_s03', studentName: 'Lê Minh Nhật Nam', status: 'pending', totalScore: null, maxScore: 1, submittedAt: ts(new Date(2025, 8, 11, 10, 25)), isFake: true, answers: { q1: 'x = 2' } },
+            { id: 'fake_sub03', examId: 'fake_ex02', examCode: 'DE_V7H1', examTitle: 'Đề kiểm tra học kỳ I – Ngữ văn 7', studentId: 'fake_s02', studentName: 'Trần Thị Khánh Linh', status: 'ai_graded', totalScore: 1.5, maxScore: 2, submittedAt: ts(new Date(2025, 8, 21, 15, 10)), isFake: true, answers: { q1: 'Người lính rất dũng cảm và hy sinh' }, questionScores: { q1: 1.5 }, feedbacks: { q1: 'Bài làm tốt, cần bổ sung thêm chi tiết.' } },
+            { id: 'fake_sub04', examId: 'fake_ex03', examCode: 'DE_EN9U3', examTitle: 'Trắc nghiệm Tiếng Anh Unit 3 – Lớp 9', studentId: 'fake_s05', studentName: 'Hoàng Đức Gia Bảo', status: 'graded', totalScore: 1, maxScore: 1, submittedAt: ts(new Date(2025, 9, 6, 9, 40)), isFake: true, answers: { q1: 'goes' }, questionScores: { q1: 1 } },
+            { id: 'fake_sub05', examId: 'fake_ex04', examCode: 'DE_KHTN8', examTitle: 'KHTN 8 – Bài: Áp suất', studentId: 'fake_s10', studentName: 'Đỗ Thị Hồng Phúc', status: 'pending', totalScore: null, maxScore: 2, submittedAt: ts(new Date(2025, 9, 13, 12, 5)), isFake: true, answers: { q1: 'Áp suất truyền đi nguyên vẹn trong chất lỏng' } }
+        ];
 
-        function generateFakeUsers() {
-            const users = [];
-            // 5 teachers
-            FAKE_TEACHER_NAMES.forEach((name, i) => {
-                const emailBase = name.toLowerCase()
-                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                    .replace(/\s+/g, ".")
-                    .replace(/[^a-z0-9.]/g, "");
-                users.push({
-                    id: "fake_teacher_" + (i + 1),
-                    name: name,
-                    email: emailBase + "@gmail.com",
-                    role: "teacher",
-                    blocked: false,
-                    createdAt: makeFakeTimestamp(randomDate(120)),
-                    isFake: true
-                });
-            });
-            // 90 students với tên đa dạng
-            for (let i = 0; i < 90; i++) {
-                const name = FAKE_STUDENT_NAMES[i % FAKE_STUDENT_NAMES.length];
-                // thêm biến thể nhỏ để tránh trùng hoàn toàn
-                const displayName = i < FAKE_STUDENT_NAMES.length ? name : (name + " " + randomInt(1, 9));
-                const emailBase = displayName.toLowerCase()
-                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                    .replace(/\s+/g, "")
-                    .replace(/[^a-z0-9]/g, "") + randomInt(10, 99);
-                users.push({
-                    id: "fake_student_" + (i + 1),
-                    name: displayName,
-                    email: emailBase + "@gmail.com",
-                    role: "student",
-                    blocked: Math.random() < 0.03,
-                    createdAt: makeFakeTimestamp(randomDate(150)),
-                    isFake: true
-                });
-            }
-            return users;
-        }
+        // ============================================================
+        // STATE & HELPERS
+        // ============================================================
+        let currentUser = null;
+        let currentUserProfile = null;
+        let allUsers = [];
+        let allExams = [];
+        let allBanks = [];
+        let allSubs = [];
+        let userNameCache = {};
+        let changeRoleUid = null;
 
-        function generateFakeExams(teachers) {
-            const exams = [];
-            for (let i = 0; i < 28; i++) {
-                const teacher = randomItem(teachers);
-                const subject = randomItem(SUBJECTS);
-                const grade = randomItem(GRADES);
-                const qCount = randomInt(8, 20);
-                const questions = [];
-                for (let q = 0; q < qCount; q++) {
-                    if (Math.random() > 0.7) {
-                        questions.push({
-                            id: "q" + q,
-                            type: "essay",
-                            question: "Câu hỏi tự luận số " + (q + 1) + ". Em hãy trình bày và giải thích.",
-                            points: randomInt(1, 3),
-                            difficulty: randomItem(["easy", "medium", "hard"]),
-                            correctAnswers: ["Đáp án mẫu"]
-                        });
-                    } else {
-                        questions.push({
-                            id: "q" + q,
-                            type: "mcq",
-                            question: "Câu hỏi trắc nghiệm số " + (q + 1) + "?",
-                            points: 1,
-                            difficulty: randomItem(["easy", "medium", "hard"]),
-                            options: [
-                                { text: "Đáp án A", correct: false },
-                                { text: "Đáp án B", correct: true },
-                                { text: "Đáp án C", correct: false },
-                                { text: "Đáp án D", correct: false }
-                            ]
-                        });
-                    }
-                }
-                // Title chỉ giữ tên đề thuần, không gắn môn + lớp
-                exams.push({
-                    id: "fake_exam_" + (i + 1),
-                    title: randomItem(EXAM_TITLES),
-                    code: "DE" + String(1000 + i),
-                    teacherName: teacher.name,
-                    teacherId: teacher.id,
-                    subject: subject,
-                    grade: grade,
-                    duration: randomItem([30, 45, 60, 90]),
-                    questions: questions,
-                    createdAt: makeFakeTimestamp(randomDate(100)),
-                    isFake: true
-                });
-            }
-            return exams;
-        }
-
-        function generateFakeBanks(teachers) {
-            const banks = [];
-            for (let i = 0; i < 14; i++) {
-                const teacher = randomItem(teachers);
-                const cnt = randomInt(12, 35);
-                const contents = [];
-                for (let c = 0; c < cnt; c++) {
-                    if (Math.random() > 0.7) {
-                        contents.push({
-                            type: "essay",
-                            question: "Câu tự luận ngân hàng số " + (c + 1),
-                            points: randomInt(1, 2),
-                            correctAnswers: ["Đáp án gợi ý"]
-                        });
-                    } else {
-                        contents.push({
-                            type: "mcq",
-                            question: "Câu trắc nghiệm ngân hàng số " + (c + 1),
-                            points: 1,
-                            options: [
-                                { text: "A", correct: false },
-                                { text: "B", correct: true },
-                                { text: "C", correct: false },
-                                { text: "D", correct: false }
-                            ]
-                        });
-                    }
-                }
-                banks.push({
-                    id: "fake_bank_" + (i + 1),
-                    name: randomItem(BANK_NAMES) + " #" + (i + 1),
-                    teacherName: teacher.name,
-                    teacherId: teacher.id,
-                    contents: contents,
-                    createdAt: makeFakeTimestamp(randomDate(110)),
-                    isFake: true
-                });
-            }
-            return banks;
-        }
-
-        function generateFakeSubmissions(students, exams) {
-            const subs = [];
-            const statuses = ["pending", "graded", "ai_graded", "graded", "ai_graded", "graded"];
-            for (let i = 0; i < 185; i++) {
-                const student = randomItem(students);
-                const exam = randomItem(exams);
-                const status = randomItem(statuses);
-                const maxScore = exam.questions ? exam.questions.reduce((s, q) => s + (q.points || 1), 0) : 10;
-                let totalScore = null;
-                if (status !== "pending") {
-                    totalScore = Math.round((randomInt(45, 100) / 100) * maxScore * 10) / 10;
-                }
-                subs.push({
-                    id: "fake_sub_" + (i + 1),
-                    studentName: student.name,
-                    studentId: student.id,
-                    examTitle: exam.title,
-                    examCode: exam.code,
-                    examId: exam.id,
-                    totalScore: totalScore,
-                    maxScore: maxScore,
-                    status: status,
-                    submittedAt: makeFakeTimestamp(randomDate(80)),
-                    answers: {},
-                    questionScores: {},
-                    feedbacks: {},
-                    isFake: true
-                });
-            }
-            return subs;
-        }
-
-        // Generate once
-        const FAKE_USERS = generateFakeUsers();
-        const FAKE_TEACHERS = FAKE_USERS.filter(u => u.role === "teacher");
-        const FAKE_STUDENTS = FAKE_USERS.filter(u => u.role === "student");
-        const FAKE_EXAMS = generateFakeExams(FAKE_TEACHERS);
-        const FAKE_BANKS = generateFakeBanks(FAKE_TEACHERS);
-        const FAKE_SUBS = generateFakeSubmissions(FAKE_STUDENTS, FAKE_EXAMS);
-
-        // ===================== HELPERS =====================
         function showLoading(msg) {
             document.getElementById('loading-text').textContent = msg || 'Đang xử lý...';
             document.getElementById('loading-overlay').classList.add('show');
-            document.getElementById('loading-overlay').style.display = 'flex';
         }
         function hideLoading() {
             document.getElementById('loading-overlay').classList.remove('show');
-            document.getElementById('loading-overlay').style.display = 'none';
         }
         function showNotification(msg, type) {
             const n = document.getElementById('notification');
@@ -1096,18 +925,12 @@
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             })[m]);
         }
-        function hideAllPages() {
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-        }
-        function subjName(s) {
-            return { toan: 'Toán', van: 'Ngữ văn', khtn: 'KHTN', anh: 'Tiếng Anh' }[s] || s;
-        }
-        function formatDate(ts) {
-            if (!ts) return 'N/A';
+        function formatDate(val) {
+            if (!val) return '—';
             try {
-                const d = ts.toDate ? ts.toDate() : new Date(ts);
-                return d.toLocaleString('vi-VN');
-            } catch (e) { return 'N/A'; }
+                const d = val.toDate ? val.toDate() : new Date(val);
+                return d.toLocaleDateString('vi-VN') + ' ' + d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            } catch (e) { return '—'; }
         }
         function roleBadge(role) {
             if (role === 'admin') return '<span class="badge badge-admin">Admin</span>';
@@ -1119,73 +942,67 @@
                 ? '<span class="badge badge-blocked">Đã chặn</span>'
                 : '<span class="badge badge-active">Hoạt động</span>';
         }
+        function subjName(s) {
+            return { toan: 'Toán', van: 'Ngữ văn', khtn: 'KHTN', anh: 'Tiếng Anh' }[s] || s;
+        }
+        function hideAllPages() {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+        }
 
-        let currentUser = null;
-        let currentUserProfile = null;
-        let allUsers = [];
-        let allExams = [];
-        let allBanks = [];
-        let allSubs = [];
-        let changeRoleUid = null;
-        let changePasswordUid = null;
-        let userNameCache = {};
-
+        // ============================================================
+        // AUTH
+        // ============================================================
         auth.onAuthStateChanged(async (user) => {
-            if (!user) {
+            if (user) {
+                currentUser = user;
+                try {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        currentUserProfile = doc.data();
+                    } else {
+                        currentUserProfile = {
+                            name: user.email ? user.email.split('@')[0] : 'Người dùng',
+                            role: 'student',
+                            email: user.email || ''
+                        };
+                    }
+                } catch (err) {
+                    console.error(err);
+                    currentUserProfile = { name: 'Người dùng', role: 'student' };
+                }
+
+                // Auto promote first user to admin if no admin exists
+                if (currentUserProfile.role !== 'admin') {
+                    try {
+                        const admins = await db.collection('users').where('role', '==', 'admin').limit(1).get();
+                        if (admins.empty) {
+                            await db.collection('users').doc(user.uid).set({
+                                ...currentUserProfile,
+                                role: 'admin',
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            }, { merge: true });
+                            currentUserProfile.role = 'admin';
+                        }
+                    } catch (e) { console.error(e); }
+                }
+
+                if (currentUserProfile.role === 'admin') {
+                    showAdminDashboard();
+                } else {
+                    showUnauthorized();
+                }
+            } else {
                 currentUser = null;
                 currentUserProfile = null;
-                showNeedLoginPage();
-                return;
-            }
-            currentUser = user;
-            try {
-                const doc = await db.collection('users').doc(user.uid).get();
-                if (doc.exists) {
-                    currentUserProfile = { id: doc.id, ...doc.data() };
-                } else {
-                    currentUserProfile = {
-                        id: user.uid,
-                        name: user.email ? user.email.split('@')[0] : 'Người dùng',
-                        email: user.email || '',
-                        role: 'student',
-                        blocked: false,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    await db.collection('users').doc(user.uid).set(currentUserProfile);
-                }
-            } catch (err) {
-                console.error(err);
-                currentUserProfile = {
-                    id: user.uid,
-                    name: user.email ? user.email.split('@')[0] : 'Người dùng',
-                    email: user.email || '',
-                    role: 'student',
-                    blocked: false
-                };
-            }
-
-            const adminSnap = await db.collection('users').where('role', '==', 'admin').limit(1).get();
-            if (adminSnap.empty) {
-                await db.collection('users').doc(user.uid).update({
-                    role: 'admin',
-                    promotedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                currentUserProfile.role = 'admin';
-                showNotification('Bạn là người dùng đầu tiên → đã được nâng cấp thành Admin!', 'success');
-            }
-
-            if (currentUserProfile.role === 'admin') {
-                showAdminDashboard();
-            } else {
-                showUnauthorizedPage();
+                showNeedLogin();
             }
         });
 
-        function showNeedLoginPage() {
+        function showNeedLogin() {
             hideAllPages();
             document.getElementById('needLoginPage').classList.remove('hidden');
         }
-        function showUnauthorizedPage() {
+        function showUnauthorized() {
             hideAllPages();
             document.getElementById('unauthorizedPage').classList.remove('hidden');
         }
@@ -1195,22 +1012,24 @@
             document.getElementById('adminWelcome').textContent = `Xin chào ${currentUserProfile?.name || 'Admin'}!`;
             loadAllStats();
             loadUsers();
+            loadExams();
+            loadBanks();
+            loadSubmissions();
         }
 
+        // Tabs
         document.querySelectorAll('.admin-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 tab.classList.add('active');
-                const id = tab.dataset.tab;
-                document.getElementById('tab-' + id).classList.add('active');
-                if (id === 'users') loadUsers();
-                else if (id === 'exams') loadExams();
-                else if (id === 'banks') loadBanks();
-                else if (id === 'submissions') loadSubmissions();
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
             });
         });
 
+        // ============================================================
+        // STATS
+        // ============================================================
         async function loadAllStats() {
             try {
                 const [usersSnap, examsSnap, banksSnap, subsSnap] = await Promise.all([
@@ -1252,7 +1071,9 @@
             }
         }
 
-        // ========== USERS ==========
+        // ============================================================
+        // USERS
+        // ============================================================
         document.getElementById('btnRefreshUsers').addEventListener('click', loadUsers);
         document.getElementById('userSearch').addEventListener('input', renderUsersTable);
         document.getElementById('userRoleFilter').addEventListener('change', renderUsersTable);
@@ -1314,7 +1135,6 @@
                         <td>${formatDate(u.createdAt)}</td>
                         <td class="actions">
                             <button class="btn btn-sm btn-secondary" onclick="openChangeRole('${u.id}')"><i class="fas fa-user-cog"></i> Vai trò</button>
-                            <button class="btn btn-sm btn-secondary" onclick="openChangePassword('${u.id}')"><i class="fas fa-key"></i> Mật khẩu</button>
                             ${u.blocked
                                 ? `<button class="btn btn-sm btn-success" onclick="toggleBlock('${u.id}', false)"><i class="fas fa-unlock"></i> Mở chặn</button>`
                                 : `<button class="btn btn-sm btn-danger" onclick="toggleBlock('${u.id}', true)" ${isSelf ? 'disabled title="Không thể tự chặn mình"' : ''}><i class="fas fa-ban"></i> Chặn</button>`
@@ -1368,43 +1188,6 @@
             }
         });
 
-        // Change Password
-        window.openChangePassword = function(uid) {
-            const u = allUsers.find(x => x.id === uid);
-            if (!u) return;
-            changePasswordUid = uid;
-            document.getElementById('changePasswordUserName').textContent = u.name || u.email || uid;
-            document.getElementById('newPasswordInput').value = '';
-            document.getElementById('confirmPasswordInput').value = '';
-            document.getElementById('changePasswordModal').classList.add('active');
-        };
-        document.getElementById('closeChangePasswordModal').addEventListener('click', () => document.getElementById('changePasswordModal').classList.remove('active'));
-        document.getElementById('cancelChangePassword').addEventListener('click', () => document.getElementById('changePasswordModal').classList.remove('active'));
-        document.getElementById('btnConfirmChangePassword').addEventListener('click', async () => {
-            if (!changePasswordUid) return;
-            const newPass = document.getElementById('newPasswordInput').value.trim();
-            const confirmPass = document.getElementById('confirmPasswordInput').value.trim();
-            if (newPass.length < 6) {
-                showNotification('Mật khẩu phải có ít nhất 6 ký tự!', 'warning');
-                return;
-            }
-            if (newPass !== confirmPass) {
-                showNotification('Mật khẩu xác nhận không khớp!', 'warning');
-                return;
-            }
-            const u = allUsers.find(x => x.id === changePasswordUid);
-            if (u && u.isFake) {
-                // Demo only
-                showNotification('Đã đổi mật khẩu thành công (demo)!', 'success');
-                document.getElementById('changePasswordModal').classList.remove('active');
-                return;
-            }
-            // Real user – client-side Firebase không cho đổi mật khẩu người khác
-            // Hiển thị thông báo rõ ràng
-            showNotification('Với tài khoản thật, cần dùng Firebase Admin SDK (backend) để đổi mật khẩu. Tính năng demo chỉ áp dụng cho tài khoản ảo.', 'info');
-            document.getElementById('changePasswordModal').classList.remove('active');
-        });
-
         window.toggleBlock = async function(uid, block) {
             if (uid === currentUser.uid) {
                 showNotification('Bạn không thể tự chặn chính mình!', 'warning');
@@ -1437,7 +1220,9 @@
             }
         };
 
-        // ========== EXAMS ==========
+        // ============================================================
+        // EXAMS
+        // ============================================================
         document.getElementById('btnRefreshExams').addEventListener('click', loadExams);
         document.getElementById('examSearch').addEventListener('input', renderExamsTable);
 
@@ -1569,7 +1354,9 @@
             }
         };
 
-        // ========== BANKS ==========
+        // ============================================================
+        // BANKS
+        // ============================================================
         document.getElementById('btnRefreshBanks').addEventListener('click', loadBanks);
         document.getElementById('bankSearch').addEventListener('input', renderBanksTable);
 
@@ -1693,7 +1480,9 @@
             }
         };
 
-        // ========== SUBMISSIONS ==========
+        // ============================================================
+        // SUBMISSIONS
+        // ============================================================
         document.getElementById('btnRefreshSubs').addEventListener('click', loadSubmissions);
         document.getElementById('subSearch').addEventListener('input', renderSubsTable);
         document.getElementById('subStatusFilter').addEventListener('change', renderSubsTable);
@@ -1789,7 +1578,7 @@
                     let html = '';
                     exam.questions.forEach((q, idx) => {
                         const ans = answers[q.id] || answers[idx] || (sub.isFake ? (Math.random() > 0.3 ? 'Câu trả lời mẫu của học sinh' : '') : '');
-                        const sc = scores[q.id] != null ? scores[q.id] : (scores[idx] != null ? scores[idx] : (sub.isFake ? randomInt(0, q.points || 1) : '—'));
+                        const sc = scores[q.id] != null ? scores[q.id] : (scores[idx] != null ? scores[idx] : (sub.isFake ? Math.floor(Math.random() * ((q.points || 1) + 1)) : '—'));
                         const fb = feedbacks[q.id] || feedbacks[idx] || (sub.isFake && Math.random() > 0.6 ? 'Bài làm tốt, cần chú ý chi tiết hơn.' : '');
                         html += `
                             <div class="detail-box ${q.type === 'essay' ? 'essay' : 'mcq'}">
