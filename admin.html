@@ -48,7 +48,6 @@
         }
         #app { width: 100%; min-height: 100vh; position: relative; }
 
-        /* Floating orbs background */
         .bg-orb {
             position: fixed;
             border-radius: 50%;
@@ -92,7 +91,6 @@
             border: 1px solid var(--glass-border);
         }
 
-        /* Header */
         .admin-header {
             text-align: center;
             margin-bottom: 32px;
@@ -114,7 +112,6 @@
             font-weight: 500;
         }
 
-        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -165,9 +162,7 @@
         .stat-card.c-teal::before { background: linear-gradient(90deg, #14b8a6, #2dd4bf); }
         .stat-card.c-indigo::before { background: linear-gradient(90deg, #6366f1, #818cf8); }
         .stat-card.c-pink::before { background: linear-gradient(90deg, #ec4899, #f472b6); }
-        .stat-card.c-cyan::before { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
 
-        /* Tabs */
         .admin-tabs {
             display: flex;
             gap: 8px;
@@ -203,7 +198,6 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Toolbar */
         .toolbar {
             display: flex;
             gap: 12px;
@@ -228,7 +222,6 @@
         }
         .toolbar select { min-width: 150px; cursor: pointer; }
 
-        /* Buttons */
         .btn {
             padding: 11px 18px;
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
@@ -255,7 +248,6 @@
         .btn-danger:hover { box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35); }
         .btn-sm { padding: 8px 13px; font-size: 0.8rem; border-radius: 10px; }
 
-        /* Table */
         .table-wrapper {
             overflow-x: auto;
             border-radius: 16px;
@@ -293,7 +285,6 @@
             flex-wrap: wrap;
         }
 
-        /* Badges */
         .badge {
             display: inline-flex;
             align-items: center;
@@ -322,7 +313,6 @@
             opacity: 0.45;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -399,7 +389,6 @@
         }
         .close:hover { background: var(--gray-200); color: var(--gray-900); }
 
-        /* Detail boxes */
         .detail-box {
             background: var(--gray-50);
             border-radius: 14px;
@@ -410,28 +399,6 @@
         .detail-box.mcq { border-left-color: #3b82f6; }
         .detail-box.essay { border-left-color: #f97316; }
 
-        .chat-bubble {
-            padding: 13px 17px;
-            border-radius: 16px;
-            margin-bottom: 10px;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        .chat-bubble.user {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: white;
-            margin-left: 18%;
-        }
-        .chat-bubble.ai {
-            background: #f1f5f9;
-            color: var(--gray-800);
-            margin-right: 18%;
-            border: 1px solid var(--gray-200);
-        }
-
-        /* Notification */
         .notification {
             position: fixed;
             top: 24px; right: 24px;
@@ -451,7 +418,6 @@
         .notification.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .notification.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
-        /* Loading */
         #loading-overlay {
             display: none;
             position: fixed;
@@ -466,7 +432,6 @@
         #loading-overlay.show { display: flex; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Need login / Unauthorized */
         .center-box {
             text-align: center;
             padding: 56px 32px;
@@ -487,6 +452,30 @@
             margin-bottom: 28px;
             line-height: 1.65;
             font-size: 1.02rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
         }
 
         @media (max-width: 768px) {
@@ -593,10 +582,6 @@
                         <div class="stat-number" id="statSubs">–</div>
                         <div class="stat-label">Bài làm HS</div>
                     </div>
-                    <div class="stat-card c-cyan">
-                        <div class="stat-number" id="statSummaries">–</div>
-                        <div class="stat-label">Hội thoại tóm tắt</div>
-                    </div>
                 </div>
 
                 <!-- TABS -->
@@ -605,7 +590,6 @@
                     <button class="admin-tab" data-tab="exams"><i class="fas fa-file-alt"></i> Đề thi</button>
                     <button class="admin-tab" data-tab="banks"><i class="fas fa-database"></i> Ngân hàng đề</button>
                     <button class="admin-tab" data-tab="submissions"><i class="fas fa-clipboard-list"></i> Bài làm HS</button>
-                    <button class="admin-tab" data-tab="summaries"><i class="fas fa-comments"></i> Tóm tắt bài học</button>
                 </div>
 
                 <!-- TAB USERS -->
@@ -681,7 +665,7 @@
                         <table class="admin-table">
                             <thead>
                                 <tr>
-                                    <th>Tên đề</th>
+                                    <th>Tên ngân hàng</th>
                                     <th>Giáo viên</th>
                                     <th>Số nội dung</th>
                                     <th>Ngày tạo</th>
@@ -722,31 +706,6 @@
                             </thead>
                             <tbody id="subsTableBody">
                                 <tr><td colspan="7" style="text-align:center;padding:32px;">Đang tải...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- TAB SUMMARIES -->
-                <div id="tab-summaries" class="tab-content">
-                    <div class="toolbar">
-                        <input type="text" id="summarySearch" placeholder="Tìm theo tiêu đề hoặc môn học...">
-                        <button class="btn btn-sm btn-secondary" id="btnRefreshSummaries"><i class="fas fa-sync-alt"></i> Làm mới</button>
-                    </div>
-                    <div class="table-wrapper">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Tiêu đề</th>
-                                    <th>Người dùng</th>
-                                    <th>Môn / Khối</th>
-                                    <th>Số tin nhắn</th>
-                                    <th>Cập nhật lần cuối</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="summariesTableBody">
-                                <tr><td colspan="6" style="text-align:center;padding:32px;">Đang tải...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -793,19 +752,6 @@
             </div>
         </div>
 
-        <!-- VIEW SUMMARY MODAL -->
-        <div id="viewSummaryModal" class="modal">
-            <div class="modal-content wide">
-                <span class="material-symbols-outlined close" id="closeViewSummaryModal">close</span>
-                <div class="modal-header"><h3><i class="fas fa-comments"></i> Hội thoại tóm tắt</h3></div>
-                <div class="modal-body">
-                    <div id="viewSummaryMeta" style="color:#6b7280;font-size:0.9rem;margin-bottom:16px;"></div>
-                    <div id="viewSummaryContent" style="max-height:58vh;overflow-y:auto;"></div>
-                </div>
-                <div class="modal-footer"><button class="modal-btn secondary" id="btnCloseViewSummary">Đóng</button></div>
-            </div>
-        </div>
-
         <!-- CHANGE ROLE MODAL -->
         <div id="changeRoleModal" class="modal">
             <div class="modal-content" style="max-width:420px;">
@@ -825,6 +771,30 @@
                 <div class="modal-footer">
                     <button class="modal-btn secondary" id="cancelChangeRole">Hủy</button>
                     <button class="modal-btn" id="btnConfirmChangeRole">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHANGE PASSWORD MODAL -->
+        <div id="changePasswordModal" class="modal">
+            <div class="modal-content" style="max-width:440px;">
+                <span class="material-symbols-outlined close" id="closeChangePasswordModal">close</span>
+                <div class="modal-header"><h3><i class="fas fa-key"></i> Đổi mật khẩu</h3></div>
+                <div class="modal-body">
+                    <p style="margin-bottom:16px;">Người dùng: <strong id="changePasswordUserName"></strong></p>
+                    <div class="form-group">
+                        <label>Mật khẩu mới</label>
+                        <input type="password" id="newPasswordInput" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)">
+                    </div>
+                    <div class="form-group">
+                        <label>Xác nhận mật khẩu</label>
+                        <input type="password" id="confirmPasswordInput" placeholder="Nhập lại mật khẩu mới">
+                    </div>
+                    <p style="font-size:0.82rem;color:#64748b;margin-top:4px;">Lưu ý: Với tài khoản thật, thao tác này cần quyền Admin SDK. Với tài khoản demo sẽ cập nhật ngay trên giao diện.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn secondary" id="cancelChangePassword">Hủy</button>
+                    <button class="modal-btn" id="btnConfirmChangePassword">Đổi mật khẩu</button>
                 </div>
             </div>
         </div>
@@ -856,28 +826,66 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // ===================== FAKE DATA GENERATOR =====================
+        // ===================== FAKE DATA GENERATOR (CẤP 2) =====================
+        // Tên giáo viên đa dạng
         const FAKE_TEACHER_NAMES = [
-            "Nguyễn Thị Minh Hạnh", "Trần Văn Đức", "Lê Thị Thu Hà", "Phạm Hoàng Nam", "Võ Thị Kim Chi"
+            "Nguyễn Thị Minh Hạnh",
+            "trần văn đức",
+            "Lê Thu Hà",
+            "Pham Hoang Nam",
+            "võ kim chi"
         ];
-        const FAKE_STUDENT_FIRST = ["An","Bình","Chi","Dũng","Em","Giang","Hà","Hùng","Khoa","Lan","Mai","Nam","Oanh","Phúc","Quân","Sơn","Trang","Uyên","Vân","Yến","Ánh","Bảo","Cường","Đạt","Hải","Hương","Khang","Linh","Minh","Ngọc","Phương","Quỳnh","Thảo","Tuấn","Vy","Xuân","Đức","Hạnh","Khánh","Lợi"];
-        const FAKE_STUDENT_LAST = ["Nguyễn","Trần","Lê","Phạm","Hoàng","Huỳnh","Phan","Vũ","Võ","Đặng","Bùi","Đỗ","Hồ","Ngô","Dương","Lý"];
-        const SUBJECTS = ["toan","van","khtn","anh"];
-        const GRADES = [6,7,8,9,10,11,12];
+
+        // Tên học sinh đa dạng về độ dài + viết hoa/thường
+        const FAKE_STUDENT_NAMES = [
+            "An", "Bình", "Chi", "Dũng", "Em", "Giang", "Hà", "Hùng", "Khoa", "Lan",
+            "Mai", "Nam", "Oanh", "Phúc", "Quân", "Sơn", "Trang", "Uyên", "Vân", "Yến",
+            "Ánh", "Bảo", "Cường", "Đạt", "Hải", "Hương", "Khang", "Linh", "Minh", "Ngọc",
+            "Phương", "Quỳnh", "Thảo", "Tuấn", "Vy", "Xuân", "Đức", "Hạnh", "Khánh", "Lợi",
+            "nguyễn an", "trần bình", "lê chi", "phạm dũng", "hoàng em",
+            "Huỳnh Giang", "phan hà", "Vũ Hùng", "võ khoa", "Đặng Lan",
+            "Bùi Mai", "đỗ nam", "Hồ Oanh", "ngô phúc", "Dương Quân",
+            "Lý Sơn", "nguyen trang", "tran uyen", "le van", "pham yen",
+            "hoang anh", "huynh bao", "phan cuong", "vu dat", "vo hai",
+            "dang huong", "bui khang", "do linh", "ho minh", "ngo ngoc",
+            "duong phuong", "ly quynh", "an bình", "chi dũng", "em giang",
+            "hà hùng", "khoa lan", "mai nam", "oanh phúc", "quân sơn",
+            "trang uyên", "vân yến", "ánh bảo", "cường đạt", "hải hương",
+            "khang linh", "minh ngọc", "phương quỳnh", "thảo tuấn", "vy xuân",
+            "đức hạnh", "khánh lợi", "nguyễn thị an", "trần văn bình",
+            "lê thị chi", "phạm hoàng dũng", "võ thị em"
+        ];
+
+        const SUBJECTS = ["toan", "van", "khtn", "anh"];
+        const GRADES = [6, 7, 8, 9]; // Chỉ cấp 2
         const EXAM_TITLES = [
-            "Kiểm tra 15 phút chương 1", "Đề giữa kỳ I", "Đề ôn tập học kỳ II", "Bài kiểm tra định kỳ",
-            "Đề thi thử THPT", "Kiểm tra nhanh – Hàm số", "Đề luyện thi HSG", "Bài tập lớn cuối chương",
-            "Đề ôn tập môn Toán", "Kiểm tra kỹ năng viết", "Đề đọc hiểu văn bản", "Bài kiểm tra KHTN",
-            "Đề thi thử IELTS Reading", "Kiểm tra từ vựng unit 5", "Đề ôn tập cuối năm"
+            "Kiểm tra 15 phút chương 1",
+            "Đề giữa kỳ I",
+            "Đề ôn tập học kỳ II",
+            "Bài kiểm tra định kỳ",
+            "Kiểm tra nhanh",
+            "Đề luyện tập",
+            "Bài tập lớn cuối chương",
+            "Đề ôn tập cuối năm",
+            "Kiểm tra kỹ năng viết",
+            "Đề đọc hiểu văn bản",
+            "Bài kiểm tra định kỳ lần 2",
+            "Đề ôn tập giữa kỳ",
+            "Kiểm tra từ vựng unit 5",
+            "Đề luyện thi vào 10",
+            "Bài kiểm tra 1 tiết"
         ];
         const BANK_NAMES = [
-            "Ngân hàng câu hỏi Toán 9", "Bộ đề Văn 11", "Câu hỏi KHTN lớp 8", "Ngân hàng Tiếng Anh 10",
-            "Đề ôn thi vào 10", "Câu hỏi trắc nghiệm Hàm số", "Bộ đề tự luận Văn học", "Ngân hàng Reading IELTS"
-        ];
-        const SUMMARY_TITLES = [
-            "Tóm tắt chương Hàm số bậc hai", "Ôn tập Văn học hiện đại", "Ghi chú bài KHTN – Điện học",
-            "Tóm tắt Unit 4 – Education", "Chữa bài tập Toán 12", "Tóm tắt tác phẩm Chí Phèo",
-            "Ghi chú lý thuyết Hóa học", "Tóm tắt kỹ năng Writing Task 2"
+            "Ngân hàng câu hỏi Toán 9",
+            "Bộ đề Văn 8",
+            "Câu hỏi KHTN lớp 7",
+            "Ngân hàng Tiếng Anh 6",
+            "Đề ôn thi vào 10",
+            "Câu hỏi trắc nghiệm",
+            "Bộ đề tự luận Văn",
+            "Ngân hàng Reading",
+            "Câu hỏi Hóa học 8",
+            "Đề luyện tập Vật lý 9"
         ];
 
         function randomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -896,29 +904,35 @@
             const users = [];
             // 5 teachers
             FAKE_TEACHER_NAMES.forEach((name, i) => {
-                const email = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, ".") + "@gmail.com";
+                const emailBase = name.toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/\s+/g, ".")
+                    .replace(/[^a-z0-9.]/g, "");
                 users.push({
                     id: "fake_teacher_" + (i + 1),
                     name: name,
-                    email: email,
+                    email: emailBase + "@gmail.com",
                     role: "teacher",
                     blocked: false,
                     createdAt: makeFakeTimestamp(randomDate(120)),
                     isFake: true
                 });
             });
-            // 90 students
+            // 90 students với tên đa dạng
             for (let i = 0; i < 90; i++) {
-                const last = randomItem(FAKE_STUDENT_LAST);
-                const first = randomItem(FAKE_STUDENT_FIRST);
-                const name = last + " " + first;
-                const emailBase = (last + first).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") + randomInt(1, 99);
+                const name = FAKE_STUDENT_NAMES[i % FAKE_STUDENT_NAMES.length];
+                // thêm biến thể nhỏ để tránh trùng hoàn toàn
+                const displayName = i < FAKE_STUDENT_NAMES.length ? name : (name + " " + randomInt(1, 9));
+                const emailBase = displayName.toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/\s+/g, "")
+                    .replace(/[^a-z0-9]/g, "") + randomInt(10, 99);
                 users.push({
                     id: "fake_student_" + (i + 1),
-                    name: name,
+                    name: displayName,
                     email: emailBase + "@gmail.com",
                     role: "student",
-                    blocked: Math.random() < 0.04,
+                    blocked: Math.random() < 0.03,
                     createdAt: makeFakeTimestamp(randomDate(150)),
                     isFake: true
                 });
@@ -932,14 +946,14 @@
                 const teacher = randomItem(teachers);
                 const subject = randomItem(SUBJECTS);
                 const grade = randomItem(GRADES);
-                const qCount = randomInt(8, 25);
+                const qCount = randomInt(8, 20);
                 const questions = [];
                 for (let q = 0; q < qCount; q++) {
-                    if (Math.random() > 0.65) {
+                    if (Math.random() > 0.7) {
                         questions.push({
                             id: "q" + q,
                             type: "essay",
-                            question: "Câu hỏi tự luận số " + (q + 1) + " – Phân tích và trình bày ý kiến của em.",
+                            question: "Câu hỏi tự luận số " + (q + 1) + ". Em hãy trình bày và giải thích.",
                             points: randomInt(1, 3),
                             difficulty: randomItem(["easy", "medium", "hard"]),
                             correctAnswers: ["Đáp án mẫu"]
@@ -960,9 +974,10 @@
                         });
                     }
                 }
+                // Title chỉ giữ tên đề thuần, không gắn môn + lớp
                 exams.push({
                     id: "fake_exam_" + (i + 1),
-                    title: randomItem(EXAM_TITLES) + " – " + (subject === "toan" ? "Toán" : subject === "van" ? "Văn" : subject === "khtn" ? "KHTN" : "Anh") + " " + grade,
+                    title: randomItem(EXAM_TITLES),
                     code: "DE" + String(1000 + i),
                     teacherName: teacher.name,
                     teacherId: teacher.id,
@@ -981,7 +996,7 @@
             const banks = [];
             for (let i = 0; i < 14; i++) {
                 const teacher = randomItem(teachers);
-                const cnt = randomInt(12, 40);
+                const cnt = randomInt(12, 35);
                 const contents = [];
                 for (let c = 0; c < cnt; c++) {
                     if (Math.random() > 0.7) {
@@ -1028,7 +1043,7 @@
                 const maxScore = exam.questions ? exam.questions.reduce((s, q) => s + (q.points || 1), 0) : 10;
                 let totalScore = null;
                 if (status !== "pending") {
-                    totalScore = Math.round((randomInt(40, 100) / 100) * maxScore * 10) / 10;
+                    totalScore = Math.round((randomInt(45, 100) / 100) * maxScore * 10) / 10;
                 }
                 subs.push({
                     id: "fake_sub_" + (i + 1),
@@ -1050,33 +1065,6 @@
             return subs;
         }
 
-        function generateFakeSummaries(users) {
-            const summaries = [];
-            for (let i = 0; i < 65; i++) {
-                const user = randomItem(users);
-                const msgCount = randomInt(4, 18);
-                const messages = [];
-                for (let m = 0; m < msgCount; m++) {
-                    if (m % 2 === 0) {
-                        messages.push({ role: "user", content: "Em muốn hỏi về nội dung bài học số " + (m + 1) + " ạ." });
-                    } else {
-                        messages.push({ role: "ai", content: "Đây là phần tóm tắt và giải thích chi tiết cho câu hỏi của em. Nội dung chính gồm các ý quan trọng cần nhớ." });
-                    }
-                }
-                summaries.push({
-                    id: "fake_sum_" + (i + 1),
-                    title: randomItem(SUMMARY_TITLES),
-                    userId: user.id,
-                    subject: randomItem(SUBJECTS),
-                    grade: randomItem(GRADES),
-                    messages: messages,
-                    updatedAt: makeFakeTimestamp(randomDate(60)),
-                    isFake: true
-                });
-            }
-            return summaries;
-        }
-
         // Generate once
         const FAKE_USERS = generateFakeUsers();
         const FAKE_TEACHERS = FAKE_USERS.filter(u => u.role === "teacher");
@@ -1084,7 +1072,6 @@
         const FAKE_EXAMS = generateFakeExams(FAKE_TEACHERS);
         const FAKE_BANKS = generateFakeBanks(FAKE_TEACHERS);
         const FAKE_SUBS = generateFakeSubmissions(FAKE_STUDENTS, FAKE_EXAMS);
-        const FAKE_SUMMARIES = generateFakeSummaries(FAKE_USERS);
 
         // ===================== HELPERS =====================
         function showLoading(msg) {
@@ -1139,8 +1126,8 @@
         let allExams = [];
         let allBanks = [];
         let allSubs = [];
-        let allSummaries = [];
         let changeRoleUid = null;
+        let changePasswordUid = null;
         let userNameCache = {};
 
         auth.onAuthStateChanged(async (user) => {
@@ -1221,18 +1208,16 @@
                 else if (id === 'exams') loadExams();
                 else if (id === 'banks') loadBanks();
                 else if (id === 'submissions') loadSubmissions();
-                else if (id === 'summaries') loadSummaries();
             });
         });
 
         async function loadAllStats() {
             try {
-                const [usersSnap, examsSnap, banksSnap, subsSnap, sumSnap] = await Promise.all([
+                const [usersSnap, examsSnap, banksSnap, subsSnap] = await Promise.all([
                     db.collection('users').get(),
                     db.collection('exams').get(),
                     db.collection('questionBanks').get(),
-                    db.collection('exam_submissions').get(),
-                    db.collection('summary_histories').get()
+                    db.collection('exam_submissions').get()
                 ]);
                 let total = FAKE_USERS.length, teachers = FAKE_TEACHERS.length, students = FAKE_STUDENTS.length, admins = 0, blocked = FAKE_USERS.filter(u => u.blocked).length;
                 usersSnap.forEach(doc => {
@@ -1254,10 +1239,8 @@
                 document.getElementById('statExams').textContent = examsSnap.size + FAKE_EXAMS.length;
                 document.getElementById('statBanks').textContent = banksSnap.size + FAKE_BANKS.length;
                 document.getElementById('statSubs').textContent = subsSnap.size + FAKE_SUBS.length;
-                document.getElementById('statSummaries').textContent = sumSnap.size + FAKE_SUMMARIES.length;
             } catch (err) {
                 console.error(err);
-                // Fallback pure fake
                 document.getElementById('statUsers').textContent = FAKE_USERS.length + 1;
                 document.getElementById('statTeachers').textContent = FAKE_TEACHERS.length;
                 document.getElementById('statStudents').textContent = FAKE_STUDENTS.length;
@@ -1266,7 +1249,6 @@
                 document.getElementById('statExams').textContent = FAKE_EXAMS.length;
                 document.getElementById('statBanks').textContent = FAKE_BANKS.length;
                 document.getElementById('statSubs').textContent = FAKE_SUBS.length;
-                document.getElementById('statSummaries').textContent = FAKE_SUMMARIES.length;
             }
         }
 
@@ -1286,7 +1268,6 @@
                     allUsers.push({ id: doc.id, ...doc.data(), isFake: false });
                     userNameCache[doc.id] = doc.data().name || doc.data().email || doc.id;
                 });
-                // Merge fake users
                 allUsers = allUsers.concat(FAKE_USERS);
                 allUsers.sort((a, b) => {
                     const order = { admin: 0, teacher: 1, student: 2 };
@@ -1332,7 +1313,8 @@
                         <td>${statusBadge(!!u.blocked)}</td>
                         <td>${formatDate(u.createdAt)}</td>
                         <td class="actions">
-                            <button class="btn btn-sm btn-secondary" onclick="openChangeRole('${u.id}')"><i class="fas fa-user-cog"></i> Đổi vai trò</button>
+                            <button class="btn btn-sm btn-secondary" onclick="openChangeRole('${u.id}')"><i class="fas fa-user-cog"></i> Vai trò</button>
+                            <button class="btn btn-sm btn-secondary" onclick="openChangePassword('${u.id}')"><i class="fas fa-key"></i> Mật khẩu</button>
                             ${u.blocked
                                 ? `<button class="btn btn-sm btn-success" onclick="toggleBlock('${u.id}', false)"><i class="fas fa-unlock"></i> Mở chặn</button>`
                                 : `<button class="btn btn-sm btn-danger" onclick="toggleBlock('${u.id}', true)" ${isSelf ? 'disabled title="Không thể tự chặn mình"' : ''}><i class="fas fa-ban"></i> Chặn</button>`
@@ -1343,6 +1325,7 @@
             tbody.innerHTML = html;
         }
 
+        // Change Role
         window.openChangeRole = function(uid) {
             const u = allUsers.find(x => x.id === uid);
             if (!u) return;
@@ -1383,6 +1366,43 @@
             } finally {
                 hideLoading();
             }
+        });
+
+        // Change Password
+        window.openChangePassword = function(uid) {
+            const u = allUsers.find(x => x.id === uid);
+            if (!u) return;
+            changePasswordUid = uid;
+            document.getElementById('changePasswordUserName').textContent = u.name || u.email || uid;
+            document.getElementById('newPasswordInput').value = '';
+            document.getElementById('confirmPasswordInput').value = '';
+            document.getElementById('changePasswordModal').classList.add('active');
+        };
+        document.getElementById('closeChangePasswordModal').addEventListener('click', () => document.getElementById('changePasswordModal').classList.remove('active'));
+        document.getElementById('cancelChangePassword').addEventListener('click', () => document.getElementById('changePasswordModal').classList.remove('active'));
+        document.getElementById('btnConfirmChangePassword').addEventListener('click', async () => {
+            if (!changePasswordUid) return;
+            const newPass = document.getElementById('newPasswordInput').value.trim();
+            const confirmPass = document.getElementById('confirmPasswordInput').value.trim();
+            if (newPass.length < 6) {
+                showNotification('Mật khẩu phải có ít nhất 6 ký tự!', 'warning');
+                return;
+            }
+            if (newPass !== confirmPass) {
+                showNotification('Mật khẩu xác nhận không khớp!', 'warning');
+                return;
+            }
+            const u = allUsers.find(x => x.id === changePasswordUid);
+            if (u && u.isFake) {
+                // Demo only
+                showNotification('Đã đổi mật khẩu thành công (demo)!', 'success');
+                document.getElementById('changePasswordModal').classList.remove('active');
+                return;
+            }
+            // Real user – client-side Firebase không cho đổi mật khẩu người khác
+            // Hiển thị thông báo rõ ràng
+            showNotification('Với tài khoản thật, cần dùng Firebase Admin SDK (backend) để đổi mật khẩu. Tính năng demo chỉ áp dụng cho tài khoản ảo.', 'info');
+            document.getElementById('changePasswordModal').classList.remove('active');
         });
 
         window.toggleBlock = async function(uid, block) {
@@ -1818,124 +1838,6 @@
                 await db.collection('exam_submissions').doc(subId).delete();
                 showNotification('Đã xóa bài làm!', 'success');
                 loadSubmissions();
-                loadAllStats();
-            } catch (err) {
-                console.error(err);
-                showNotification('Lỗi: ' + err.message, 'error');
-            } finally {
-                hideLoading();
-            }
-        };
-
-        // ========== SUMMARIES ==========
-        document.getElementById('btnRefreshSummaries').addEventListener('click', loadSummaries);
-        document.getElementById('summarySearch').addEventListener('input', renderSummariesTable);
-
-        async function loadSummaries() {
-            const tbody = document.getElementById('summariesTableBody');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;">Đang tải...</td></tr>';
-            try {
-                const snap = await db.collection('summary_histories').get();
-                allSummaries = [];
-                snap.forEach(doc => allSummaries.push({ id: doc.id, ...doc.data(), isFake: false }));
-                allSummaries = allSummaries.concat(FAKE_SUMMARIES);
-                allSummaries.sort((a, b) => {
-                    const ta = a.updatedAt && a.updatedAt.toDate ? a.updatedAt.toDate().getTime() : 0;
-                    const tb = b.updatedAt && b.updatedAt.toDate ? b.updatedAt.toDate().getTime() : 0;
-                    return tb - ta;
-                });
-                renderSummariesTable();
-            } catch (err) {
-                console.error(err);
-                allSummaries = FAKE_SUMMARIES.slice();
-                renderSummariesTable();
-            }
-        }
-
-        function renderSummariesTable() {
-            const search = (document.getElementById('summarySearch').value || '').toLowerCase().trim();
-            let filtered = allSummaries;
-            if (search) {
-                filtered = allSummaries.filter(s => {
-                    const title = (s.title || '').toLowerCase();
-                    const subj = subjName(s.subject || '').toLowerCase();
-                    const userName = (userNameCache[s.userId] || '').toLowerCase();
-                    return title.includes(search) || subj.includes(search) || userName.includes(search);
-                });
-            }
-            const tbody = document.getElementById('summariesTableBody');
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="fas fa-comments"></i>Chưa có hội thoại tóm tắt nào</div></td></tr>';
-                return;
-            }
-            let html = '';
-            filtered.forEach(s => {
-                const msgCount = s.messages ? s.messages.length : 0;
-                const userName = userNameCache[s.userId] || s.userId || '—';
-                html += `
-                    <tr>
-                        <td><strong>${escapeHtml(s.title || 'Không tiêu đề')}</strong>${s.isFake ? ' <span style="color:#94a3b8;font-size:0.7rem;">• demo</span>' : ''}</td>
-                        <td>${escapeHtml(userName)}</td>
-                        <td>${subjName(s.subject)} – Lớp ${s.grade || '?'}</td>
-                        <td>${msgCount}</td>
-                        <td>${formatDate(s.updatedAt)}</td>
-                        <td class="actions">
-                            <button class="btn btn-sm btn-secondary" onclick="viewSummaryDetail('${s.id}')"><i class="fas fa-eye"></i> Xem</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteSummary('${s.id}')"><i class="fas fa-trash"></i> Xóa</button>
-                        </td>
-                    </tr>`;
-            });
-            tbody.innerHTML = html;
-        }
-
-        window.viewSummaryDetail = function(sumId) {
-            const s = allSummaries.find(x => x.id === sumId);
-            if (!s) { showNotification('Không tìm thấy hội thoại', 'error'); return; }
-            const userName = userNameCache[s.userId] || s.userId || '—';
-            document.getElementById('viewSummaryMeta').innerHTML = `
-                <strong>Tiêu đề:</strong> ${escapeHtml(s.title || 'Không tiêu đề')}<br>
-                <strong>Người dùng:</strong> ${escapeHtml(userName)}<br>
-                <strong>Môn / Khối:</strong> ${subjName(s.subject)} – Lớp ${s.grade || '?'}<br>
-                <strong>Cập nhật:</strong> ${formatDate(s.updatedAt)}
-            `;
-            const container = document.getElementById('viewSummaryContent');
-            const messages = s.messages || [];
-            if (messages.length === 0) {
-                container.innerHTML = '<div class="empty-state">Hội thoại trống</div>';
-            } else {
-                let html = '';
-                messages.forEach(msg => {
-                    const role = msg.role === 'user' ? 'user' : 'ai';
-                    const label = role === 'user' ? 'Học sinh' : 'AI';
-                    html += `
-                        <div style="margin-bottom:14px;">
-                            <div style="font-size:0.75rem;color:#9ca3af;margin-bottom:3px;">${label}</div>
-                            <div class="chat-bubble ${role}">${escapeHtml(msg.content)}</div>
-                        </div>`;
-                });
-                container.innerHTML = html;
-            }
-            document.getElementById('viewSummaryModal').classList.add('active');
-        };
-        document.getElementById('closeViewSummaryModal').addEventListener('click', () => document.getElementById('viewSummaryModal').classList.remove('active'));
-        document.getElementById('btnCloseViewSummary').addEventListener('click', () => document.getElementById('viewSummaryModal').classList.remove('active'));
-
-        window.deleteSummary = async function(sumId) {
-            const s = allSummaries.find(x => x.id === sumId);
-            if (s && s.isFake) {
-                if (!confirm('Xóa hội thoại demo này?')) return;
-                allSummaries = allSummaries.filter(x => x.id !== sumId);
-                showNotification('Đã xóa hội thoại demo!', 'success');
-                renderSummariesTable();
-                loadAllStats();
-                return;
-            }
-            if (!confirm('Xóa hội thoại tóm tắt này? Không thể hoàn tác!')) return;
-            showLoading('Đang xóa...');
-            try {
-                await db.collection('summary_histories').doc(sumId).delete();
-                showNotification('Đã xóa hội thoại!', 'success');
-                loadSummaries();
                 loadAllStats();
             } catch (err) {
                 console.error(err);
