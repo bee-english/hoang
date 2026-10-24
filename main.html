@@ -6,78 +6,56 @@
     <title>LOHA – Trang chính</title>
     <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/2922/2922561.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #FFA500;
-            --primary-dark: #e69500;
-            --gold: #FFD700;
-            --blue: #2196F3;
-            --purple: #7C4DFF;
-            --dark: #1a1a2e;
-            --text: #2d3436;
-            --text-light: #636e72;
-            --success: #4CAF50;
-            --danger: #f44336;
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --primary-light: #fbbf24;
+            --secondary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            --teal: #14b8a6;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-lg: 0 20px 50px rgba(0,0,0,0.12);
+            --glass: rgba(255,255,255,0.78);
+            --glass-border: rgba(255,255,255,0.4);
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 45%, #334155 100%);
             min-height: 100vh;
+            color: var(--gray-800);
             overflow-x: hidden;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 50%, #e0eafc 100%);
-            color: var(--text);
-            position: relative;
         }
-        /* Animated background shapes */
-        .bg-shapes {
+
+        /* Floating orbs */
+        .bg-orb {
             position: fixed;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        .shape {
-            position: absolute;
             border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.35;
-            animation: float 18s ease-in-out infinite;
+            filter: blur(90px);
+            opacity: 0.32;
+            pointer-events: none;
+            z-index: 0;
         }
-        .shape-1 {
-            width: 420px;
-            height: 420px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            top: -120px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-        .shape-2 {
-            width: 360px;
-            height: 360px;
-            background: linear-gradient(135deg, #36d1dc, #5b86e5);
-            bottom: -80px;
-            right: -80px;
-            animation-delay: -6s;
-        }
-        .shape-3 {
-            width: 280px;
-            height: 280px;
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            top: 40%;
-            left: 55%;
-            animation-delay: -12s;
-        }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -40px) scale(1.05); }
-            66% { transform: translate(-20px, 25px) scale(0.95); }
-        }
-        /* Main wrapper */
+        .orb-1 { width: 460px; height: 460px; background: #f59e0b; top: -160px; left: -120px; }
+        .orb-2 { width: 400px; height: 400px; background: #3b82f6; bottom: -120px; right: -100px; }
+        .orb-3 { width: 280px; height: 280px; background: #8b5cf6; top: 42%; left: 58%; }
+
         .page {
             position: relative;
             z-index: 1;
@@ -86,240 +64,95 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 48px 20px 40px;
         }
-        /* Logo + Brand */
+
+        /* Brand */
         .brand {
             text-align: center;
-            margin-bottom: 48px;
-            animation: fadeUp 0.8s ease-out both;
+            margin-bottom: 40px;
+            animation: fadeUp 0.7s ease-out both;
         }
         .brand-logo {
-            width: 88px;
-            height: 88px;
-            margin-bottom: 16px;
-            filter: drop-shadow(0 8px 20px rgba(255, 165, 0, 0.35));
-            animation: bounceSoft 3s ease-in-out infinite;
+            width: 84px;
+            height: 84px;
+            margin-bottom: 14px;
+            filter: drop-shadow(0 10px 24px rgba(245,158,11,0.4));
+            animation: bounceSoft 3.2s ease-in-out infinite;
         }
         @keyframes bounceSoft {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
         .brand h1 {
-            font-size: clamp(2.2rem, 5vw, 3rem);
+            font-size: clamp(2.3rem, 5vw, 3.1rem);
             font-weight: 800;
-            background: linear-gradient(135deg, #FFA500 0%, #FFD700 50%, #FF8C00 100%);
+            background: linear-gradient(135deg, #f59e0b, #fbbf24, #f97316);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.6px;
             margin-bottom: 8px;
         }
         .brand p {
             font-size: 1.05rem;
-            color: var(--text-light);
+            color: #94a3b8;
             font-weight: 500;
-            max-width: 420px;
+            max-width: 440px;
             margin: 0 auto;
-            line-height: 1.5;
+            line-height: 1.55;
         }
         .brand .badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
             margin-top: 14px;
-            background: rgba(255, 165, 0, 0.12);
-            color: #e69500;
-            font-size: 0.82rem;
+            background: rgba(245,158,11,0.15);
+            color: #fbbf24;
+            font-size: 0.84rem;
             font-weight: 600;
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: 50px;
-            border: 1px solid rgba(255, 165, 0, 0.25);
+            border: 1px solid rgba(245,158,11,0.3);
         }
-        /* Cards container */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 28px;
-            max-width: 1180px;
-            width: 100%;
-            animation: fadeUp 0.8s ease-out 0.2s both;
-        }
-        /* Individual card */
-        .card {
-            position: relative;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            border-radius: 24px;
-            padding: 40px 32px;
-            text-align: center;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 2px;
-            background: linear-gradient(135deg, transparent, transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.35s;
-        }
-        .card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
-        }
-        .card:hover::before {
-            opacity: 1;
-        }
-        .card-class::before {
-            background: linear-gradient(135deg, #FFA500, #FFD700);
-        }
-        .card-class:hover {
-            box-shadow: 0 20px 50px rgba(255, 165, 0, 0.25);
-        }
-        .card-summary::before {
-            background: linear-gradient(135deg, #2196F3, #7C4DFF);
-        }
-        .card-summary:hover {
-            box-shadow: 0 20px 50px rgba(33, 150, 243, 0.25);
-        }
-        .card-exam::before {
-            background: linear-gradient(135deg, #00b894, #00cec9);
-        }
-        .card-exam:hover {
-            box-shadow: 0 20px 50px rgba(0, 184, 148, 0.25);
-        }
-        .card-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-            margin: 0 auto 22px;
-            color: white;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            transition: transform 0.35s;
-        }
-        .card:hover .card-icon {
-            transform: scale(1.1) rotate(-4deg);
-        }
-        .card-class .card-icon {
-            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
-        }
-        .card-summary .card-icon {
-            background: linear-gradient(135deg, #2196F3 0%, #7C4DFF 100%);
-        }
-        .card-exam .card-icon {
-            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-        }
-        .card h2 {
-            font-size: 1.45rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        .card p {
-            font-size: 0.95rem;
-            color: var(--text-light);
-            line-height: 1.55;
-            margin-bottom: 22px;
-        }
-        .card-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            padding: 12px 24px;
-            border-radius: 50px;
-            color: white;
-            transition: all 0.25s;
-        }
-        .card-class .card-btn {
-            background: linear-gradient(135deg, #FFA500, #FFD700);
-        }
-        .card-summary .card-btn {
-            background: linear-gradient(135deg, #2196F3, #7C4DFF);
-        }
-        .card-exam .card-btn {
-            background: linear-gradient(135deg, #00b894, #00cec9);
-        }
-        .card:hover .card-btn {
-            transform: translateX(4px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-        }
-        /* Footer */
-        .footer {
-            margin-top: 56px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-light);
-            animation: fadeUp 0.8s ease-out 0.4s both;
-        }
-        .footer span {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        /* Animations */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* ========== AUTH STYLES ========== */
+
+        /* Auth */
         .auth-section {
             width: 100%;
-            max-width: 480px;
-            margin: 0 auto 40px;
-            animation: fadeUp 0.8s ease-out both;
+            max-width: 460px;
+            margin: 0 auto 36px;
+            animation: fadeUp 0.7s ease-out 0.1s both;
         }
         .auth-container {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 28px;
+            box-shadow: var(--shadow-lg);
             padding: 36px 32px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--glass-border);
         }
         .auth-container .logo-mini {
             text-align: center;
             margin-bottom: 22px;
         }
         .auth-container .logo-mini img {
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             margin-bottom: 8px;
         }
         .auth-container .logo-mini h2 {
-            font-size: 1.6rem;
+            font-size: 1.55rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         .auth-container .logo-mini p {
-            color: var(--text-light);
+            color: var(--gray-500);
             font-size: 0.9rem;
             margin-top: 4px;
         }
+
         .role-tabs {
             display: flex;
             gap: 10px;
@@ -329,25 +162,26 @@
             flex: 1;
             padding: 12px;
             text-align: center;
-            border: 2px solid #e0e0e0;
+            border: 1.5px solid var(--gray-200);
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.94rem;
             transition: all 0.25s;
             background: white;
-            color: #555;
+            color: var(--gray-500);
         }
         .role-tab:hover {
-            border-color: #FFA500;
-            color: #FFA500;
+            border-color: var(--primary);
+            color: var(--primary-dark);
         }
         .role-tab.active {
-            border-color: #FFA500;
-            background: rgba(255, 165, 0, 0.12);
-            color: #FFA500;
-            box-shadow: 0 4px 12px rgba(255, 165, 0, 0.15);
+            border-color: var(--primary);
+            background: rgba(245,158,11,0.1);
+            color: var(--primary-dark);
+            box-shadow: 0 4px 14px rgba(245,158,11,0.15);
         }
+
         .form-group {
             margin-bottom: 16px;
         }
@@ -355,28 +189,30 @@
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            color: #555;
+            color: var(--gray-600);
             font-size: 0.9rem;
         }
         .form-group input {
             width: 100%;
             padding: 13px 16px;
-            border: 2px solid #e0e0e0;
+            border: 1.5px solid var(--gray-200);
             border-radius: 12px;
             font-size: 0.98rem;
             font-family: inherit;
             transition: all 0.2s;
             background: white;
+            color: var(--gray-800);
         }
         .form-group input:focus {
-            border-color: #FFA500;
+            border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 4px rgba(255, 165, 0, 0.12);
+            box-shadow: 0 0 0 4px rgba(245,158,11,0.15);
         }
+
         .btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: white;
             border: none;
             border-radius: 12px;
@@ -393,43 +229,47 @@
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(255, 165, 0, 0.35);
+            box-shadow: 0 8px 22px rgba(245,158,11,0.35);
         }
         .btn:disabled {
-            opacity: 0.7;
+            opacity: 0.65;
             cursor: not-allowed;
             transform: none;
         }
         .btn-outline {
             background: transparent;
-            border: 2px solid #FFA500;
-            color: #FFA500;
+            border: 2px solid var(--primary);
+            color: var(--primary-dark);
             margin-top: 12px;
         }
         .btn-outline:hover {
-            background: rgba(255, 165, 0, 0.08);
+            background: rgba(245,158,11,0.08);
             box-shadow: none;
         }
+        .btn-sm {
+            padding: 9px 16px;
+            font-size: 0.88rem;
+            width: auto;
+            margin: 0;
+        }
         .btn-danger {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            background: linear-gradient(135deg, #f87171, #ef4444);
         }
-        .btn-danger:hover {
-            box-shadow: 0 6px 18px rgba(255, 65, 108, 0.35);
-        }
-        /* User bar after login */
+
+        /* User bar */
         .user-bar {
             display: none;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(16px);
+            gap: 14px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
             border-radius: 50px;
-            padding: 10px 20px 10px 12px;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 10px 18px 10px 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
             margin-bottom: 32px;
-            max-width: 520px;
+            max-width: 560px;
             width: 100%;
             animation: fadeUp 0.6s ease-out both;
         }
@@ -442,18 +282,18 @@
             gap: 12px;
         }
         .user-avatar {
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
             font-size: 1.15rem;
-            box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
-            border: 2px solid white;
+            box-shadow: 0 4px 14px rgba(245,158,11,0.35);
+            border: 3px solid white;
         }
         .user-details {
             line-height: 1.3;
@@ -461,22 +301,28 @@
         .user-details .user-name {
             font-weight: 700;
             font-size: 1rem;
-            color: var(--dark);
+            color: var(--gray-800);
         }
         .user-details .user-role {
             font-size: 0.8rem;
-            color: var(--text-light);
+            color: var(--gray-500);
             font-weight: 500;
         }
-        .user-details .user-role.teacher {
-            color: #e69500;
+        .user-details .user-role.teacher,
+        .user-details .user-role.admin {
+            color: #d97706;
         }
         .user-details .user-role.student {
-            color: #2196F3;
+            color: #3b82f6;
+        }
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .logout-btn {
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            padding: 9px 16px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
             border: none;
             border-radius: 50px;
@@ -491,9 +337,10 @@
         }
         .logout-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(255, 65, 108, 0.35);
+            box-shadow: 0 6px 16px rgba(239,68,68,0.35);
         }
-        /* Main content area (cards) – hidden until login */
+
+        /* Cards */
         #mainContent {
             display: none;
             width: 100%;
@@ -504,21 +351,215 @@
         #mainContent.show {
             display: flex;
         }
-        #authSection {
-            display: block;
-        }
         #authSection.hidden {
             display: none;
         }
-        /* Loading overlay */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 26px;
+            max-width: 1180px;
+            width: 100%;
+            animation: fadeUp 0.7s ease-out 0.15s both;
+        }
+        .card {
+            position: relative;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 36px 28px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 24px 50px rgba(0,0,0,0.18);
+        }
+        .card-icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.1rem;
+            margin: 0 auto 20px;
+            color: white;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+            transition: transform 0.35s;
+        }
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(-4deg);
+        }
+        .card-class .card-icon {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+        .card-exam .card-icon {
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+        }
+        .card-summary .card-icon {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--gray-900);
+        }
+        .card p {
+            font-size: 0.94rem;
+            color: var(--gray-500);
+            line-height: 1.55;
+            margin-bottom: 22px;
+        }
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.94rem;
+            padding: 11px 22px;
+            border-radius: 50px;
+            color: white;
+            transition: all 0.25s;
+        }
+        .card-class .card-btn {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+        .card-exam .card-btn {
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+        }
+        .card-summary .card-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+        .card:hover .card-btn {
+            transform: translateX(4px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 48px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            animation: fadeUp 0.7s ease-out 0.3s both;
+        }
+        .footer span {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .modal.active {
+            display: flex;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 88vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+            animation: modalContentIn 0.35s cubic-bezier(0.16,1,0.3,1);
+        }
+        @keyframes modalContentIn {
+            from { opacity: 0; transform: scale(0.94) translateY(16px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-header {
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #fef3c7;
+        }
+        .modal-header h3 {
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+        .modal-btn {
+            padding: 11px 20px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.92rem;
+            font-family: inherit;
+        }
+        .modal-btn.secondary {
+            background: var(--gray-500);
+        }
+        .close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            cursor: pointer;
+            color: var(--gray-500);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+        .close:hover {
+            background: var(--gray-200);
+            color: var(--gray-900);
+        }
+
+        /* Loading */
         #loading-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.82);
+            inset: 0;
+            background: rgba(15,23,42,0.85);
             z-index: 10000;
             justify-content: center;
             align-items: center;
@@ -531,86 +572,79 @@
         .spinner {
             width: 56px;
             height: 56px;
-            border: 4px solid rgba(255, 215, 0, 0.3);
+            border: 4px solid rgba(251,191,36,0.25);
             border-radius: 50%;
-            border-top-color: #FFD700;
-            animation: spin 0.8s linear infinite;
+            border-top-color: #fbbf24;
+            animation: spin 0.75s linear infinite;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         #loading-text {
             color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.05rem;
+            font-weight: 500;
         }
+
         /* Notification */
         .notification {
             position: fixed;
             top: 24px;
             right: 24px;
-            padding: 14px 22px;
+            padding: 15px 22px;
             border-radius: 14px;
             color: white;
-            font-weight: 700;
-            z-index: 2000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            z-index: 3000;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             gap: 10px;
             transform: translateX(150%);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
             max-width: 380px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
             font-size: 0.95rem;
         }
         .notification.show {
             transform: translateX(0);
         }
-        .notification.success {
-            background: linear-gradient(135deg, #00b09b, #96c93d);
-        }
-        .notification.info {
-            background: linear-gradient(135deg, #36d1dc, #5b86e5);
-        }
-        .notification.warning {
-            background: linear-gradient(135deg, #f46b45, #eea849);
-        }
-        .notification.error {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-        }
+        .notification.success { background: linear-gradient(135deg, #10b981, #059669); }
+        .notification.info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .notification.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .notification.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
         .loading-inline {
             display: inline-block;
             width: 18px;
             height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2.5px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.75s linear infinite;
         }
+
         /* Responsive */
         @media (max-width: 900px) {
             .cards {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                max-width: 780px;
+                max-width: 760px;
             }
         }
         @media (max-width: 680px) {
             .cards {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 18px;
                 max-width: 400px;
             }
             .card {
-                padding: 32px 24px;
+                padding: 28px 22px;
             }
             .brand {
                 margin-bottom: 28px;
             }
             .brand-logo {
-                width: 72px;
-                height: 72px;
+                width: 70px;
+                height: 70px;
             }
             .auth-container {
                 padding: 28px 22px;
@@ -624,18 +658,20 @@
             .user-info {
                 flex-direction: column;
             }
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="bg-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-    </div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
 
     <div class="page">
-        <!-- Brand (luôn hiện) -->
+        <!-- Brand -->
         <div class="brand">
             <img
                 class="brand-logo"
@@ -652,7 +688,7 @@
             </div>
         </div>
 
-        <!-- ========== AUTH SECTION (hiện khi chưa đăng nhập) ========== -->
+        <!-- AUTH SECTION -->
         <div id="authSection" class="auth-section">
             <div class="auth-container">
                 <div class="logo-mini">
@@ -660,7 +696,6 @@
                     <h2>Đăng nhập LOHA</h2>
                     <p>Một tài khoản dùng chung cho toàn bộ ứng dụng</p>
                 </div>
-
                 <div class="role-tabs">
                     <div class="role-tab active" data-role="student" id="tabStudent">
                         <i class="fas fa-user-graduate"></i> Học sinh
@@ -669,7 +704,6 @@
                         <i class="fas fa-chalkboard-teacher"></i> Giáo viên
                     </div>
                 </div>
-
                 <div id="loginForm">
                     <div class="form-group">
                         <label for="authEmail">Email</label>
@@ -693,7 +727,7 @@
             </div>
         </div>
 
-        <!-- ========== USER BAR (hiện sau khi đăng nhập) ========== -->
+        <!-- USER BAR -->
         <div class="user-bar" id="userBar">
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">?</div>
@@ -702,12 +736,17 @@
                     <div class="user-role" id="userRoleDisplay">—</div>
                 </div>
             </div>
-            <button class="logout-btn" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i> Đăng xuất
-            </button>
+            <div class="user-actions">
+                <button class="btn btn-sm btn-outline" id="btnChangePassword" style="border-radius:50px;">
+                    <i class="fas fa-key"></i> Đổi MK
+                </button>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
         </div>
 
-        <!-- ========== MAIN CONTENT (cards) – chỉ hiện sau đăng nhập ========== -->
+        <!-- MAIN CONTENT -->
         <div id="mainContent">
             <div class="cards">
                 <!-- Lớp học -->
@@ -729,7 +768,6 @@
                         <i class="fas fa-arrow-right"></i>
                     </span>
                 </a>
-
                 <!-- Tạo - Làm đề -->
                 <a
                     href="https://hmtuan002.github.io/hoang/de"
@@ -749,7 +787,6 @@
                         <i class="fas fa-arrow-right"></i>
                     </span>
                 </a>
-
                 <!-- Tóm tắt bài học -->
                 <a
                     href="https://hmtuan002.github.io/hoang/tomtat"
@@ -778,6 +815,34 @@
         </div>
     </div>
 
+    <!-- CHANGE PASSWORD MODAL -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="material-symbols-outlined close" id="closeChangePasswordModal">close</span>
+            <div class="modal-header">
+                <h3><i class="fas fa-key"></i> Đổi mật khẩu</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Mật khẩu hiện tại</label>
+                    <input type="password" id="currentPasswordInput" placeholder="Nhập mật khẩu hiện tại">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu mới</label>
+                    <input type="password" id="newPasswordInput" placeholder="Tối thiểu 6 ký tự">
+                </div>
+                <div class="form-group">
+                    <label>Xác nhận mật khẩu mới</label>
+                    <input type="password" id="confirmPasswordInput" placeholder="Nhập lại mật khẩu mới">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" id="cancelChangePassword">Hủy</button>
+                <button class="modal-btn" id="btnConfirmChangePassword">Đổi mật khẩu</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Loading overlay -->
     <div id="loading-overlay">
         <div class="spinner"></div>
@@ -794,7 +859,7 @@
 
     <script>
         // ============================================================
-        // FIREBASE CONFIG (GIỐNG HỆT TRANG LỚP HỌC – TÀI KHOẢN DÙNG CHUNG)
+        // FIREBASE CONFIG
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
@@ -847,7 +912,6 @@
                     if (profileDoc.exists) {
                         currentUserProfile = profileDoc.data();
                     } else {
-                        // Fallback nếu chưa có profile (trường hợp cũ)
                         currentUserProfile = {
                             name: user.email ? user.email.split('@')[0] : 'Người dùng',
                             role: 'student',
@@ -862,6 +926,14 @@
                         email: user.email || ''
                     };
                 }
+
+                // Kiểm tra blocked
+                if (currentUserProfile.blocked) {
+                    showNotification('Tài khoản của bạn đã bị chặn!', 'error');
+                    await auth.signOut();
+                    return;
+                }
+
                 showLoggedInUI();
             } else {
                 currentUser = null;
@@ -880,11 +952,21 @@
 
             const name = currentUserProfile?.name || 'Bạn';
             const role = currentUserProfile?.role || 'student';
-            const roleText = role === 'teacher' ? 'Giáo viên' : 'Học sinh';
+
+            // Admin được hiển thị như Giáo viên + Admin
+            let roleText = 'Học sinh';
+            let roleClass = 'student';
+            if (role === 'admin') {
+                roleText = 'Admin / Giáo viên';
+                roleClass = 'admin';
+            } else if (role === 'teacher') {
+                roleText = 'Giáo viên';
+                roleClass = 'teacher';
+            }
 
             document.getElementById('userNameDisplay').textContent = name;
             document.getElementById('userRoleDisplay').textContent = roleText;
-            document.getElementById('userRoleDisplay').className = 'user-role ' + role;
+            document.getElementById('userRoleDisplay').className = 'user-role ' + roleClass;
             document.getElementById('userAvatar').textContent = (name.charAt(0) || 'U').toUpperCase();
         }
 
@@ -939,7 +1021,6 @@
             const originalHtml = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-inline"></span> Đang xử lý...';
-
             showLoading(isRegisterMode ? 'Đang đăng ký...' : 'Đang đăng nhập...');
 
             try {
@@ -956,6 +1037,7 @@
                         name: name,
                         email: email,
                         role: selectedRole,
+                        blocked: false,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     showNotification('Đăng ký thành công! Chào mừng bạn đến với LOHA.', 'success');
@@ -963,7 +1045,6 @@
                     await auth.signInWithEmailAndPassword(email, password);
                     showNotification('Đăng nhập thành công!', 'success');
                 }
-                // onAuthStateChanged sẽ tự động cập nhật UI
             } catch (err) {
                 console.error(err);
                 let msg = 'Không thể đăng nhập/đăng ký';
@@ -987,19 +1068,67 @@
         });
 
         // Enter key support
-        document.getElementById('authPassword').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('loginBtn').click();
-            }
+        ['authPassword', 'authEmail', 'authName'].forEach(id => {
+            document.getElementById(id).addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById('loginBtn').click();
+                }
+            });
         });
-        document.getElementById('authEmail').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('loginBtn').click();
-            }
+
+        // ============================================================
+        // CHANGE PASSWORD (Người dùng tự đổi)
+        // ============================================================
+        document.getElementById('btnChangePassword').addEventListener('click', () => {
+            document.getElementById('currentPasswordInput').value = '';
+            document.getElementById('newPasswordInput').value = '';
+            document.getElementById('confirmPasswordInput').value = '';
+            document.getElementById('changePasswordModal').classList.add('active');
         });
-        document.getElementById('authName').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('loginBtn').click();
+        document.getElementById('closeChangePasswordModal').addEventListener('click', () => {
+            document.getElementById('changePasswordModal').classList.remove('active');
+        });
+        document.getElementById('cancelChangePassword').addEventListener('click', () => {
+            document.getElementById('changePasswordModal').classList.remove('active');
+        });
+        document.getElementById('btnConfirmChangePassword').addEventListener('click', async () => {
+            const currentPass = document.getElementById('currentPasswordInput').value;
+            const newPass = document.getElementById('newPasswordInput').value;
+            const confirmPass = document.getElementById('confirmPasswordInput').value;
+
+            if (!currentPass || !newPass || !confirmPass) {
+                showNotification('Vui lòng điền đầy đủ thông tin!', 'warning');
+                return;
+            }
+            if (newPass.length < 6) {
+                showNotification('Mật khẩu mới phải có ít nhất 6 ký tự!', 'warning');
+                return;
+            }
+            if (newPass !== confirmPass) {
+                showNotification('Mật khẩu xác nhận không khớp!', 'warning');
+                return;
+            }
+
+            showLoading('Đang đổi mật khẩu...');
+            try {
+                const credential = firebase.auth.EmailAuthProvider.credential(currentUser.email, currentPass);
+                await currentUser.reauthenticateWithCredential(credential);
+                await currentUser.updatePassword(newPass);
+                showNotification('Đổi mật khẩu thành công!', 'success');
+                document.getElementById('changePasswordModal').classList.remove('active');
+            } catch (err) {
+                console.error(err);
+                if (err.code === 'auth/wrong-password') {
+                    showNotification('Mật khẩu hiện tại không đúng!', 'error');
+                } else if (err.code === 'auth/too-many-requests') {
+                    showNotification('Quá nhiều lần thử. Vui lòng thử lại sau.', 'error');
+                } else if (err.code === 'auth/requires-recent-login') {
+                    showNotification('Vui lòng đăng xuất rồi đăng nhập lại trước khi đổi mật khẩu.', 'warning');
+                } else {
+                    showNotification('Lỗi: ' + err.message, 'error');
+                }
+            } finally {
+                hideLoading();
             }
         });
 
