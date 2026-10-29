@@ -477,6 +477,7 @@
         }
         .role-badge.student { background: #3b82f6; color: white; }
         .role-badge.teacher { background: #f59e0b; color: white; }
+        .role-badge.admin { background: #8b5cf6; color: white; }
         .waiting-overlay {
             position: absolute;
             top: 0;
@@ -1834,8 +1835,8 @@
             document.getElementById('roomPage').classList.add('hidden');
             const name = currentUserProfile?.name || 'Bạn';
             const role = currentUserProfile?.role || 'student';
-            document.getElementById('welcomeText').textContent = `Xin chào ${name} (${role === 'teacher' ? 'Giáo viên' : 'Học sinh'})`;
-            if (role === 'teacher') {
+            document.getElementById('welcomeText').textContent = `Xin chào ${name} (${(role === 'teacher' || role === 'admin') ? 'Giáo viên' : 'Học sinh'})`;
+            if ((role === 'teacher' || role === 'admin')) {
                 document.getElementById('teacherHomeSection').classList.remove('hidden');
             } else {
                 document.getElementById('teacherHomeSection').classList.add('hidden');
@@ -1850,7 +1851,7 @@
         document.getElementById('leaveRoomBtn').addEventListener('click', leaveRoom);
 
         function createRoom() {
-            if (!currentUser || currentUserProfile?.role !== 'teacher') {
+            if (!currentUser || (currentUserProfile?.role !== 'teacher' && currentUserProfile?.role !== 'admin')) {
                 showNotification('Chỉ giáo viên mới tạo được phòng', 'warning');
                 return;
             }
@@ -3349,8 +3350,8 @@ Chỉ trả về JSON, không thêm text.`;
         document.getElementById('bankCreateMcqBtn').addEventListener('click', () => openBankCreateModal('mcq'));
 
         function openBankManagerModal() {
-            if (currentUserProfile?.role !== 'teacher') {
-                showNotification('Chỉ giáo viên quản lý ngân hàng đề', 'warning');
+            if (currentUserProfile?.role !== 'teacher' && currentUserProfile?.role !== 'admin') {
+                showNotification('Chỉ giáo viên/admin quản lý ngân hàng đề', 'warning');
                 return;
             }
             document.getElementById('bankManagerModal').classList.add('active');
@@ -3365,7 +3366,7 @@ Chỉ trả về JSON, không thêm text.`;
         }
         function openAddBankModal() {
             if (!isTeacher) {
-                showNotification('Chỉ giáo viên mới thêm đề', 'warning');
+                showNotification('Chỉ giáo viên/admin mới thêm đề', 'warning');
                 return;
             }
             document.getElementById('addBankModal').classList.add('active');
