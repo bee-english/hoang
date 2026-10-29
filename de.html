@@ -813,7 +813,7 @@
             <div class="container wide">
                 <div class="logo-section">
                     <h1 style="font-size:1.7rem;">LOHA – Quản lý đề thi</h1>
-                    <p id="teacherWelcome">Xin chào giáo viên!</p>
+                    <p id="teacherWelcome">Xin chào giáo viên / admin!</p>
                 </div>
 
                 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
@@ -1200,7 +1200,7 @@
                         email: user.email || ''
                     };
                 }
-                if (currentUserProfile.role === 'teacher') {
+                if (currentUserProfile.role === 'teacher' || currentUserProfile.role === 'admin') {
                     showTeacherDashboard();
                 } else {
                     showStudentHome();
