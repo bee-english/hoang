@@ -37,48 +37,35 @@
             overflow-x: hidden;
         }
 
-        /* ========== HERO BANNER (ảnh lớn) ========== */
+        /* ========== HERO BANNER (tỉ lệ rộng - thấp) ========== */
         .hero {
             width: 100%;
             max-width: 1280px;
-            margin: 24px auto 0;
+            margin: 20px auto 0;
             padding: 0 16px;
         }
         .hero-banner {
             width: 100%;
-            border-radius: 24px;
+            border-radius: 18px;
             overflow: hidden;
             box-shadow: var(--shadow-lg);
             background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
-            position: relative;
-            min-height: 340px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            /* Tỉ lệ rất rộng, chiều cao thấp giống ảnh bạn gửi */
+            aspect-ratio: 4.8 / 1;
+            max-height: 260px;
         }
         .hero-banner img {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 100%;
             object-fit: cover;
-        }
-        /* Nếu ảnh chưa load được thì vẫn giữ khoảng trống đẹp */
-        .hero-placeholder {
-            width: 100%;
-            min-height: 340px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0369a1;
-            font-weight: 600;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            object-position: center;
+            display: block;
         }
 
-        /* ========== USER BAR (sau khi đăng nhập) ========== */
+        /* ========== USER BAR ========== */
         .user-bar-wrapper {
             max-width: 1280px;
-            margin: 20px auto 0;
+            margin: 18px auto 0;
             padding: 0 16px;
             display: none;
         }
@@ -176,7 +163,7 @@
         /* ========== AUTH SECTION ========== */
         .auth-section {
             max-width: 460px;
-            margin: 32px auto;
+            margin: 28px auto;
             padding: 0 16px;
         }
         .auth-container {
@@ -299,12 +286,12 @@
             box-shadow: none;
         }
 
-        /* ========== MAIN CONTENT (3 cards) ========== */
+        /* ========== MAIN CONTENT - 3 CARDS ========== */
         #mainContent {
             display: none;
             max-width: 1280px;
-            margin: 28px auto 0;
-            padding: 0 16px 40px;
+            margin: 24px auto 0;
+            padding: 0 16px 36px;
         }
         #mainContent.show {
             display: block;
@@ -312,19 +299,17 @@
         .cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 22px;
         }
         .card {
             background: white;
             border-radius: 20px;
-            padding: 28px 24px;
+            padding: 26px 22px;
             text-decoration: none;
             color: inherit;
             border: 1px solid var(--gray-200);
             box-shadow: var(--shadow);
             transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-            position: relative;
-            overflow: hidden;
         }
         .card:hover {
             transform: translateY(-8px);
@@ -334,16 +319,16 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         .card-icon {
-            width: 52px;
-            height: 52px;
+            width: 50px;
+            height: 50px;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: white;
             flex-shrink: 0;
         }
@@ -352,24 +337,24 @@
         .card-summary .card-icon { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
 
         .card h2 {
-            font-size: 1.25rem;
+            font-size: 1.22rem;
             font-weight: 700;
             color: var(--gray-900);
             margin: 0;
         }
         .card p {
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             color: var(--gray-500);
             line-height: 1.55;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         .card-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             font-weight: 600;
-            font-size: 0.92rem;
-            padding: 10px 20px;
+            font-size: 0.9rem;
+            padding: 9px 18px;
             border-radius: 50px;
             color: white;
             transition: all 0.25s;
@@ -385,7 +370,7 @@
         /* ========== FEATURES BOTTOM ========== */
         .features {
             max-width: 1280px;
-            margin: 0 auto 40px;
+            margin: 0 auto 36px;
             padding: 0 16px;
             display: none;
         }
@@ -394,39 +379,39 @@
         }
         .features-inner {
             background: white;
-            border-radius: 20px;
-            padding: 20px 16px;
+            border-radius: 18px;
+            padding: 18px 14px;
             box-shadow: var(--shadow);
             border: 1px solid var(--gray-200);
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 14px;
         }
         .feature-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             color: var(--gray-600);
             font-weight: 500;
         }
         .feature-item i {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: #eff6ff;
             color: #3b82f6;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         /* ========== FOOTER ========== */
         .footer {
             text-align: center;
-            padding: 24px 16px 32px;
+            padding: 20px 16px 28px;
             font-size: 0.85rem;
             color: var(--gray-500);
         }
@@ -596,7 +581,8 @@
                 margin: 0 auto;
             }
             .hero-banner {
-                min-height: 240px;
+                aspect-ratio: 3.2 / 1;
+                max-height: 200px;
             }
         }
         @media (max-width: 600px) {
@@ -612,33 +598,32 @@
             .features-inner {
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 20px;
+                padding: 18px;
             }
             .auth-container {
                 padding: 28px 20px;
+            }
+            .hero-banner {
+                aspect-ratio: 2.6 / 1;
+                max-height: 160px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ========== HERO BANNER (ảnh lớn - bạn thay link nếu cần) ========== -->
+    <!-- ========== HERO BANNER (tỉ lệ rộng - thấp) ========== -->
     <div class="hero">
         <div class="hero-banner">
-            <!-- Ảnh banner chính. Nếu link không hiện thì khoảng trống vẫn giữ nguyên -->
+            <!-- Thay link ảnh của bạn vào đây -->
             <img 
-                src="https://i.ibb.co/Q7BLngG1/banner-loha.png" 
+                src="https://cdn.vectorstock.com/i/preview-1x/45/74/design-concept-of-word-english-website-banner-vector-38484574.jpg" 
                 alt="LOHA - Nền tảng học tập trực tuyến"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
             >
-            <div class="hero-placeholder" style="display:none;">
-                <!-- Khoảng trống to để bạn dán link ảnh -->
-                <span>Banner LOHA (thay link ảnh tại đây)</span>
-            </div>
         </div>
     </div>
 
-    <!-- ========== USER BAR (hiện sau khi đăng nhập) ========== -->
+    <!-- ========== USER BAR ========== -->
     <div class="user-bar-wrapper" id="userBarWrapper">
         <div class="user-bar" id="userBar">
             <div class="user-info">
@@ -701,52 +686,31 @@
     <!-- ========== MAIN CONTENT - 3 CARDS ========== -->
     <div id="mainContent">
         <div class="cards">
-            <!-- Lớp học -->
             <a href="https://bee-english.github.io/hoang/index" class="card card-class" target="_blank" rel="noopener">
                 <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
+                    <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
                     <h2>LỚP HỌC</h2>
                 </div>
-                <p>
-                    Tạo phòng học online, ra đề trắc nghiệm &amp; tự luận, theo dõi học sinh làm bài theo thời gian thực.
-                </p>
-                <span class="card-btn">
-                    Vào lớp học <i class="fas fa-arrow-right"></i>
-                </span>
+                <p>Tạo phòng học online, ra đề trắc nghiệm &amp; tự luận, theo dõi học sinh làm bài theo thời gian thực.</p>
+                <span class="card-btn">Vào lớp học <i class="fas fa-arrow-right"></i></span>
             </a>
 
-            <!-- Tạo - Làm đề -->
             <a href="https://bee-english.github.io/hoang/de" class="card card-exam" target="_blank" rel="noopener">
                 <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-file-pen"></i>
-                    </div>
+                    <div class="card-icon"><i class="fas fa-file-pen"></i></div>
                     <h2>TẠO – LÀM ĐỀ</h2>
                 </div>
-                <p>
-                    Tạo đề kiểm tra và làm bài trực tuyến, hỗ trợ ôn tập kiến thức và đánh giá kết quả học tập.
-                </p>
-                <span class="card-btn">
-                    Tạo – làm đề ngay <i class="fas fa-arrow-right"></i>
-                </span>
+                <p>Tạo đề kiểm tra và làm bài trực tuyến, hỗ trợ ôn tập kiến thức và đánh giá kết quả học tập.</p>
+                <span class="card-btn">Tạo – làm đề ngay <i class="fas fa-arrow-right"></i></span>
             </a>
 
-            <!-- Tóm tắt bài học -->
             <a href="https://bee-english.github.io/hoang/tomtat" class="card card-summary" target="_blank" rel="noopener">
                 <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-book-open"></i>
-                    </div>
+                    <div class="card-icon"><i class="fas fa-book-open"></i></div>
                     <h2>TÓM TẮT BÀI HỌC</h2>
                 </div>
-                <p>
-                    AI tóm tắt kiến thức trọng tâm bất kỳ bài nào trong SGK Kết nối tri thức – nhanh, rõ, dễ nhớ.
-                </p>
-                <span class="card-btn">
-                    Tóm tắt ngay <i class="fas fa-arrow-right"></i>
-                </span>
+                <p>AI tóm tắt kiến thức trọng tâm bất kỳ bài nào trong SGK Kết nối tri thức – nhanh, rõ, dễ nhớ.</p>
+                <span class="card-btn">Tóm tắt ngay <i class="fas fa-arrow-right"></i></span>
             </a>
         </div>
     </div>
@@ -777,12 +741,11 @@
         </div>
     </div>
 
-    <!-- ========== FOOTER ========== -->
     <div class="footer">
         © 2026 <span>LOHA</span> · Học thông minh hơn mỗi ngày
     </div>
 
-    <!-- ========== CHANGE PASSWORD MODAL ========== -->
+    <!-- CHANGE PASSWORD MODAL -->
     <div id="changePasswordModal" class="modal">
         <div class="modal-content">
             <span class="material-symbols-outlined close" id="closeChangePasswordModal">close</span>
@@ -810,24 +773,16 @@
         </div>
     </div>
 
-    <!-- Loading overlay -->
     <div id="loading-overlay">
         <div class="spinner"></div>
         <div id="loading-text">Đang xử lý...</div>
     </div>
-
-    <!-- Notification -->
     <div class="notification" id="notification"></div>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
     <script>
-        // ============================================================
-        // FIREBASE CONFIG
-        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
             authDomain: "bee2-8be5c.firebaseapp.com",
@@ -842,17 +797,11 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // ============================================================
-        // GLOBAL STATE
-        // ============================================================
         let currentUser = null;
         let currentUserProfile = null;
         let isRegisterMode = false;
         let selectedRole = 'student';
 
-        // ============================================================
-        // HELPERS
-        // ============================================================
         function showLoading(msg) {
             document.getElementById('loading-text').textContent = msg || 'Đang xử lý...';
             document.getElementById('loading-overlay').classList.add('show');
@@ -868,25 +817,17 @@
             setTimeout(() => n.classList.remove('show'), 4000);
         }
 
-        // ============================================================
-        // AUTH STATE LISTENER
-        // ============================================================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 currentUser = user;
                 try {
                     const profileDoc = await db.collection('users').doc(user.uid).get();
-                    if (profileDoc.exists) {
-                        currentUserProfile = profileDoc.data();
-                    } else {
-                        currentUserProfile = {
-                            name: user.email ? user.email.split('@')[0] : 'Người dùng',
-                            role: 'student',
-                            email: user.email || ''
-                        };
-                    }
+                    currentUserProfile = profileDoc.exists ? profileDoc.data() : {
+                        name: user.email ? user.email.split('@')[0] : 'Người dùng',
+                        role: 'student',
+                        email: user.email || ''
+                    };
                 } catch (err) {
-                    console.error('Lỗi tải profile:', err);
                     currentUserProfile = {
                         name: user.email ? user.email.split('@')[0] : 'Người dùng',
                         role: 'student',
@@ -906,9 +847,6 @@
             }
         });
 
-        // ============================================================
-        // UI SWITCH
-        // ============================================================
         function showLoggedInUI() {
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('mainContent').classList.add('show');
@@ -917,15 +855,10 @@
 
             const name = currentUserProfile?.name || 'Bạn';
             const role = currentUserProfile?.role || 'student';
-            let roleText = 'Học sinh';
-            let roleClass = 'student';
-            if (role === 'admin') {
-                roleText = 'Admin / Giáo viên';
-                roleClass = 'admin';
-            } else if (role === 'teacher') {
-                roleText = 'Giáo viên';
-                roleClass = 'teacher';
-            }
+            let roleText = 'Học sinh', roleClass = 'student';
+            if (role === 'admin') { roleText = 'Admin / Giáo viên'; roleClass = 'admin'; }
+            else if (role === 'teacher') { roleText = 'Giáo viên'; roleClass = 'teacher'; }
+
             document.getElementById('userNameDisplay').textContent = name;
             document.getElementById('userRoleDisplay').textContent = roleText;
             document.getElementById('userRoleDisplay').className = 'user-role ' + roleClass;
@@ -938,9 +871,6 @@
             document.getElementById('featuresSection').classList.remove('show');
         }
 
-        // ============================================================
-        // ROLE TABS
-        // ============================================================
         document.getElementById('tabStudent').addEventListener('click', () => {
             selectedRole = 'student';
             document.getElementById('tabStudent').classList.add('active');
@@ -952,9 +882,6 @@
             document.getElementById('tabStudent').classList.remove('active');
         });
 
-        // ============================================================
-        // TOGGLE REGISTER / LOGIN MODE
-        // ============================================================
         document.getElementById('toggleRegisterBtn').addEventListener('click', () => {
             isRegisterMode = !isRegisterMode;
             document.getElementById('nameGroup').style.display = isRegisterMode ? 'block' : 'none';
@@ -966,9 +893,6 @@
                 : 'Chưa có tài khoản? Đăng ký';
         });
 
-        // ============================================================
-        // LOGIN / REGISTER
-        // ============================================================
         document.getElementById('loginBtn').addEventListener('click', async () => {
             const email = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value;
@@ -993,10 +917,7 @@
                     }
                     const cred = await auth.createUserWithEmailAndPassword(email, password);
                     await db.collection('users').doc(cred.user.uid).set({
-                        name: name,
-                        email: email,
-                        role: selectedRole,
-                        blocked: false,
+                        name, email, role: selectedRole, blocked: false,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     showNotification('Đăng ký thành công! Chào mừng bạn đến với LOHA.', 'success');
@@ -1005,19 +926,12 @@
                     showNotification('Đăng nhập thành công!', 'success');
                 }
             } catch (err) {
-                console.error(err);
                 let msg = 'Không thể đăng nhập/đăng ký';
-                if (err.code === 'auth/email-already-in-use') {
-                    msg = 'Email này đã được đăng ký. Hãy đăng nhập.';
-                } else if (err.code === 'auth/invalid-email') {
-                    msg = 'Email không hợp lệ.';
-                } else if (err.code === 'auth/weak-password') {
-                    msg = 'Mật khẩu quá yếu (tối thiểu 6 ký tự).';
-                } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-                    msg = 'Email hoặc mật khẩu không đúng.';
-                } else if (err.message) {
-                    msg = err.message;
-                }
+                if (err.code === 'auth/email-already-in-use') msg = 'Email này đã được đăng ký. Hãy đăng nhập.';
+                else if (err.code === 'auth/invalid-email') msg = 'Email không hợp lệ.';
+                else if (err.code === 'auth/weak-password') msg = 'Mật khẩu quá yếu (tối thiểu 6 ký tự).';
+                else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') msg = 'Email hoặc mật khẩu không đúng.';
+                else if (err.message) msg = err.message;
                 showNotification('Lỗi: ' + msg, 'error');
             } finally {
                 hideLoading();
@@ -1026,18 +940,12 @@
             }
         });
 
-        // Enter key support
         ['authPassword', 'authEmail', 'authName'].forEach(id => {
             document.getElementById(id).addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    document.getElementById('loginBtn').click();
-                }
+                if (e.key === 'Enter') document.getElementById('loginBtn').click();
             });
         });
 
-        // ============================================================
-        // CHANGE PASSWORD
-        // ============================================================
         document.getElementById('btnChangePassword').addEventListener('click', () => {
             document.getElementById('currentPasswordInput').value = '';
             document.getElementById('newPasswordInput').value = '';
@@ -1074,24 +982,15 @@
                 showNotification('Đổi mật khẩu thành công!', 'success');
                 document.getElementById('changePasswordModal').classList.remove('active');
             } catch (err) {
-                console.error(err);
-                if (err.code === 'auth/wrong-password') {
-                    showNotification('Mật khẩu hiện tại không đúng!', 'error');
-                } else if (err.code === 'auth/too-many-requests') {
-                    showNotification('Quá nhiều lần thử. Vui lòng thử lại sau.', 'error');
-                } else if (err.code === 'auth/requires-recent-login') {
-                    showNotification('Vui lòng đăng xuất rồi đăng nhập lại trước khi đổi mật khẩu.', 'warning');
-                } else {
-                    showNotification('Lỗi: ' + err.message, 'error');
-                }
+                if (err.code === 'auth/wrong-password') showNotification('Mật khẩu hiện tại không đúng!', 'error');
+                else if (err.code === 'auth/too-many-requests') showNotification('Quá nhiều lần thử. Vui lòng thử lại sau.', 'error');
+                else if (err.code === 'auth/requires-recent-login') showNotification('Vui lòng đăng xuất rồi đăng nhập lại trước khi đổi mật khẩu.', 'warning');
+                else showNotification('Lỗi: ' + err.message, 'error');
             } finally {
                 hideLoading();
             }
         });
 
-        // ============================================================
-        // LOGOUT
-        // ============================================================
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             showLoading('Đang đăng xuất...');
             try {
@@ -1108,7 +1007,6 @@
                 document.getElementById('tabStudent').classList.add('active');
                 document.getElementById('tabTeacher').classList.remove('active');
             } catch (err) {
-                console.error(err);
                 showNotification('Lỗi đăng xuất', 'error');
             } finally {
                 hideLoading();
