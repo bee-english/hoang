@@ -12,12 +12,9 @@
         :root {
             --primary: #f59e0b;
             --primary-dark: #d97706;
-            --primary-light: #fbbf24;
             --secondary: #3b82f6;
             --success: #10b981;
-            --danger: #ef4444;
             --purple: #8b5cf6;
-            --teal: #14b8a6;
             --gray-50: #f8fafc;
             --gray-100: #f1f5f9;
             --gray-200: #e2e8f0;
@@ -27,121 +24,179 @@
             --gray-600: #475569;
             --gray-700: #334155;
             --gray-800: #1e293b;
-            --gray-900: #0f172a;
             --radius: 16px;
             --shadow: 0 4px 20px rgba(0,0,0,0.06);
-            --shadow-lg: 0 20px 50px rgba(0,0,0,0.12);
-            --glass: rgba(255,255,255,0.78);
-            --glass-border: rgba(255,255,255,0.4);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(145deg, #0f172a 0%, #1e293b 45%, #334155 100%);
+            background: #f0f7ff;
             min-height: 100vh;
             color: var(--gray-800);
             overflow-x: hidden;
         }
 
-        /* Floating orbs */
-        .bg-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.32;
-            pointer-events: none;
-            z-index: 0;
+        /* ========== HERO BANNER (ảnh lớn) ========== */
+        .hero {
+            width: 100%;
+            max-width: 1280px;
+            margin: 24px auto 0;
+            padding: 0 16px;
         }
-        .orb-1 { width: 460px; height: 460px; background: #f59e0b; top: -160px; left: -120px; }
-        .orb-2 { width: 400px; height: 400px; background: #3b82f6; bottom: -120px; right: -100px; }
-        .orb-3 { width: 280px; height: 280px; background: #8b5cf6; top: 42%; left: 58%; }
-
-        .page {
+        .hero-banner {
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
             position: relative;
-            z-index: 1;
-            min-height: 100vh;
+            min-height: 340px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 48px 20px 40px;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+        /* Nếu ảnh chưa load được thì vẫn giữ khoảng trống đẹp */
+        .hero-placeholder {
+            width: 100%;
+            min-height: 340px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0369a1;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
         }
 
-        /* Brand */
-        .brand {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeUp 0.7s ease-out both;
+        /* ========== USER BAR (sau khi đăng nhập) ========== */
+        .user-bar-wrapper {
+            max-width: 1280px;
+            margin: 20px auto 0;
+            padding: 0 16px;
+            display: none;
         }
-        .brand-logo {
-            width: 84px;
-            height: 84px;
-            margin-bottom: 14px;
-            filter: drop-shadow(0 10px 24px rgba(245,158,11,0.4));
-            animation: bounceSoft 3.2s ease-in-out infinite;
+        .user-bar-wrapper.show {
+            display: block;
         }
-        @keyframes bounceSoft {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+        .user-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-radius: 16px;
+            padding: 12px 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
         }
-        .brand h1 {
-            font-size: clamp(2.3rem, 5vw, 3.1rem);
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 800;
-            background: linear-gradient(135deg, #f59e0b, #fbbf24, #f97316);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.6px;
-            margin-bottom: 8px;
+            font-size: 1.1rem;
+            border: 3px solid #fef3c7;
         }
-        .brand p {
-            font-size: 1.05rem;
-            color: #94a3b8;
+        .user-details .user-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--gray-800);
+        }
+        .user-details .user-role {
+            font-size: 0.82rem;
+            color: var(--gray-500);
             font-weight: 500;
-            max-width: 440px;
-            margin: 0 auto;
-            line-height: 1.55;
         }
-        .brand .badge {
+        .user-details .user-role.teacher,
+        .user-details .user-role.admin { color: #d97706; }
+        .user-details .user-role.student { color: #3b82f6; }
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-sm {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            margin-top: 14px;
-            background: rgba(245,158,11,0.15);
-            color: #fbbf24;
-            font-size: 0.84rem;
-            font-weight: 600;
-            padding: 7px 16px;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-outline {
+            background: white;
+            border: 1.5px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            background: #fffbeb;
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 8px 16px;
             border-radius: 50px;
-            border: 1px solid rgba(245,158,11,0.3);
+            font-weight: 600;
+            font-size: 0.88rem;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .logout-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(239,68,68,0.3);
         }
 
-        /* Auth */
+        /* ========== AUTH SECTION ========== */
         .auth-section {
-            width: 100%;
             max-width: 460px;
-            margin: 0 auto 36px;
-            animation: fadeUp 0.7s ease-out 0.1s both;
+            margin: 32px auto;
+            padding: 0 16px;
         }
         .auth-container {
-            background: var(--glass);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 28px;
+            background: white;
+            border-radius: 24px;
             box-shadow: var(--shadow-lg);
             padding: 36px 32px;
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--gray-200);
         }
         .auth-container .logo-mini {
             text-align: center;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
         }
         .auth-container .logo-mini img {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 8px;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 10px;
         }
         .auth-container .logo-mini h2 {
-            font-size: 1.55rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
@@ -152,7 +207,6 @@
             font-size: 0.9rem;
             margin-top: 4px;
         }
-
         .role-tabs {
             display: flex;
             gap: 10px;
@@ -181,7 +235,6 @@
             color: var(--primary-dark);
             box-shadow: 0 4px 14px rgba(245,158,11,0.15);
         }
-
         .form-group {
             margin-bottom: 16px;
         }
@@ -208,7 +261,6 @@
             outline: none;
             box-shadow: 0 0 0 4px rgba(245,158,11,0.15);
         }
-
         .btn {
             width: 100%;
             padding: 14px;
@@ -236,243 +288,164 @@
             cursor: not-allowed;
             transform: none;
         }
-        .btn-outline {
+        .btn-outline-auth {
             background: transparent;
             border: 2px solid var(--primary);
             color: var(--primary-dark);
             margin-top: 12px;
         }
-        .btn-outline:hover {
+        .btn-outline-auth:hover {
             background: rgba(245,158,11,0.08);
             box-shadow: none;
         }
-        .btn-sm {
-            padding: 9px 16px;
-            font-size: 0.88rem;
-            width: auto;
-            margin: 0;
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, #f87171, #ef4444);
-        }
 
-        /* User bar */
-        .user-bar {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-radius: 50px;
-            padding: 10px 18px 10px 12px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--glass-border);
-            margin-bottom: 32px;
-            max-width: 560px;
-            width: 100%;
-            animation: fadeUp 0.6s ease-out both;
-        }
-        .user-bar.show {
-            display: flex;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .user-avatar {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.15rem;
-            box-shadow: 0 4px 14px rgba(245,158,11,0.35);
-            border: 3px solid white;
-        }
-        .user-details {
-            line-height: 1.3;
-        }
-        .user-details .user-name {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--gray-800);
-        }
-        .user-details .user-role {
-            font-size: 0.8rem;
-            color: var(--gray-500);
-            font-weight: 500;
-        }
-        .user-details .user-role.teacher,
-        .user-details .user-role.admin {
-            color: #d97706;
-        }
-        .user-details .user-role.student {
-            color: #3b82f6;
-        }
-        .user-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .logout-btn {
-            padding: 9px 16px;
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.25s;
-            font-family: inherit;
-        }
-        .logout-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(239,68,68,0.35);
-        }
-
-        /* Cards */
+        /* ========== MAIN CONTENT (3 cards) ========== */
         #mainContent {
             display: none;
-            width: 100%;
-            max-width: 1180px;
-            flex-direction: column;
-            align-items: center;
+            max-width: 1280px;
+            margin: 28px auto 0;
+            padding: 0 16px 40px;
         }
         #mainContent.show {
-            display: flex;
+            display: block;
         }
-        #authSection.hidden {
-            display: none;
-        }
-
         .cards {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 26px;
-            max-width: 1180px;
-            width: 100%;
-            animation: fadeUp 0.7s ease-out 0.15s both;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
         .card {
-            position: relative;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 36px 28px;
-            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 28px 24px;
             text-decoration: none;
             color: inherit;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-lg);
-            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+            position: relative;
             overflow: hidden;
-            cursor: pointer;
         }
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 24px 50px rgba(0,0,0,0.18);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
         }
         .card-icon {
-            width: 76px;
-            height: 76px;
-            border-radius: 20px;
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.1rem;
-            margin: 0 auto 20px;
+            font-size: 1.5rem;
             color: white;
-            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-            transition: transform 0.35s;
+            flex-shrink: 0;
         }
-        .card:hover .card-icon {
-            transform: scale(1.1) rotate(-4deg);
-        }
-        .card-class .card-icon {
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-        }
-        .card-exam .card-icon {
-            background: linear-gradient(135deg, #10b981, #14b8a6);
-        }
-        .card-summary .card-icon {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-        }
+        .card-class .card-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+        .card-exam .card-icon { background: linear-gradient(135deg, #10b981, #14b8a6); }
+        .card-summary .card-icon { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+
         .card h2 {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 10px;
             color: var(--gray-900);
+            margin: 0;
         }
         .card p {
-            font-size: 0.94rem;
+            font-size: 0.92rem;
             color: var(--gray-500);
             line-height: 1.55;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
         .card-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             font-weight: 600;
-            font-size: 0.94rem;
-            padding: 11px 22px;
+            font-size: 0.92rem;
+            padding: 10px 20px;
             border-radius: 50px;
             color: white;
             transition: all 0.25s;
         }
-        .card-class .card-btn {
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-        }
-        .card-exam .card-btn {
-            background: linear-gradient(135deg, #10b981, #14b8a6);
-        }
-        .card-summary .card-btn {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-        }
+        .card-class .card-btn { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+        .card-exam .card-btn { background: linear-gradient(135deg, #10b981, #14b8a6); }
+        .card-summary .card-btn { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
         .card:hover .card-btn {
             transform: translateX(4px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
 
-        /* Footer */
+        /* ========== FEATURES BOTTOM ========== */
+        .features {
+            max-width: 1280px;
+            margin: 0 auto 40px;
+            padding: 0 16px;
+            display: none;
+        }
+        .features.show {
+            display: block;
+        }
+        .features-inner {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+        .feature-item i {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #eff6ff;
+            color: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        /* ========== FOOTER ========== */
         .footer {
-            margin-top: 48px;
             text-align: center;
+            padding: 24px 16px 32px;
             font-size: 0.85rem;
-            color: #94a3b8;
-            animation: fadeUp 0.7s ease-out 0.3s both;
+            color: var(--gray-500);
         }
         .footer span {
-            color: #fbbf24;
+            color: #f59e0b;
             font-weight: 600;
         }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(28px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Modal */
+        /* ========== MODAL ========== */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(15,23,42,0.7);
+            background: rgba(15,23,42,0.6);
             z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(6px);
         }
         .modal.active {
             display: flex;
@@ -491,12 +464,7 @@
             max-height: 88vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.25);
-            animation: modalContentIn 0.35s cubic-bezier(0.16,1,0.3,1);
-        }
-        @keyframes modalContentIn {
-            from { opacity: 0; transform: scale(0.94) translateY(16px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
         }
         .modal-header {
             margin-bottom: 18px;
@@ -554,12 +522,12 @@
             color: var(--gray-900);
         }
 
-        /* Loading */
+        /* ========== LOADING & NOTIFICATION ========== */
         #loading-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(15,23,42,0.85);
+            background: rgba(15,23,42,0.8);
             z-index: 10000;
             justify-content: center;
             align-items: center;
@@ -585,8 +553,6 @@
             font-size: 1.05rem;
             font-weight: 500;
         }
-
-        /* Notification */
         .notification {
             position: fixed;
             top: 24px;
@@ -612,7 +578,6 @@
         .notification.info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
         .notification.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .notification.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
-
         .loading-inline {
             display: inline-block;
             width: 18px;
@@ -623,111 +588,58 @@
             animation: spin 0.75s linear infinite;
         }
 
-        /* Responsive */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 900px) {
             .cards {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                max-width: 760px;
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                margin: 0 auto;
+            }
+            .hero-banner {
+                min-height: 240px;
             }
         }
-        @media (max-width: 680px) {
-            .cards {
-                grid-template-columns: 1fr;
-                gap: 18px;
-                max-width: 400px;
-            }
-            .card {
-                padding: 28px 22px;
-            }
-            .brand {
-                margin-bottom: 28px;
-            }
-            .brand-logo {
-                width: 70px;
-                height: 70px;
-            }
-            .auth-container {
-                padding: 28px 22px;
-            }
+        @media (max-width: 600px) {
             .user-bar {
                 flex-direction: column;
-                border-radius: 20px;
-                padding: 16px;
+                gap: 14px;
                 text-align: center;
-            }
-            .user-info {
-                flex-direction: column;
             }
             .user-actions {
                 width: 100%;
                 justify-content: center;
             }
+            .features-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+            .auth-container {
+                padding: 28px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-    <div class="bg-orb orb-3"></div>
 
-    <div class="page">
-        <!-- Brand -->
-        <div class="brand">
-            <img
-                class="brand-logo"
-                src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png"
-                alt="LOHA"
+    <!-- ========== HERO BANNER (ảnh lớn - bạn thay link nếu cần) ========== -->
+    <div class="hero">
+        <div class="hero-banner">
+            <!-- Ảnh banner chính. Nếu link không hiện thì khoảng trống vẫn giữ nguyên -->
+            <img 
+                src="https://i.ibb.co/Q7BLngG1/banner-loha.png" 
+                alt="LOHA - Nền tảng học tập trực tuyến"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
             >
-            <h1>LOHA</h1>
-            <p>
-                Nền tảng học tập trực tuyến dành cho học sinh &amp; giáo viên THCS – Kết nối tri thức
-            </p>
-            <div class="badge">
-                <i class="fas fa-graduation-cap"></i>
-                Toán · Văn · KHTN · Anh (Lớp 6 – 9)
+            <div class="hero-placeholder" style="display:none;">
+                <!-- Khoảng trống to để bạn dán link ảnh -->
+                <span>Banner LOHA (thay link ảnh tại đây)</span>
             </div>
         </div>
+    </div>
 
-        <!-- AUTH SECTION -->
-        <div id="authSection" class="auth-section">
-            <div class="auth-container">
-                <div class="logo-mini">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
-                    <h2>Đăng nhập LOHA</h2>
-                    <p>Một tài khoản dùng chung cho toàn bộ ứng dụng</p>
-                </div>
-                <div class="role-tabs">
-                    <div class="role-tab active" data-role="student" id="tabStudent">
-                        <i class="fas fa-user-graduate"></i> Học sinh
-                    </div>
-                    <div class="role-tab" data-role="teacher" id="tabTeacher">
-                        <i class="fas fa-chalkboard-teacher"></i> Giáo viên
-                    </div>
-                </div>
-                <div id="loginForm">
-                    <div class="form-group">
-                        <label for="authEmail">Email</label>
-                        <input type="email" id="authEmail" placeholder="Nhập email của bạn" autocomplete="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="authPassword">Mật khẩu</label>
-                        <input type="password" id="authPassword" placeholder="Nhập mật khẩu" autocomplete="current-password">
-                    </div>
-                    <div class="form-group" id="nameGroup" style="display: none;">
-                        <label for="authName">Họ và tên</label>
-                        <input type="text" id="authName" placeholder="Nhập họ tên hiển thị" autocomplete="name">
-                    </div>
-                    <button class="btn" id="loginBtn">
-                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
-                    </button>
-                    <button class="btn btn-outline" id="toggleRegisterBtn">
-                        Chưa có tài khoản? Đăng ký
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- USER BAR -->
+    <!-- ========== USER BAR (hiện sau khi đăng nhập) ========== -->
+    <div class="user-bar-wrapper" id="userBarWrapper">
         <div class="user-bar" id="userBar">
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">?</div>
@@ -737,85 +649,140 @@
                 </div>
             </div>
             <div class="user-actions">
-                <button class="btn btn-sm btn-outline" id="btnChangePassword" style="border-radius:50px;">
-                    <i class="fas fa-key"></i> Đổi MK
+                <button class="btn-sm btn-outline" id="btnChangePassword">
+                    <i class="fas fa-key"></i> Đổi mật khẩu
                 </button>
                 <button class="logout-btn" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i> Đăng xuất
                 </button>
             </div>
         </div>
+    </div>
 
-        <!-- MAIN CONTENT -->
-        <div id="mainContent">
-            <div class="cards">
-                <!-- Lớp học -->
-                <a
-                    href="https://bee-english.github.io/hoang/index"
-                    class="card card-class"
-                    target="_blank"
-                    rel="noopener"
-                >
+    <!-- ========== AUTH SECTION ========== -->
+    <div id="authSection" class="auth-section">
+        <div class="auth-container">
+            <div class="logo-mini">
+                <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
+                <h2>Đăng nhập LOHA</h2>
+                <p>Một tài khoản dùng chung cho toàn bộ ứng dụng</p>
+            </div>
+            <div class="role-tabs">
+                <div class="role-tab active" data-role="student" id="tabStudent">
+                    <i class="fas fa-user-graduate"></i> Học sinh
+                </div>
+                <div class="role-tab" data-role="teacher" id="tabTeacher">
+                    <i class="fas fa-chalkboard-teacher"></i> Giáo viên
+                </div>
+            </div>
+            <div id="loginForm">
+                <div class="form-group">
+                    <label for="authEmail">Email</label>
+                    <input type="email" id="authEmail" placeholder="Nhập email của bạn" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Mật khẩu</label>
+                    <input type="password" id="authPassword" placeholder="Nhập mật khẩu" autocomplete="current-password">
+                </div>
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label for="authName">Họ và tên</label>
+                    <input type="text" id="authName" placeholder="Nhập họ tên hiển thị" autocomplete="name">
+                </div>
+                <button class="btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
+                <button class="btn btn-outline-auth" id="toggleRegisterBtn">
+                    Chưa có tài khoản? Đăng ký
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MAIN CONTENT - 3 CARDS ========== -->
+    <div id="mainContent">
+        <div class="cards">
+            <!-- Lớp học -->
+            <a href="https://bee-english.github.io/hoang/index" class="card card-class" target="_blank" rel="noopener">
+                <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-chalkboard-teacher"></i>
                     </div>
                     <h2>LỚP HỌC</h2>
-                    <p>
-                        Tạo phòng học online, ra đề trắc nghiệm &amp; tự luận, theo dõi học sinh làm bài theo thời gian thực.
-                    </p>
-                    <span class="card-btn">
-                        Vào lớp học
-                        <i class="fas fa-arrow-right"></i>
-                    </span>
-                </a>
-                <!-- Tạo - Làm đề -->
-                <a
-                    href="https://bee-english.github.io/hoang/de"
-                    class="card card-exam"
-                    target="_blank"
-                    rel="noopener"
-                >
+                </div>
+                <p>
+                    Tạo phòng học online, ra đề trắc nghiệm &amp; tự luận, theo dõi học sinh làm bài theo thời gian thực.
+                </p>
+                <span class="card-btn">
+                    Vào lớp học <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+
+            <!-- Tạo - Làm đề -->
+            <a href="https://bee-english.github.io/hoang/de" class="card card-exam" target="_blank" rel="noopener">
+                <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-file-pen"></i>
                     </div>
-                    <h2>TẠO-LÀM ĐỀ</h2>
-                    <p>
-                        Tạo đề kiểm tra và làm bài trực tuyến, hỗ trợ ôn tập kiến thức và đánh giá kết quả học tập.
-                    </p>
-                    <span class="card-btn">
-                        Tạo - làm đề ngay
-                        <i class="fas fa-arrow-right"></i>
-                    </span>
-                </a>
-                <!-- Tóm tắt bài học -->
-                <a
-                    href="https://bee-english.github.io/hoang/tomtat"
-                    class="card card-summary"
-                    target="_blank"
-                    rel="noopener"
-                >
+                    <h2>TẠO – LÀM ĐỀ</h2>
+                </div>
+                <p>
+                    Tạo đề kiểm tra và làm bài trực tuyến, hỗ trợ ôn tập kiến thức và đánh giá kết quả học tập.
+                </p>
+                <span class="card-btn">
+                    Tạo – làm đề ngay <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
+
+            <!-- Tóm tắt bài học -->
+            <a href="https://bee-english.github.io/hoang/tomtat" class="card card-summary" target="_blank" rel="noopener">
+                <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-book-open"></i>
                     </div>
                     <h2>TÓM TẮT BÀI HỌC</h2>
-                    <p>
-                        AI tóm tắt kiến thức trọng tâm bất kỳ bài nào trong SGK Kết nối tri thức – nhanh, rõ, dễ nhớ.
-                    </p>
-                    <span class="card-btn">
-                        Tóm tắt ngay
-                        <i class="fas fa-arrow-right"></i>
-                    </span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            © 2026 <span>LOHA</span> · Học thông minh hơn mỗi ngày
+                </div>
+                <p>
+                    AI tóm tắt kiến thức trọng tâm bất kỳ bài nào trong SGK Kết nối tri thức – nhanh, rõ, dễ nhớ.
+                </p>
+                <span class="card-btn">
+                    Tóm tắt ngay <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
         </div>
     </div>
 
-    <!-- CHANGE PASSWORD MODAL -->
+    <!-- ========== FEATURES BOTTOM ========== -->
+    <div class="features" id="featuresSection">
+        <div class="features-inner">
+            <div class="feature-item">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Đa dạng môn học<br><small>Toán – Văn – KHTN – Anh</small></span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-users"></i>
+                <span>Phù hợp khối lớp<br><small>Lớp 6 – 7 – 8 – 9</small></span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-robot"></i>
+                <span>Ứng dụng AI hiện đại<br><small>Hỗ trợ tóm tắt &amp; tạo đề</small></span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-cloud"></i>
+                <span>Học mọi lúc, mọi nơi<br><small>Trên mọi thiết bị</small></span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>An toàn – Bảo mật<br><small>Dữ liệu được bảo vệ</small></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <div class="footer">
+        © 2026 <span>LOHA</span> · Học thông minh hơn mỗi ngày
+    </div>
+
+    <!-- ========== CHANGE PASSWORD MODAL ========== -->
     <div id="changePasswordModal" class="modal">
         <div class="modal-content">
             <span class="material-symbols-outlined close" id="closeChangePasswordModal">close</span>
@@ -926,14 +893,11 @@
                         email: user.email || ''
                     };
                 }
-
-                // Kiểm tra blocked
                 if (currentUserProfile.blocked) {
                     showNotification('Tài khoản của bạn đã bị chặn!', 'error');
                     await auth.signOut();
                     return;
                 }
-
                 showLoggedInUI();
             } else {
                 currentUser = null;
@@ -946,14 +910,13 @@
         // UI SWITCH
         // ============================================================
         function showLoggedInUI() {
-            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('authSection').style.display = 'none';
             document.getElementById('mainContent').classList.add('show');
-            document.getElementById('userBar').classList.add('show');
+            document.getElementById('userBarWrapper').classList.add('show');
+            document.getElementById('featuresSection').classList.add('show');
 
             const name = currentUserProfile?.name || 'Bạn';
             const role = currentUserProfile?.role || 'student';
-
-            // Admin được hiển thị như Giáo viên + Admin
             let roleText = 'Học sinh';
             let roleClass = 'student';
             if (role === 'admin') {
@@ -963,17 +926,16 @@
                 roleText = 'Giáo viên';
                 roleClass = 'teacher';
             }
-
             document.getElementById('userNameDisplay').textContent = name;
             document.getElementById('userRoleDisplay').textContent = roleText;
             document.getElementById('userRoleDisplay').className = 'user-role ' + roleClass;
             document.getElementById('userAvatar').textContent = (name.charAt(0) || 'U').toUpperCase();
         }
-
         function showLoggedOutUI() {
-            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('authSection').style.display = 'block';
             document.getElementById('mainContent').classList.remove('show');
-            document.getElementById('userBar').classList.remove('show');
+            document.getElementById('userBarWrapper').classList.remove('show');
+            document.getElementById('featuresSection').classList.remove('show');
         }
 
         // ============================================================
@@ -1011,18 +973,15 @@
             const email = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value;
             const name = document.getElementById('authName').value.trim();
-
             if (!email || !password) {
                 showNotification('Vui lòng nhập email và mật khẩu', 'warning');
                 return;
             }
-
             const btn = document.getElementById('loginBtn');
             const originalHtml = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-inline"></span> Đang xử lý...';
             showLoading(isRegisterMode ? 'Đang đăng ký...' : 'Đang đăng nhập...');
-
             try {
                 if (isRegisterMode) {
                     if (!name) {
@@ -1077,7 +1036,7 @@
         });
 
         // ============================================================
-        // CHANGE PASSWORD (Người dùng tự đổi)
+        // CHANGE PASSWORD
         // ============================================================
         document.getElementById('btnChangePassword').addEventListener('click', () => {
             document.getElementById('currentPasswordInput').value = '';
@@ -1095,7 +1054,6 @@
             const currentPass = document.getElementById('currentPasswordInput').value;
             const newPass = document.getElementById('newPasswordInput').value;
             const confirmPass = document.getElementById('confirmPasswordInput').value;
-
             if (!currentPass || !newPass || !confirmPass) {
                 showNotification('Vui lòng điền đầy đủ thông tin!', 'warning');
                 return;
@@ -1108,7 +1066,6 @@
                 showNotification('Mật khẩu xác nhận không khớp!', 'warning');
                 return;
             }
-
             showLoading('Đang đổi mật khẩu...');
             try {
                 const credential = firebase.auth.EmailAuthProvider.credential(currentUser.email, currentPass);
@@ -1140,7 +1097,6 @@
             try {
                 await auth.signOut();
                 showNotification('Đã đăng xuất', 'info');
-                // Reset form
                 document.getElementById('authEmail').value = '';
                 document.getElementById('authPassword').value = '';
                 document.getElementById('authName').value = '';
