@@ -1659,6 +1659,7 @@
 
         <div id="addBankModal" class="modal">
             <div class="modal-content" style="max-width:820px;">
+                <div class="modal-content" style="max-width:820px;">
                 <span class="material-symbols-outlined close" id="closeAddBankModal">close</span>
                 <div class="modal-header"><h3><i class="fas fa-plus-circle"></i> Thêm đề từ ngân hàng vào phòng</h3></div>
                 <div class="modal-body">
@@ -1738,13 +1739,15 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // WEBRTC CONFIG + STATE
+        // WEBRTC CONFIG + STATE (ĐÃ SỬA LỖI NẶNG)
         // ============================================================
         const ICE_SERVERS = {
             iceServers: [
                 { urls: 'stun:stun.l.google.com:19302' },
                 { urls: 'stun:stun1.l.google.com:19302' },
-                { urls: 'stun:stun2.l.google.com:19302' }
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' }
             ]
         };
 
@@ -2041,10 +2044,11 @@
         }
 
         // ============================================================
-        // WEBRTC VOICE + VIDEO
+        // WEBRTC VOICE + VIDEO (ĐÃ VIẾT LẠI HOÀN TOÀN - SỬA LỖI NẶNG)
         // ============================================================
         async function joinWebRTC(channelName) {
             try {
+                // Xin quyền mic + cam
                 localStream = await navigator.mediaDevices.getUserMedia({
                     audio: {
                         echoCancellation: true,
@@ -2058,6 +2062,7 @@
                     }
                 });
 
+                // Tắt mặc định
                 localStream.getAudioTracks().forEach(track => { track.enabled = false; });
                 localStream.getVideoTracks().forEach(track => { track.enabled = false; });
                 isMicMuted = true;
@@ -2071,8 +2076,10 @@
                 document.getElementById('toggleCamBtn').disabled = false;
                 showNotification("Đã kết nối mic & cam thành công! Nhấn nút để bật", "success");
 
+                // Lắng nghe signal
                 startSignalListener(channelName);
 
+                // Tạo peer connection với những người đang có trong phòng
                 const participantsSnap = await db.collection('rooms').doc(channelName).collection('participants').get();
                 participantsSnap.forEach(doc => {
                     const remoteUid = doc.id;
@@ -2108,6 +2115,7 @@
                         const fromUid = data.from;
                         const type = data.type;
 
+                        // Xóa signal ngay sau khi nhận
                         try { await change.doc.ref.delete(); } catch(e) {}
 
                         if (!peerConnections[fromUid]) {
@@ -2131,7 +2139,9 @@
                                 await sendSignal(roomId, fromUid, 'answer', pc.localDescription);
                             }
                             else if (type === 'answer') {
-                                await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
+                                if (pc.signalingState === 'have-local-offer') {
+                                    await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));
+                                }
                             }
                             else if (type === 'ice') {
                                 if (data.candidate) {
@@ -2161,31 +2171,39 @@
             const pc = new RTCPeerConnection(ICE_SERVERS);
             peerConnections[remoteUid] = pc;
 
+            // Thêm local tracks
             if (localStream) {
                 localStream.getTracks().forEach(track => {
                     pc.addTrack(track, localStream);
                 });
             }
 
+            // ========== SỬA LỖI NẶNG NHẤT: tích lũy track vào cùng MediaStream ==========
             pc.ontrack = (event) => {
                 console.log('Nhận track từ', remoteUid, event.track.kind);
-                const stream = event.streams[0];
-                if (!stream) return;
 
-                remoteStreams[remoteUid] = stream;
+                let stream = remoteStreams[remoteUid];
+                if (!stream) {
+                    stream = new MediaStream();
+                    remoteStreams[remoteUid] = stream;
+                }
+
+                // Chỉ add nếu chưa có
+                if (!stream.getTracks().find(t => t.id === event.track.id)) {
+                    stream.addTrack(event.track);
+                }
 
                 const videoEl = document.getElementById(`video-${remoteUid}`);
                 if (videoEl) {
-                    videoEl.srcObject = stream;
-                    videoEl.play().catch(e => console.warn('Autoplay blocked', e));
+                    if (videoEl.srcObject !== stream) {
+                        videoEl.srcObject = stream;
+                    }
+                    videoEl.play().catch(e => console.warn('Autoplay blocked for remote', e));
                 }
 
-                event.track.onmute = () => {
-                    updateParticipantMediaIndicators(remoteUid);
-                };
-                event.track.onunmute = () => {
-                    updateParticipantMediaIndicators(remoteUid);
-                };
+                event.track.onmute = () => updateParticipantMediaIndicators(remoteUid);
+                event.track.onunmute = () => updateParticipantMediaIndicators(remoteUid);
+                event.track.onended = () => updateParticipantMediaIndicators(remoteUid);
 
                 updateParticipantMediaIndicators(remoteUid);
             };
@@ -2198,6 +2216,20 @@
 
             pc.onconnectionstatechange = () => {
                 console.log('Connection state with', remoteUid, ':', pc.connectionState);
+                if (pc.connectionState === 'failed') {
+                    console.warn('Connection failed with', remoteUid, '- attempting ICE restart');
+                    try {
+                        if (typeof pc.restartIce === 'function') {
+                            pc.restartIce();
+                        }
+                    } catch (e) {
+                        console.warn('restartIce error', e);
+                    }
+                }
+            };
+
+            pc.oniceconnectionstatechange = () => {
+                console.log('ICE state with', remoteUid, ':', pc.iceConnectionState);
             };
 
             if (isInitiator) {
@@ -2239,7 +2271,9 @@
             try {
                 Object.keys(peerConnections).forEach(uid => {
                     const pc = peerConnections[uid];
-                    if (pc) pc.close();
+                    if (pc) {
+                        try { pc.close(); } catch(e) {}
+                    }
                 });
                 peerConnections = {};
                 makingOffer = {};
@@ -2248,7 +2282,9 @@
                 remoteStreams = {};
 
                 if (localStream) {
-                    localStream.getTracks().forEach(track => track.stop());
+                    localStream.getTracks().forEach(track => {
+                        try { track.stop(); } catch(e) {}
+                    });
                     localStream = null;
                 }
 
@@ -2401,15 +2437,17 @@
 
                     if (audioTracks.length > 0) {
                         const t = audioTracks[0];
-                        micMuted = !t.enabled || t.muted;
+                        micMuted = !t.enabled || t.muted || t.readyState === 'ended';
                     }
                     if (videoTracks.length > 0) {
                         const t = videoTracks[0];
-                        camOff = !t.enabled || t.muted;
+                        camOff = !t.enabled || t.muted || t.readyState === 'ended';
                     }
 
-                    if (videoEl && videoEl.srcObject !== stream) {
-                        videoEl.srcObject = stream;
+                    if (videoEl) {
+                        if (videoEl.srcObject !== stream) {
+                            videoEl.srcObject = stream;
+                        }
                         videoEl.play().catch(() => {});
                     }
                 }
@@ -2499,11 +2537,14 @@
                         });
                     }
 
+                    // Đóng connection của người đã rời
                     Object.keys(peerConnections).forEach(uid => {
                         if (!currentRemoteUids.has(uid)) {
                             console.log('Peer left, closing connection:', uid);
                             const pc = peerConnections[uid];
-                            if (pc) pc.close();
+                            if (pc) {
+                                try { pc.close(); } catch(e) {}
+                            }
                             delete peerConnections[uid];
                             delete makingOffer[uid];
                             delete ignoreOffer[uid];
