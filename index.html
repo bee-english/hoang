@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LOHA - Lớp học Online THCS (Kết nối tri thức)</title>
     <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -400,16 +400,19 @@
             border-radius: 14px;
             background: #0f172a;
             z-index: 2;
-            /* Quan trọng cho mobile: không fullscreen khi tap */
+            /* Quan trọng cho mobile: không fullscreen khi tap, playsinline bắt buộc */
             -webkit-playsinline: true;
             playsinline: true;
+            /* Ngăn fullscreen trên iOS */
+            max-width: 100%;
+            max-height: 100%;
         }
         .participant-avatar .avatar-letter {
             z-index: 1;
             text-shadow: 0 2px 8px rgba(0,0,0,0.3);
             position: relative;
         }
-        /* SỬA LỖI 2: Ẩn chữ cái khi cam bật */
+        /* Ẩn chữ cái khi cam bật */
         .participant-avatar.video-on .avatar-letter {
             display: none !important;
         }
@@ -1744,7 +1747,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // WEBRTC CONFIG + STATE (ĐÃ SỬA LỖI NẶNG TRÊN MOBILE)
+        // WEBRTC CONFIG + STATE (ĐÃ SỬA LỖI NẶNG TRÊN MOBILE + INDICATOR)
         // ============================================================
         const ICE_SERVERS = {
             iceServers: [
@@ -2050,14 +2053,44 @@
         }
 
         // ============================================================
-        // WEBRTC VOICE + VIDEO (ĐÃ VIẾT LẠI HOÀN TOÀN - SỬA LỖI NẶNG TRÊN MOBILE)
+        // WEBRTC VOICE + VIDEO (ĐÃ VIẾT LẠI HOÀN TOÀN - SỬA LỖI NẶNG)
         // ============================================================
         // Hàm quan trọng: ép tất cả video play sau user gesture (giống Google Meet)
+        // Không bao giờ để video fullscreen trên mobile
         function resumeAllVideos() {
             hasUserGesture = true;
             document.querySelectorAll('video').forEach(v => {
+                // Ép playsinline mọi lúc
+                v.setAttribute('playsinline', '');
+                v.setAttribute('webkit-playsinline', '');
+                v.playsInline = true;
+                v.controls = false;
+                // Ngăn fullscreen
+                v.setAttribute('x-webkit-airplay', 'deny');
                 if (v.srcObject && v.paused) {
-                    v.play().catch(e => console.warn('resume play blocked', e));
+                    const p = v.play();
+                    if (p && typeof p.catch === 'function') {
+                        p.catch(e => console.warn('resume play blocked', e));
+                    }
+                }
+            });
+        }
+
+        // Ngăn video bị fullscreen trên mobile khi user tap
+        function preventVideoFullscreen(videoEl) {
+            if (!videoEl) return;
+            videoEl.setAttribute('playsinline', '');
+            videoEl.setAttribute('webkit-playsinline', '');
+            videoEl.playsInline = true;
+            videoEl.controls = false;
+            // Chặn requestFullscreen nếu có
+            videoEl.addEventListener('webkitbeginfullscreen', (e) => {
+                e.preventDefault();
+                if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            }, true);
+            videoEl.addEventListener('fullscreenchange', () => {
+                if (document.fullscreenElement === videoEl) {
+                    document.exitFullscreen().catch(() => {});
                 }
             });
         }
@@ -2106,6 +2139,15 @@
 
                 // Sau khi getUserMedia thành công coi như đã có user gesture
                 setTimeout(resumeAllVideos, 300);
+
+                // Thêm gesture listener toàn cục (giống Meet) để play video remote khi user tương tác bất kỳ
+                const unlock = () => {
+                    resumeAllVideos();
+                    document.removeEventListener('click', unlock);
+                    document.removeEventListener('touchstart', unlock);
+                };
+                document.addEventListener('click', unlock, { once: true });
+                document.addEventListener('touchstart', unlock, { once: true });
 
             } catch (err) {
                 console.error("WebRTC join error:", err);
@@ -2214,6 +2256,7 @@
 
                 const videoEl = document.getElementById(`video-${remoteUid}`);
                 if (videoEl) {
+                    preventVideoFullscreen(videoEl);
                     if (videoEl.srcObject !== stream) {
                         videoEl.srcObject = stream;
                     }
@@ -2221,15 +2264,26 @@
                     videoEl.play().catch(e => console.warn('Autoplay blocked for remote', e));
                 }
 
-                event.track.onmute = () => updateParticipantMediaIndicators(remoteUid);
+                // Quan trọng: khi track mute/unmute (do sender bật/tắt enabled) thì update icon
+                event.track.onmute = () => {
+                    console.log('Track muted from', remoteUid, event.track.kind);
+                    updateParticipantMediaIndicators(remoteUid);
+                };
                 event.track.onunmute = () => {
+                    console.log('Track unmuted from', remoteUid, event.track.kind);
                     updateParticipantMediaIndicators(remoteUid);
                     // Khi unmute cố play lại
                     const v = document.getElementById(`video-${remoteUid}`);
-                    if (v) v.play().catch(()=>{});
+                    if (v) {
+                        preventVideoFullscreen(v);
+                        v.play().catch(()=>{});
+                    }
                 };
-                event.track.onended = () => updateParticipantMediaIndicators(remoteUid);
+                event.track.onended = () => {
+                    updateParticipantMediaIndicators(remoteUid);
+                };
 
+                // Gọi ngay để set icon đúng trạng thái ban đầu
                 updateParticipantMediaIndicators(remoteUid);
                 
                 // Nếu đã có user gesture thì ép play tất cả
@@ -2442,6 +2496,9 @@
             }
         }
 
+        // ========== SỬA LỖI CHÍNH: Indicator đúng cho cả local + remote ==========
+        // Remote track: dùng .muted (vì sender set enabled=false → receiver thấy muted=true)
+        // Local track: dùng biến isMicMuted / isCamOff
         function updateParticipantMediaIndicators(uid) {
             const avatar = document.getElementById(`avatar-${uid}`);
             if (!avatar) return;
@@ -2455,19 +2512,22 @@
             let camOff = true;
 
             if (uid === currentUser.uid) {
+                // LOCAL
                 micMuted = isMicMuted;
                 camOff = isCamOff;
 
                 if (videoEl) {
+                    preventVideoFullscreen(videoEl);
                     if (!camOff && localStream) {
                         if (videoEl.srcObject !== localStream) {
                             videoEl.srcObject = localStream;
-                            videoEl.muted = true;
+                            videoEl.muted = true; // local luôn mute để không echo
                         }
                         videoEl.play().catch(() => {});
                     }
                 }
             } else {
+                // REMOTE
                 const stream = remoteStreams[uid];
                 if (stream) {
                     const audioTracks = stream.getAudioTracks();
@@ -2475,23 +2535,27 @@
 
                     if (audioTracks.length > 0) {
                         const t = audioTracks[0];
-                        micMuted = !t.enabled || t.muted || t.readyState === 'ended';
+                        // Quan trọng: remote dùng muted, không dùng enabled
+                        micMuted = t.muted || t.readyState === 'ended';
                     }
                     if (videoTracks.length > 0) {
                         const t = videoTracks[0];
-                        camOff = !t.enabled || t.muted || t.readyState === 'ended';
+                        // Quan trọng: remote dùng muted
+                        camOff = t.muted || t.readyState === 'ended';
                     }
 
                     if (videoEl) {
+                        preventVideoFullscreen(videoEl);
                         if (videoEl.srcObject !== stream) {
                             videoEl.srcObject = stream;
                         }
-                        // Cố play (sau gesture sẽ OK)
+                        // Cố play (sau gesture sẽ OK) - KHÔNG BAO GIỜ fullscreen
                         videoEl.play().catch(() => {});
                     }
                 }
             }
 
+            // Update icon mic
             if (micMuted) {
                 micStatus.classList.add('muted');
                 micStatus.innerHTML = '<i class="fas fa-microphone-slash"></i>';
@@ -2500,6 +2564,7 @@
                 micStatus.innerHTML = '<i class="fas fa-microphone"></i>';
             }
 
+            // Update icon cam + class video-on
             if (camOff) {
                 camStatus.classList.add('off');
                 camStatus.innerHTML = '<i class="fas fa-video-slash"></i>';
@@ -2507,7 +2572,6 @@
             } else {
                 camStatus.classList.remove('off');
                 camStatus.innerHTML = '<i class="fas fa-video"></i>';
-                // SỬA LỖI 2: Thêm class để ẩn chữ cái
                 avatar.classList.add('video-on');
             }
         }
@@ -2545,7 +2609,7 @@
                         }
 
                         const isMe = pid === currentUser.uid;
-                        // SỬA LỖI 1: Thêm playsinline + webkit-playsinline đầy đủ
+                        // SỬA LỖI: Thêm playsinline + webkit-playsinline đầy đủ + muted cho local
                         html += `
                             <div class="participant-card ${isMe ? 'participant-current' : ''}">
                                 <div class="participant-avatar" id="avatar-${pid}">
@@ -2570,6 +2634,13 @@
                     html += '</div>';
                     listEl.innerHTML = html;
                     document.getElementById('participantCount').textContent = count;
+
+                    // Sau khi render, set lại attribute playsinline và prevent fullscreen
+                    snapshot.forEach(doc => {
+                        const pid = doc.id;
+                        const v = document.getElementById(`video-${pid}`);
+                        if (v) preventVideoFullscreen(v);
+                    });
 
                     if (isWebRTCJoined) {
                         updateParticipantMediaIndicators(currentUser.uid);
