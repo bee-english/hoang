@@ -399,13 +399,19 @@
             object-fit: cover;
             border-radius: 14px;
             background: #0f172a;
+            z-index: 2;
+            /* Quan trọng cho mobile: không fullscreen khi tap */
+            -webkit-playsinline: true;
+            playsinline: true;
         }
         .participant-avatar .avatar-letter {
             z-index: 1;
             text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            position: relative;
         }
+        /* SỬA LỖI 2: Ẩn chữ cái khi cam bật */
         .participant-avatar.video-on .avatar-letter {
-            display: none;
+            display: none !important;
         }
         .participant-avatar.speaking {
             box-shadow: 0 0 0 5px rgba(16,185,129,0.6);
@@ -1659,7 +1665,6 @@
 
         <div id="addBankModal" class="modal">
             <div class="modal-content" style="max-width:820px;">
-                <div class="modal-content" style="max-width:820px;">
                 <span class="material-symbols-outlined close" id="closeAddBankModal">close</span>
                 <div class="modal-header"><h3><i class="fas fa-plus-circle"></i> Thêm đề từ ngân hàng vào phòng</h3></div>
                 <div class="modal-body">
@@ -1739,7 +1744,7 @@
         const auth = firebase.auth();
 
         // ============================================================
-        // WEBRTC CONFIG + STATE (ĐÃ SỬA LỖI NẶNG)
+        // WEBRTC CONFIG + STATE (ĐÃ SỬA LỖI NẶNG TRÊN MOBILE)
         // ============================================================
         const ICE_SERVERS = {
             iceServers: [
@@ -1761,6 +1766,7 @@
         let ignoreOffer = {};
         let polite = {};
         let remoteStreams = {};
+        let hasUserGesture = false; // quan trọng cho autoplay trên mobile
 
         // ============================================================
         // API KEY + AI HELPERS
@@ -2044,8 +2050,18 @@
         }
 
         // ============================================================
-        // WEBRTC VOICE + VIDEO (ĐÃ VIẾT LẠI HOÀN TOÀN - SỬA LỖI NẶNG)
+        // WEBRTC VOICE + VIDEO (ĐÃ VIẾT LẠI HOÀN TOÀN - SỬA LỖI NẶNG TRÊN MOBILE)
         // ============================================================
+        // Hàm quan trọng: ép tất cả video play sau user gesture (giống Google Meet)
+        function resumeAllVideos() {
+            hasUserGesture = true;
+            document.querySelectorAll('video').forEach(v => {
+                if (v.srcObject && v.paused) {
+                    v.play().catch(e => console.warn('resume play blocked', e));
+                }
+            });
+        }
+
         async function joinWebRTC(channelName) {
             try {
                 // Xin quyền mic + cam
@@ -2087,6 +2103,9 @@
                         createPeerConnection(remoteUid, true);
                     }
                 });
+
+                // Sau khi getUserMedia thành công coi như đã có user gesture
+                setTimeout(resumeAllVideos, 300);
 
             } catch (err) {
                 console.error("WebRTC join error:", err);
@@ -2178,7 +2197,7 @@
                 });
             }
 
-            // ========== SỬA LỖI NẶNG NHẤT: tích lũy track vào cùng MediaStream ==========
+            // ========== SỬA LỖI NẶNG NHẤT: tích lũy track vào cùng MediaStream + autoplay mobile ==========
             pc.ontrack = (event) => {
                 console.log('Nhận track từ', remoteUid, event.track.kind);
 
@@ -2198,14 +2217,25 @@
                     if (videoEl.srcObject !== stream) {
                         videoEl.srcObject = stream;
                     }
+                    // Cố gắng play ngay (sau user gesture sẽ thành công)
                     videoEl.play().catch(e => console.warn('Autoplay blocked for remote', e));
                 }
 
                 event.track.onmute = () => updateParticipantMediaIndicators(remoteUid);
-                event.track.onunmute = () => updateParticipantMediaIndicators(remoteUid);
+                event.track.onunmute = () => {
+                    updateParticipantMediaIndicators(remoteUid);
+                    // Khi unmute cố play lại
+                    const v = document.getElementById(`video-${remoteUid}`);
+                    if (v) v.play().catch(()=>{});
+                };
                 event.track.onended = () => updateParticipantMediaIndicators(remoteUid);
 
                 updateParticipantMediaIndicators(remoteUid);
+                
+                // Nếu đã có user gesture thì ép play tất cả
+                if (hasUserGesture) {
+                    setTimeout(resumeAllVideos, 100);
+                }
             };
 
             pc.onicecandidate = (event) => {
@@ -2331,6 +2361,10 @@
                 });
                 updateMicUI();
                 updateParticipantMediaIndicators(currentUser.uid);
+                
+                // User gesture → ép play video
+                resumeAllVideos();
+                
                 if (isMicMuted) {
                     showNotification("Đã tắt mic", "info");
                 } else {
@@ -2355,6 +2389,10 @@
                 });
                 updateCamUI();
                 updateParticipantMediaIndicators(currentUser.uid);
+                
+                // User gesture → ép play video
+                resumeAllVideos();
+                
                 if (isCamOff) {
                     showNotification("Đã tắt camera", "info");
                 } else {
@@ -2448,6 +2486,7 @@
                         if (videoEl.srcObject !== stream) {
                             videoEl.srcObject = stream;
                         }
+                        // Cố play (sau gesture sẽ OK)
                         videoEl.play().catch(() => {});
                     }
                 }
@@ -2468,6 +2507,7 @@
             } else {
                 camStatus.classList.remove('off');
                 camStatus.innerHTML = '<i class="fas fa-video"></i>';
+                // SỬA LỖI 2: Thêm class để ẩn chữ cái
                 avatar.classList.add('video-on');
             }
         }
@@ -2505,10 +2545,11 @@
                         }
 
                         const isMe = pid === currentUser.uid;
+                        // SỬA LỖI 1: Thêm playsinline + webkit-playsinline đầy đủ
                         html += `
                             <div class="participant-card ${isMe ? 'participant-current' : ''}">
                                 <div class="participant-avatar" id="avatar-${pid}">
-                                    <video id="video-${pid}" autoplay playsinline ${isMe ? 'muted' : ''}></video>
+                                    <video id="video-${pid}" autoplay playsinline webkit-playsinline ${isMe ? 'muted' : ''}></video>
                                     <span class="avatar-letter">${(p.name||'?').charAt(0).toUpperCase()}</span>
                                     <div class="mic-status muted" title="Mic">
                                         <i class="fas fa-microphone-slash"></i>
@@ -2535,6 +2576,10 @@
                         Object.keys(remoteStreams).forEach(uid => {
                             updateParticipantMediaIndicators(uid);
                         });
+                        // Sau khi render lại, cố play video
+                        if (hasUserGesture) {
+                            setTimeout(resumeAllVideos, 150);
+                        }
                     }
 
                     // Đóng connection của người đã rời
