@@ -756,6 +756,34 @@
             display: grid;
             gap: 8px;
         }
+        .custom-count-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 600px) {
+            .custom-count-grid { grid-template-columns: 1fr; }
+        }
+        .count-item {
+            background: #f8fafc;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+        .count-item label {
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+        .count-item input {
+            padding: 10px 12px;
+            font-weight: 600;
+        }
+        .ai-mode-hint {
+            font-size: 0.82rem;
+            color: var(--gray-500);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -766,7 +794,7 @@
     <div id="app">
         <a href="https://bee-english.github.io/hoang/main" class="home-button" id="btnHomeTop"><i class="fas fa-home"></i> Trang chính</a>
 
-        <!-- NEED LOGIN (dùng chung session với trang Main) -->
+        <!-- NEED LOGIN -->
         <div id="needLoginPage" class="page hidden">
             <div class="container">
                 <div class="logo-section">
@@ -865,25 +893,26 @@
             </div>
         </div>
 
-        <!-- AI CREATE EXAM -->
+        <!-- AI CREATE EXAM (ĐÃ SỬA) -->
         <div id="aiCreatePage" class="page hidden">
             <div class="container wide">
                 <div class="exam-header-bar">
                     <div>
                         <div style="font-size:1.25rem;font-weight:800;">Tạo đề bằng AI</div>
-                        <div style="opacity:0.9;font-size:0.9rem;">Chọn mức độ nhận thức và cấu trúc ma trận</div>
+                        <div style="opacity:0.9;font-size:0.9rem;">Tùy chỉnh số lượng câu hoặc dùng ma trận mẫu</div>
                     </div>
                     <button class="btn btn-sm" style="background:rgba(255,255,255,0.25);" id="btnBackFromAI">
                         <i class="fas fa-arrow-left"></i> Quay lại
                     </button>
                 </div>
+
                 <div class="form-group">
                     <label>Tiêu đề đề thi</label>
                     <input type="text" id="aiExamTitle" placeholder="Ví dụ: Kiểm tra giữa kỳ 1 - Toán 9">
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
                     <div class="form-group">
-                        <label>Môn học (theo ma trận mẫu)</label>
+                        <label>Môn học (để lấy ma trận mẫu)</label>
                         <select id="aiSubject">
                             <option value="toan">Toán</option>
                             <option value="van">Ngữ văn</option>
@@ -913,15 +942,58 @@
                         <div class="level-chip" data-level="vandungcao">Vận dụng cao</div>
                     </div>
                 </div>
+
+                <!-- MA TRẬN MẪU (chỉ tham khảo) -->
                 <div class="form-group">
-                    <label>Cấu trúc đề theo ma trận mẫu của môn</label>
+                    <label>Ma trận mẫu của môn (tham khảo – không bắt buộc)</label>
                     <div class="matrix-box" id="matrixPreview">Đang tải ma trận...</div>
                 </div>
+
+                <!-- SỐ LƯỢNG TÙY CHỈNH -->
+                <div class="form-group">
+                    <label>Số lượng câu hỏi tùy chỉnh (dùng khi bấm “Tạo đề bằng AI”)</label>
+                    <div class="custom-count-grid">
+                        <div class="count-item">
+                            <label>Trắc nghiệm</label>
+                            <input type="number" id="customMcq" value="10" min="0" max="40">
+                        </div>
+                        <div class="count-item">
+                            <label>Đúng – Sai (4 ý)</label>
+                            <input type="number" id="customTrueFalse" value="2" min="0" max="10">
+                        </div>
+                        <div class="count-item">
+                            <label>Trả lời ngắn</label>
+                            <input type="number" id="customShort" value="4" min="0" max="15">
+                        </div>
+                        <div class="count-item">
+                            <label>Tự luận</label>
+                            <input type="number" id="customEssay" value="2" min="0" max="10">
+                        </div>
+                    </div>
+                    <div class="ai-mode-hint">
+                        Điểm mặc định khi tùy chỉnh: Trắc nghiệm 0.25đ • Đúng-Sai 1đ • Trả lời ngắn 0.5đ • Tự luận 1đ.
+                        AI sẽ phân bố mức độ nhận thức theo các mức bạn đã chọn ở trên.
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Yêu cầu bổ sung cho AI (tùy chọn)</label>
                     <textarea id="aiExtra" rows="2" placeholder="Ví dụ: Ưu tiên câu hỏi thực tiễn, không dùng từ khó, độ dài đoạn văn khoảng 150 từ..."></textarea>
                 </div>
-                <button class="btn btn-purple" id="btnGenerateAI"><i class="fas fa-magic"></i> Tạo đề bằng AI</button>
+
+                <!-- HAI NÚT TẠO -->
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+                    <button class="btn btn-purple" id="btnGenerateAI" style="flex:1;min-width:200px;">
+                        <i class="fas fa-magic"></i> Tạo đề bằng AI (theo số lượng tùy chỉnh)
+                    </button>
+                    <button class="btn btn-secondary" id="btnGenerateByMatrix" style="flex:1;min-width:200px;">
+                        <i class="fas fa-table"></i> Tạo đề theo ma trận mẫu
+                    </button>
+                </div>
+                <div class="ai-mode-hint" style="margin-top:10px;">
+                    <strong>Tạo đề theo ma trận:</strong> Bắt buộc đúng số lượng câu + điểm theo ma trận mẫu của môn (đã lọc theo mức độ bạn chọn). Nội dung và lớp vẫn theo bạn nhập.
+                </div>
+
                 <div id="aiResultArea" style="margin-top:24px;display:none;">
                     <div class="form-title"><i class="fas fa-list"></i> Đề đã tạo – chỉnh sửa trước khi lưu</div>
                     <div id="aiQuestionsPreview"></div>
@@ -1037,7 +1109,7 @@
 
     <script>
         // ============================================================
-        // CẤU HÌNH FIREBASE (thay bằng cấu hình thật của bạn)
+        // CẤU HÌNH FIREBASE
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
@@ -1053,12 +1125,10 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Bắt buộc dùng persistence LOCAL để giữ session khi chuyển từ trang Main sang trang này
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
             console.warn("Không set được persistence:", err);
         });
 
-        // API OpenAI (thay key thật)
         const API_URL = "https://api.openai.com/v1/chat/completions";
         function getAPIKey() {
             return localStorage.getItem("loha_openai_key") || "YOUR_OPENAI_KEY";
@@ -1080,8 +1150,7 @@
         let selectedLevels = ["nhanbiet", "thonghieu", "vandungthap"];
 
         // ============================================================
-        // MA TRẬN MẪU 4 MÔN (dựa trên đề giữa kỳ lớp 9 gửi kèm)
-        // Người dùng vẫn có thể tạo đề bất kỳ lớp / chủ đề, AI chỉ lấy cấu trúc tỷ lệ
+        // MA TRẬN MẪU 4 MÔN
         // ============================================================
         const MATRIX_TEMPLATES = {
             toan: {
@@ -1194,10 +1263,8 @@
         }
 
         // ============================================================
-        // AUTH – dùng chung session với Trang chính (Main)
-        // Không có form đăng nhập riêng. Chỉ đọc Firebase Auth persistence.
+        // AUTH
         // ============================================================
-        // Hiện loading ngay khi vào trang, chờ auth resolve
         showLoading("Đang kiểm tra đăng nhập...");
 
         auth.onAuthStateChanged(async user => {
@@ -1207,14 +1274,12 @@
                     const doc = await db.collection("users").doc(user.uid).get();
                     if (doc.exists) {
                         currentUserProfile = doc.data();
-                        // teacher và admin đều vào dashboard giáo viên
                         if (currentUserProfile.role === "teacher" || currentUserProfile.role === "admin") {
                             showTeacherDashboard();
                         } else {
                             showStudentHome();
                         }
                     } else {
-                        // User đã auth nhưng chưa có profile → vẫn cho vào student
                         currentUserProfile = {
                             name: user.email ? user.email.split("@")[0] : "Người dùng",
                             role: "student",
@@ -1234,7 +1299,6 @@
                     hideLoading();
                 }
             } else {
-                // Chưa đăng nhập → hiện trang cần đăng nhập + link về Main
                 currentUser = null;
                 currentUserProfile = null;
                 hideLoading();
@@ -1242,16 +1306,11 @@
             }
         });
 
-        // Nút đăng xuất → signOut rồi auth state sẽ tự chuyển về needLoginPage
         document.getElementById("btnLogoutTeacher").addEventListener("click", () => {
-            auth.signOut().then(() => {
-                showNotification("Đã đăng xuất", "info");
-            });
+            auth.signOut().then(() => showNotification("Đã đăng xuất", "info"));
         });
         document.getElementById("btnLogoutStudent").addEventListener("click", () => {
-            auth.signOut().then(() => {
-                showNotification("Đã đăng xuất", "info");
-            });
+            auth.signOut().then(() => showNotification("Đã đăng xuất", "info"));
         });
 
         // ============================================================
@@ -1429,7 +1488,6 @@
             });
             container.innerHTML = html || '<div class="empty-state"><i class="fas fa-question-circle"></i><p>Chưa có câu hỏi. Hãy thêm câu hỏi.</p></div>';
 
-            // gắn sự kiện cập nhật dữ liệu
             container.querySelectorAll(".q-text").forEach(el => {
                 el.addEventListener("input", e => {
                     const q = questionsData.find(x => x.id === e.target.dataset.qid);
@@ -1510,7 +1568,6 @@
                 showNotification("Đề phải có ít nhất một câu hỏi", "warning");
                 return;
             }
-            // đồng bộ lại dữ liệu từ DOM
             renderQuestionsEditor();
             const subject = document.getElementById("examSubject").value;
             const grade = document.getElementById("examGrade").value.trim() || "9";
@@ -1572,9 +1629,10 @@
         };
 
         // ============================================================
-        // TẠO ĐỀ BẰNG AI – THEO MA TRẬN + MỨC ĐỘ
+        // TẠO ĐỀ BẰNG AI – HỖ TRỢ TÙY CHỈNH + THEO MA TRẬN
         // ============================================================
         document.getElementById("aiSubject").addEventListener("change", updateMatrixPreview);
+
         function updateMatrixPreview() {
             const subj = document.getElementById("aiSubject").value;
             const matrix = MATRIX_TEMPLATES[subj];
@@ -1596,7 +1654,8 @@
             });
         });
 
-        document.getElementById("btnGenerateAI").addEventListener("click", async () => {
+        // Hàm chung để gọi AI tạo đề
+        async function generateExamWithStructure(structure, modeLabel) {
             const title = document.getElementById("aiExamTitle").value.trim();
             const subject = document.getElementById("aiSubject").value;
             const grade = document.getElementById("aiGrade").value.trim() || "9";
@@ -1612,14 +1671,16 @@
                 showNotification("Hãy chọn ít nhất một mức độ nhận thức", "warning");
                 return;
             }
+            if (!structure || structure.length === 0) {
+                showNotification("Cấu trúc đề trống. Hãy kiểm tra lại số lượng câu hoặc ma trận.", "warning");
+                return;
+            }
 
             const matrix = MATRIX_TEMPLATES[subject];
-            // Lọc cấu trúc theo mức độ giáo viên chọn
-            const filteredStructure = matrix.structure.filter(item => selectedLevels.includes(item.level));
+            const subjectName = matrix ? matrix.name : subjName(subject);
 
-            // Xây dựng prompt hoàn toàn bằng tiếng Việt, không dùng ký tự code
-            let prompt = `Bạn là giáo viên giàu kinh nghiệm đang soạn đề kiểm tra môn ${matrix.name} lớp ${grade}.
-Hãy tạo một đề thi hoàn chỉnh theo đúng cấu trúc ma trận dưới đây.
+            let prompt = `Bạn là giáo viên giàu kinh nghiệm đang soạn đề kiểm tra môn ${subjectName} lớp ${grade}.
+Hãy tạo một đề thi hoàn chỉnh theo đúng cấu trúc dưới đây.
 Chỉ trả về kết quả dưới dạng danh sách câu hỏi, mỗi câu theo định dạng rõ ràng sau (không dùng bất kỳ ký hiệu kỹ thuật nào như dấu gạch chéo ngược, thẻ code, hay định dạng lập trình):
 
 Câu số [số thứ tự]
@@ -1629,7 +1690,7 @@ Mức độ: [Nhận biết hoặc Thông hiểu hoặc Vận dụng thấp ho�
 Nội dung câu hỏi: [nội dung đầy đủ bằng tiếng Việt]
 `;
 
-            if (filteredStructure.some(s => s.type === "mcq")) {
+            if (structure.some(s => s.type === "mcq")) {
                 prompt += `Nếu là trắc nghiệm thì liệt kê:
 Lựa chọn A: ...
 Lựa chọn B: ...
@@ -1638,7 +1699,7 @@ Lựa chọn D: ...
 Đáp án đúng: [A hoặc B hoặc C hoặc D]
 `;
             }
-            if (filteredStructure.some(s => s.type === "truefalse")) {
+            if (structure.some(s => s.type === "truefalse")) {
                 prompt += `Nếu là Đúng sai thì liệt kê đúng 4 ý:
 Ý a: [nội dung] – Đáp án: Đúng hoặc Sai
 Ý b: [nội dung] – Đáp án: Đúng hoặc Sai
@@ -1646,12 +1707,12 @@ Lựa chọn D: ...
 Ý d: [nội dung] – Đáp án: Đúng hoặc Sai
 `;
             }
-            if (filteredStructure.some(s => s.type === "short")) {
+            if (structure.some(s => s.type === "short")) {
                 prompt += `Nếu là Trả lời ngắn:
 Đáp án đúng: [chỉ gồm các ký tự số, dấu trừ, dấu chấm, tối đa 4 ký tự]
 `;
             }
-            if (filteredStructure.some(s => s.type === "essay")) {
+            if (structure.some(s => s.type === "essay")) {
                 prompt += `Nếu là Tự luận:
 Đáp án mẫu: [nội dung gợi ý chấm ngắn gọn]
 `;
@@ -1660,7 +1721,7 @@ Lựa chọn D: ...
             prompt += `
 Cấu trúc số lượng câu cần tạo:
 `;
-            filteredStructure.forEach(item => {
+            structure.forEach(item => {
                 const typeVi = item.type === "mcq" ? "Trắc nghiệm" : item.type === "truefalse" ? "Đúng sai" : item.type === "short" ? "Trả lời ngắn" : "Tự luận";
                 prompt += `- ${item.count} câu ${typeVi}, mức độ ${levelLabel(item.level)}, mỗi câu ${item.points} điểm\n`;
             });
@@ -1670,7 +1731,7 @@ Chủ đề nội dung cần kiểm tra: ${topic}
 ${extra ? "Yêu cầu thêm: " + extra : ""}
 Tất cả nội dung câu hỏi, lựa chọn, đáp án phải viết hoàn toàn bằng tiếng Việt trong sáng, phù hợp học sinh lớp ${grade}. Không được xuất hiện bất kỳ ký hiệu kỹ thuật hay mã lập trình nào.`;
 
-            showLoading("AI đang soạn đề theo ma trận...");
+            showLoading(`AI đang soạn đề (${modeLabel})...`);
             try {
                 const response = await fetch(API_URL, {
                     method: "POST",
@@ -1692,15 +1753,13 @@ Tất cả nội dung câu hỏi, lựa chọn, đáp án phải viết hoàn to
                 const data = await response.json();
                 let content = data.choices[0].message.content || "";
 
-                // Phân tích văn bản thuần Việt thành mảng câu hỏi
-                const parsed = parseAIVietnameseResponse(content, filteredStructure);
+                const parsed = parseAIVietnameseResponse(content, structure);
                 if (parsed.length === 0) {
                     showNotification("AI trả về nội dung không đúng định dạng. Hãy thử lại.", "warning");
                     hideLoading();
                     return;
                 }
 
-                // Hiển thị xem trước
                 questionsData = parsed;
                 document.getElementById("aiResultArea").style.display = "block";
                 renderAIPreview();
@@ -1711,11 +1770,64 @@ Tất cả nội dung câu hỏi, lựa chọn, đáp án phải viết hoàn to
             } finally {
                 hideLoading();
             }
+        }
+
+        // Nút 1: Tạo theo số lượng tùy chỉnh
+        document.getElementById("btnGenerateAI").addEventListener("click", async () => {
+            const mcqCount = parseInt(document.getElementById("customMcq").value) || 0;
+            const tfCount = parseInt(document.getElementById("customTrueFalse").value) || 0;
+            const shortCount = parseInt(document.getElementById("customShort").value) || 0;
+            const essayCount = parseInt(document.getElementById("customEssay").value) || 0;
+
+            if (mcqCount + tfCount + shortCount + essayCount === 0) {
+                showNotification("Hãy nhập ít nhất một loại câu hỏi", "warning");
+                return;
+            }
+
+            // Phân bố mức độ đều cho các mức đã chọn
+            const levels = selectedLevels.length ? selectedLevels : ["nhanbiet"];
+            const structure = [];
+
+            function distribute(type, total, defaultPoints) {
+                if (total <= 0) return;
+                const base = Math.floor(total / levels.length);
+                let remain = total % levels.length;
+                levels.forEach((lv, i) => {
+                    const c = base + (i < remain ? 1 : 0);
+                    if (c > 0) structure.push({ type, level: lv, count: c, points: defaultPoints });
+                });
+            }
+
+            distribute("mcq", mcqCount, 0.25);
+            distribute("truefalse", tfCount, 1.0);
+            distribute("short", shortCount, 0.5);
+            distribute("essay", essayCount, 1.0);
+
+            await generateExamWithStructure(structure, "theo số lượng tùy chỉnh");
+        });
+
+        // Nút 2: Tạo theo ma trận mẫu (bắt buộc đúng số lượng + điểm)
+        document.getElementById("btnGenerateByMatrix").addEventListener("click", async () => {
+            const subject = document.getElementById("aiSubject").value;
+            const matrix = MATRIX_TEMPLATES[subject];
+            if (!matrix) {
+                showNotification("Môn này chưa có ma trận mẫu", "warning");
+                return;
+            }
+
+            // Lọc theo mức độ người dùng chọn
+            const filteredStructure = matrix.structure.filter(item => selectedLevels.includes(item.level));
+
+            if (filteredStructure.length === 0) {
+                showNotification("Không có câu nào trong ma trận khớp với mức độ bạn chọn. Hãy chọn thêm mức độ.", "warning");
+                return;
+            }
+
+            await generateExamWithStructure(filteredStructure, "theo ma trận mẫu");
         });
 
         function parseAIVietnameseResponse(text, structureHint) {
             const questions = [];
-            // Tách theo "Câu số"
             const blocks = text.split(/Câu số\s*\d+/i).filter(b => b.trim().length > 30);
             blocks.forEach((block, idx) => {
                 const lines = block.split(/\n/).map(l => l.trim()).filter(Boolean);
@@ -1727,7 +1839,6 @@ Tất cả nội dung câu hỏi, lựa chọn, đáp án phải viết hoàn to
                 let statements = [];
                 let shortAnswer = "";
                 let correctAnswers = [];
-                let currentOpt = null;
 
                 for (let line of lines) {
                     if (/^Loại câu hỏi:/i.test(line)) {
@@ -1767,16 +1878,13 @@ Tất cả nội dung câu hỏi, lựa chọn, đáp án phải viết hoàn to
                     } else if (/^Đáp án mẫu:/i.test(line)) {
                         correctAnswers = [line.replace(/^Đáp án mẫu:\s*/i, "").trim()];
                     } else if (question && !line.match(/^(Loại|Mức|Điểm|Lựa chọn|Đáp án|Ý )/i)) {
-                        // tiếp tục nội dung câu hỏi nếu bị xuống dòng
                         if (!question.endsWith(".") && !question.endsWith("?")) question += " " + line;
                     }
                 }
 
-                // Bổ sung đủ 4 ý nếu thiếu
                 while (type === "truefalse" && statements.length < 4) {
                     statements.push({ text: "Ý bổ sung " + (statements.length + 1), correct: false });
                 }
-                // Bổ sung đủ 4 lựa chọn nếu thiếu
                 while (type === "mcq" && options.length < 4) {
                     options.push({ text: "Lựa chọn " + String.fromCharCode(65 + options.length), correct: false });
                 }
@@ -2081,7 +2189,6 @@ Chỉ trả về danh sách đó, không giải thích thêm.
                 const data = await response.json();
                 let content = data.choices[0].message.content || "";
 
-                // Phân tích đơn giản
                 questions.forEach(q => {
                     const regex = new RegExp(`Câu\\s*${q.id}[^:]*:\\s*điểm\\s*([0-9.,]+)[^;]*;\\s*nhận xét\\s*(.+)`, "i");
                     const m = content.match(regex);
@@ -2321,7 +2428,6 @@ Chỉ trả về danh sách đó, không giải thích thêm.
                 }
             });
 
-            // Tự chấm phần trắc nghiệm / đúng-sai / trả lời ngắn
             let autoScores = {};
             let totalAuto = 0;
             let maxScore = 0;
@@ -2349,7 +2455,6 @@ Chỉ trả về danh sách đó, không giải thích thêm.
                         const key = String.fromCharCode(97 + si);
                         if (student[key] === st.correct) correctCount++;
                     });
-                    // 1 ý = 10%, 2 = 25%, 3 = 50%, 4 = 100%
                     let ratio = 0;
                     if (correctCount === 1) ratio = 0.10;
                     else if (correctCount === 2) ratio = 0.25;
