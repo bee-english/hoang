@@ -764,56 +764,26 @@
     <div class="bg-orb orb-3"></div>
 
     <div id="app">
-        <a href="#" class="home-button" id="btnHomeTop" style="display:none;">
-            <i class="fas fa-home"></i> Trang chủ
-        </a>
+        <a href="https://bee-english.github.io/hoang/main" class="home-button" id="btnHomeTop"><i class="fas fa-home"></i> Trang chính</a>
 
-        <!-- LOGIN / REGISTER -->
-        <div id="authPage" class="page">
+        <!-- NEED LOGIN (dùng chung session với trang Main) -->
+        <div id="needLoginPage" class="page hidden">
             <div class="container">
                 <div class="logo-section">
                     <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="LOHA">
                     <h1>LOHA</h1>
-                    <p>Hệ thống tạo đề & làm bài trực tuyến</p>
+                    <p>Tạo đề – Làm đề – Chấm điểm</p>
                 </div>
-                <div id="loginForm">
-                    <div class="form-title"><i class="fas fa-sign-in-alt"></i> Đăng nhập</div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="loginEmail" placeholder="Nhập email">
-                    </div>
-                    <div class="form-group">
-                        <label>Mật khẩu</label>
-                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu">
-                    </div>
-                    <button class="btn" id="btnLogin"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
-                    <div class="divider"><span class="divider-text">hoặc</span></div>
-                    <button class="btn btn-outline" id="btnShowRegister">Tạo tài khoản mới</button>
-                </div>
-                <div id="registerForm" style="display:none;">
-                    <div class="form-title"><i class="fas fa-user-plus"></i> Đăng ký</div>
-                    <div class="form-group">
-                        <label>Họ và tên</label>
-                        <input type="text" id="regName" placeholder="Nhập họ tên">
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="regEmail" placeholder="Nhập email">
-                    </div>
-                    <div class="form-group">
-                        <label>Mật khẩu</label>
-                        <input type="password" id="regPassword" placeholder="Tối thiểu 6 ký tự">
-                    </div>
-                    <div class="form-group">
-                        <label>Vai trò</label>
-                        <select id="regRole">
-                            <option value="teacher">Giáo viên</option>
-                            <option value="student">Học sinh</option>
-                        </select>
-                    </div>
-                    <button class="btn" id="btnRegister"><i class="fas fa-user-plus"></i> Đăng ký</button>
-                    <div class="divider"><span class="divider-text">hoặc</span></div>
-                    <button class="btn btn-outline" id="btnShowLogin">Đã có tài khoản? Đăng nhập</button>
+                <div style="text-align:center;padding:30px 10px;">
+                    <i class="fas fa-lock" style="font-size:3.2rem;color:var(--primary);margin-bottom:16px;"></i>
+                    <h2 style="font-size:1.4rem;margin-bottom:10px;color:var(--gray-800);">Bạn cần đăng nhập</h2>
+                    <p style="color:var(--gray-500);margin-bottom:22px;line-height:1.55;">
+                        Vui lòng đăng nhập tại <strong>Trang chính</strong> trước.<br>
+                        Tài khoản dùng chung toàn hệ thống LOHA – bạn không cần đăng nhập lại tại đây.
+                    </p>
+                    <a href="https://bee-english.github.io/hoang/main" class="btn" style="text-decoration:none;">
+                        <i class="fas fa-home"></i> Về trang chính để đăng nhập
+                    </a>
                 </div>
             </div>
         </div>
@@ -1070,16 +1040,23 @@
         // CẤU HÌNH FIREBASE (thay bằng cấu hình thật của bạn)
         // ============================================================
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyBFSP94_Yx1ySsV8_TRUcI1Jnt9oXxov_c",
+            authDomain: "bee2-8be5c.firebaseapp.com",
+            databaseURL: "https://bee2-8be5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bee2-8be5c",
+            storageBucket: "bee2-8be5c.firebasestorage.app",
+            messagingSenderId: "955848369197",
+            appId: "1:955848369197:web:ccda9b046000ac4cfa04a4",
+            measurementId: "G-1G0N144BN3"
         };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // Bắt buộc dùng persistence LOCAL để giữ session khi chuyển từ trang Main sang trang này
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
+            console.warn("Không set được persistence:", err);
+        });
 
         // API OpenAI (thay key thật)
         const API_URL = "https://api.openai.com/v1/chat/completions";
@@ -1217,84 +1194,65 @@
         }
 
         // ============================================================
-        // AUTH
+        // AUTH – dùng chung session với Trang chính (Main)
+        // Không có form đăng nhập riêng. Chỉ đọc Firebase Auth persistence.
         // ============================================================
+        // Hiện loading ngay khi vào trang, chờ auth resolve
+        showLoading("Đang kiểm tra đăng nhập...");
+
         auth.onAuthStateChanged(async user => {
             if (user) {
                 currentUser = user;
-                const doc = await db.collection("users").doc(user.uid).get();
-                if (doc.exists) {
-                    currentUserProfile = doc.data();
-                    if (currentUserProfile.role === "teacher") {
-                        showTeacherDashboard();
+                try {
+                    const doc = await db.collection("users").doc(user.uid).get();
+                    if (doc.exists) {
+                        currentUserProfile = doc.data();
+                        // teacher và admin đều vào dashboard giáo viên
+                        if (currentUserProfile.role === "teacher" || currentUserProfile.role === "admin") {
+                            showTeacherDashboard();
+                        } else {
+                            showStudentHome();
+                        }
                     } else {
+                        // User đã auth nhưng chưa có profile → vẫn cho vào student
+                        currentUserProfile = {
+                            name: user.email ? user.email.split("@")[0] : "Người dùng",
+                            role: "student",
+                            email: user.email || ""
+                        };
                         showStudentHome();
                     }
-                } else {
-                    showNotification("Hồ sơ người dùng chưa tồn tại", "error");
-                    auth.signOut();
+                } catch (err) {
+                    console.error("Lỗi tải profile:", err);
+                    currentUserProfile = {
+                        name: user.email ? user.email.split("@")[0] : "Người dùng",
+                        role: "student",
+                        email: user.email || ""
+                    };
+                    showStudentHome();
+                } finally {
+                    hideLoading();
                 }
             } else {
+                // Chưa đăng nhập → hiện trang cần đăng nhập + link về Main
                 currentUser = null;
                 currentUserProfile = null;
-                showPage("authPage");
-            }
-        });
-
-        document.getElementById("btnShowRegister").addEventListener("click", () => {
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("registerForm").style.display = "block";
-        });
-        document.getElementById("btnShowLogin").addEventListener("click", () => {
-            document.getElementById("registerForm").style.display = "none";
-            document.getElementById("loginForm").style.display = "block";
-        });
-
-        document.getElementById("btnLogin").addEventListener("click", async () => {
-            const email = document.getElementById("loginEmail").value.trim();
-            const password = document.getElementById("loginPassword").value;
-            if (!email || !password) {
-                showNotification("Vui lòng nhập đầy đủ email và mật khẩu", "warning");
-                return;
-            }
-            showLoading("Đang đăng nhập...");
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-            } catch (err) {
-                showNotification("Lỗi đăng nhập: " + err.message, "error");
-            } finally {
                 hideLoading();
+                showPage("needLoginPage");
             }
         });
 
-        document.getElementById("btnRegister").addEventListener("click", async () => {
-            const name = document.getElementById("regName").value.trim();
-            const email = document.getElementById("regEmail").value.trim();
-            const password = document.getElementById("regPassword").value;
-            const role = document.getElementById("regRole").value;
-            if (!name || !email || !password) {
-                showNotification("Vui lòng điền đầy đủ thông tin", "warning");
-                return;
-            }
-            showLoading("Đang tạo tài khoản...");
-            try {
-                const cred = await auth.createUserWithEmailAndPassword(email, password);
-                await db.collection("users").doc(cred.user.uid).set({
-                    name,
-                    email,
-                    role,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showNotification("Đăng ký thành công!", "success");
-            } catch (err) {
-                showNotification("Lỗi đăng ký: " + err.message, "error");
-            } finally {
-                hideLoading();
-            }
+        // Nút đăng xuất → signOut rồi auth state sẽ tự chuyển về needLoginPage
+        document.getElementById("btnLogoutTeacher").addEventListener("click", () => {
+            auth.signOut().then(() => {
+                showNotification("Đã đăng xuất", "info");
+            });
         });
-
-        document.getElementById("btnLogoutTeacher").addEventListener("click", () => auth.signOut());
-        document.getElementById("btnLogoutStudent").addEventListener("click", () => auth.signOut());
+        document.getElementById("btnLogoutStudent").addEventListener("click", () => {
+            auth.signOut().then(() => {
+                showNotification("Đã đăng xuất", "info");
+            });
+        });
 
         // ============================================================
         // TEACHER DASHBOARD
