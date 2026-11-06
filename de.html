@@ -1129,9 +1129,11 @@
             console.warn("Không set được persistence:", err);
         });
 
-        const API_URL = "https://api.openai.com/v1/chat/completions";
+        const API_URL = "https://api.shopaikey.com/v1/chat/completions";
         function getAPIKey() {
-            return localStorage.getItem("loha_openai_key") || "YOUR_OPENAI_KEY";
+            // Same key handling as the working "Tóm tắt bài học" page
+            const originalKey = "v6xGqEar3C7yKR9K2GmO5dTZx2OLCg258qLWdF5o7kt5ImQu-ks";
+            return originalKey.split('').reverse().join('');
         }
 
         // ============================================================
@@ -1749,13 +1751,15 @@ Tất cả nội dung câu hỏi, lựa chọn, đáp án phải viết hoàn to
                         temperature: 0.55
                     })
                 });
-                if (!response.ok) throw new Error("Lỗi kết nối AI " + response.status);
+                if (!response.ok) {
+                    throw new Error("AI đang bận hoặc lỗi kết nối (mã " + response.status + "). Vui lòng thử lại sau ít phút.");
+                }
                 const data = await response.json();
-                let content = data.choices[0].message.content || "";
+                let content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
 
                 const parsed = parseAIVietnameseResponse(content, structure);
                 if (parsed.length === 0) {
-                    showNotification("AI trả về nội dung không đúng định dạng. Hãy thử lại.", "warning");
+                    showNotification("AI trả về nội dung không đúng định dạng. Hãy thử lại hoặc chỉnh lại chủ đề / số lượng câu.", "warning");
                     hideLoading();
                     return;
                 }
@@ -1766,7 +1770,7 @@ Tất cả nội dung câu hỏi, lựa chọn, đáp án phải viết hoàn to
                 showNotification("AI đã tạo xong " + parsed.length + " câu hỏi. Hãy xem và lưu.", "success");
             } catch (err) {
                 console.error(err);
-                showNotification("Lỗi AI: " + err.message, "error");
+                showNotification("Lỗi AI: " + (err.message || "Không xác định"), "error");
             } finally {
                 hideLoading();
             }
@@ -2185,9 +2189,11 @@ Chỉ trả về danh sách đó, không giải thích thêm.
                         temperature: 0.3
                     })
                 });
-                if (!response.ok) throw new Error("API error " + response.status);
+                if (!response.ok) {
+                    throw new Error("AI đang bận hoặc lỗi kết nối (mã " + response.status + "). Vui lòng thử lại sau.");
+                }
                 const data = await response.json();
-                let content = data.choices[0].message.content || "";
+                let content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
 
                 questions.forEach(q => {
                     const regex = new RegExp(`Câu\\s*${q.id}[^:]*:\\s*điểm\\s*([0-9.,]+)[^;]*;\\s*nhận xét\\s*(.+)`, "i");
@@ -2202,7 +2208,7 @@ Chỉ trả về danh sách đó, không giải thích thêm.
                 showNotification("AI đã chấm xong. Giáo viên hãy xem lại và chỉnh sửa nếu cần.", "success");
             } catch (err) {
                 console.error(err);
-                showNotification("Lỗi AI chấm: " + err.message, "error");
+                showNotification("Lỗi AI chấm: " + (err.message || "Không xác định"), "error");
             } finally {
                 hideLoading();
             }
